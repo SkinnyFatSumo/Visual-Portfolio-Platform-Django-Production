@@ -1,61 +1,42 @@
 // Core React, Router, and Redux modules
-import React, {Component, render} from 'react';
-import {Router, withRouter} from 'react-router-dom';
+import React from 'react';
+import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-// Redux Actions
-import {setPhotos} from '../../actions/photoActions';
-import {setTags} from '../../actions/tagActions';
-
 // React Components
-import PhotoDetail from './PhotoDetail';
-import PhotoCarousel from './PhotoCarousel';
+// import PhotoDetail from './PhotoDetail';
+import Carousel from 'react-bootstrap/Carousel';
 
 // Helpers
 import PropTypes from 'prop-types';
-import {stringOfTags, tagStringFromURL} from '../support/helpers';
 
 // ------------------------------------------------------------------------- //
-//                           PHOTO GALLERY ROOT                              //
+//                             PHOTO GALLERY                                 //
 // ------------------------------------------------------------------------- //
 
-class PhotoGallery extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleTagClick = this.handleTagClick.bind(this);
-  }
-
-  componentDidUpdate() {
-    if (this.props.photos_loaded && this.props.photos.length === 0) {
-      console.log('NO TAGS MATCH');
-      this.props.history.push('/error/', {hydrated: true});
-    }
-  }
-
-  // --------------
-  // EVENT HANDLERS
-
-  handleTagClick = event => {
-    event.preventDefault();
-    const {tags, setTags, setPhotos} = this.props;
-    setTags(event.target.id, tags);
-    const string_for_url = stringOfTags(tags);
-    setPhotos(string_for_url);
-    this.props.history.push('/photo/gallery/' + string_for_url, {
-      hydrated: true,
-    });
-  };
-
-  // ---------------------
-  // CONDITIONAL RENDERING 
-
-  render() {
-    if (this.props.photos_loaded && this.props.tags_loaded) {
-      return <h1>Gallery Loaded</h1>;
-    } else {
-      return <h1>Gallery NOT Loaded</h1>;
-    }
+function PhotoGallery(props) {
+  if (props.photos_loaded && props.tags_loaded) {
+    const slides = props.photos.map(photo => (
+      <Carousel.Item key={photo.id}>
+        <div className="carousel-item-container">
+          <div className="carousel-image">
+            <img src={photo.photo_source} href={photo.photo_source} />
+            <h6>{photo.title}</h6>
+          </div>
+          <div className="carousel-detail-container">
+            <h4>This will be a Dropdown(up) Item with photo info</h4>
+          </div>
+        </div>
+      </Carousel.Item>
+    ));
+    return (
+      <div>
+        <h5>Total of {props.photos.length} photos</h5>
+        <Carousel>{slides}</Carousel>;
+      </div>
+    );
+  } else {
+    return <h1>Gallery NOT Loaded</h1>;
   }
 }
 
@@ -63,12 +44,10 @@ PhotoGallery.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
-  setPhotos: PropTypes.func.isRequired,
 
   // TAGS
   tags: PropTypes.array.isRequired,
   tags_loaded: PropTypes.bool.isRequired,
-  setTags: PropTypes.func.isRequired,
 
   // RELATIONS
   relations: PropTypes.array.isRequired,
@@ -89,6 +68,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {setPhotos, setTags},
+    {},
   )(PhotoGallery),
 );

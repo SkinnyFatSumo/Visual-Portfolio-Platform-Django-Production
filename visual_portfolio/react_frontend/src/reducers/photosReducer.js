@@ -31,6 +31,7 @@ export default function(state = initialState, action) {
       };
     case PHOTOS_SUCCESS:
       console.log('FROM REDUCER: photos success!');
+      console.log('PAYLOAD:', action.payload);
       return {
         ...state,
         photos_loaded: true,

@@ -37,7 +37,7 @@ const alertOptions = {
 // Temporary Styling
 const headerStyle = {
   margin: '10px',
-  backgroundColor: 'blue',
+  backgroundColor: 'LightSlateGrey',
 };
 
 // Track browser history to control redux state operations and push routes
@@ -78,8 +78,8 @@ class App extends Component {
                 component={PhotoGallery}
               />
               <Route path="/photo/grid/:url_tags?" component={PhotoGrid} />
-              <Route path="/photo/tags" component={TagListAll} />
-              <Route path="/photo/:id" component={PhotoDetail} />
+              <Route path="/photo/tags/:url_tags?" component={TagListAll} />
+              <Route path="/photo/detail/:id" component={PhotoDetail} />
               <Route path="/error/" component={ErrorPage} />
             </Fragment>
           </Router>

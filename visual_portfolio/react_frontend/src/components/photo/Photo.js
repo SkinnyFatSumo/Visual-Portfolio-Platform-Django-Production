@@ -1,8 +1,10 @@
-import React, {Component, render} from 'react';
-import PropTypes from 'prop-types';
+// React
+import React, {Component, Fragment} from 'react';
 
+// Redux
 import {connect} from 'react-redux';
 
+// React Router
 import {Router, withRouter, Redirect} from 'react-router-dom';
 
 // GET Requests for ALL photos/tags
@@ -13,18 +15,17 @@ import {
   fetchRelations, // async
 } from '../../actions/tagActions';
 
-// components
-import Gallery from 'react-photo-gallery';
-import PhotoDetail from './PhotoDetail';
-import PhotoGrid from './PhotoGrid';
-import PhotoGallery from './PhotoGallery';
-import {PhotoButton, PhotoCard} from './PhotoButton';
+// Components
+import TagSelectBox from './TagSelectBox';
+import Buttons_OR_Cards from './Buttons_OR_Cards';
 
-// react bootstrap
-import {ButtonToolbar} from 'react-bootstrap';
-// helpers
-import {groupByProperty, stringOfTags} from '../support/helpers';
-// import history from '../support/history';
+// Helpers
+import {stringOfTags, tagStringFromURL} from '../support/helpers';
+import PropTypes from 'prop-types';
+
+// ------------------------------------------------------------------------- //
+//                 ROOT COMPONENT FOR ALL --PHOTO-- MATERIAL                 //
+// ------------------------------------------------------------------------- //
 
 class Photo extends Component {
   constructor(props) {
@@ -38,17 +39,19 @@ class Photo extends Component {
     this.launchGalleryView = this.launchGalleryView.bind(this);
     this.launchGridView = this.launchGridView.bind(this);
     this.launchTagsView = this.launchTagsView.bind(this);
+    this.handleTagClick = this.handleTagClick.bind(this);
   }
 
-  // -------------------
-  // Component Lifecycle
+  // ------------------
+  // Component Mounting
+  // ------------------
+
   componentDidMount() {
     // Activate
-    const {display} = this.props.match.params;
-    const {url_params} = this.props.match.params;
-    var which_view;
+    const display = this.props.match.params.display;
+    console.log('Mounting:', display);
     if (display === undefined) {
-      which_view === 'photo';
+      display === 'photo';
     } else if (
       display === 'gallery' ||
       display === 'grid' ||
@@ -72,32 +75,61 @@ class Photo extends Component {
       this.props.fetchTags();
     }
   }
-
-  // PHOTO ROOT IS RESPONSIBLE FOR INITIAL HYDRATION OF ALL PHOTO CONTENT
-  componentDidUpdate() {
+  
+  // ------------------
+  // Component Updating 
+  // ------------------
+  
+  // PHOTO ROOT IS RESPONSIBLE HYDRATION AND LOADING ALL PHOTO CONTENT
+  componentDidUpdate(prevProps) {
+    // GET PROPS
+    const {display} = this.props.match.params;
     const {hydrated} = this.props.history.location.state;
-    const {tags_loaded, photos_loaded, tags, photos} = this.props;
-    const {url_tags} = this.props.match.params;
-
-    if (!hydrated && tags_loaded) {
-      // Get URL tags from URL parameters
-      if (url_tags === undefined) {
+    const {tags_loaded, tags, photo_loaded, photos} = this.props;
+    // LOAD PHOTOS IF IF NOT HYDRATED
+    if (tags_loaded && !hydrated) {
+      // IF AT PHOTO ROOT ('photo/') LOAD ALL PHOTOS
+      if (display === undefined) {
         this.props.setPhotos('');
+        // OTHERWISE SET TAGS BASED ON LAST PATH OF URL, FOLLOWING DISPLAY TYPE
       } else {
+        var url_tags = tagStringFromURL(this.props.location.pathname);
         var tagnames = url_tags.split(',');
         tagnames.forEach(tagname => this.props.setTags(tagname, tags));
-        this.props.setPhotos(endpoint);
+        this.props.setPhotos(url_tags);
       }
+      // SET AS HYDRATED
       this.props.history.push({state: {hydrated: true}});
+    }
+    // THERE SHOULD ALWAYS BE PHOTOS, IF NOT IT'S A BAD URL OR TAG COMBO
+    if (this.props.photos_loaded && this.props.photos.length === 0) {
+      this.props.history.push('/error/', {
+        failure:
+          'Either your URL is misconfigured, or no photo includes that combination of tags',
+      });
     }
   }
 
   // --------------
   // Event Handlers
+  // --------------
+
+  handleTagClick = event => {
+    event.preventDefault();
+    // set tags based on tag clicked, then get new url and set photos
+    // and new path using it. maintain current display type
+    const {tags, setTags, setPhotos} = this.props;
+    setTags(event.target.id, tags);
+    const string_for_url = stringOfTags(tags);
+    setPhotos(string_for_url);
+    const {display} = this.props.match.params;
+    this.props.history.push('/photo/' + display + '/' + string_for_url, {
+      hydrated: true,
+    });
+  };
 
   launchGalleryView = () => {
     // push to gallery route
-    // TODO: YOU SHOULD BE ABLE TO REPLACE STRING OF TAGS WITH URL PARAMS
     this.props.history.push('/photo/gallery/' + stringOfTags(this.props.tags), {
       hydrated: true,
     });
@@ -119,53 +151,38 @@ class Photo extends Component {
 
   // -------------------
   // Component Rendering
+  // -------------------
 
   render() {
     console.log('Rendering Photo', this.props.history);
-    var hydrated;
-    if (this.props.history.location.state !== undefined) {
-      if (this.props.history.location.state.hydrated !== undefined) {
-        if (this.props.history.location.state.hydrated) {
-          hydrated = true;
-        } else {
-          hydrated = false;
-        }
-      } else {
-        hydrated = false;
-      }
-    } else {
-      hydrated = false;
-    }
-    const gallery_button = (
-      <PhotoButton
-        handleClick={this.launchGalleryView}
-        active={hydrated}
-        name="Gallery"
-      />
-    );
 
-    const grid_buton = (
-      <PhotoButton
-        handleClick={this.launchGridView}
-        active={hydrated}
-        name="Grid"
-      />
-    );
+    // Insure that hydration has occurred before activating display buttons
+    var active;
+    this.props.photos_loaded ? (active = true) : (active = false);
 
-    const tags_button = (
-      <PhotoButton
-        handleClick={this.launchTagView}
-        active={hydrated}
-        name="Tags"
-      />
-    );
+    // Get display type, we will only show tags for 'grid' and 'gallery'
+    const {display} = this.props.match.params;
+
+    // TODO: set up card display menu
 
     return (
-      <ButtonToolbar>
-        <h5>{gallery_button}</h5>
-        <h5>{grid_buton}</h5>
-        <h5>{tags_button}</h5>
-      </ButtonToolbar>
+      <Fragment>
+        <Buttons_OR_Cards
+          active={active}
+          launchGallery={this.launchGalleryView}
+          launchGrid={this.launchGridView}
+          launchTags={this.launchTagsView}
+        />
+        <br />
+        {display === 'grid' || display === 'gallery' ? (
+          <TagSelectBox
+            photos={this.props.photos}
+            relations={this.props.relations}
+            tags={this.props.tags}
+            onTagClick={this.handleTagClick}
+          />
+        ) : null}
+      </Fragment>
     );
   }
 }

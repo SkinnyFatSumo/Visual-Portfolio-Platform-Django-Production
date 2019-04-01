@@ -61,12 +61,6 @@ class PhotoGallery extends Component {
         console.log('error', error);
       });
   }
-  /*
-  componentDidMount() {
-    const input_id = this.props.match.params.id;
-    this.loadPhoto('/api/photos/' + input_id + '/');
-  }
-  */
 
   componentDidMount() {
     this.loadPhoto('/api/photos/' + this.props.photo_id + '/');
