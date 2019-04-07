@@ -14,9 +14,6 @@ class TagSelectBox extends Component {
     };
   }
   render() {
-    //const grouped = groupByProperty(props.relations, 'photo');
-    //console.log('GROUPED:', grouped);
-
     // CONTROL TOGGLE STATE OF THE TAG BOX
     const {isOpen} = this.state;
 
@@ -33,7 +30,6 @@ class TagSelectBox extends Component {
         related_photo_tag_ids.add(relation.tag);
       }
     });
-    console.log('Related_photo_tag_ids', related_photo_tag_ids);
 
     // SET BUTTONS ACCORDING TO ACTIVE OR INACTIVE
     // IF INACTIVE SET BUTTON AS DISABLED IF NO CURRENT PHOTOS CONTAIN ITS TAG

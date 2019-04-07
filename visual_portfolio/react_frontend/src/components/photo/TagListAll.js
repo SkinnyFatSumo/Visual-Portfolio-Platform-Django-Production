@@ -4,11 +4,8 @@ import React, {Component, render} from 'react';
 import {Router, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-// Redux Actions
-import {setPhotos} from '../../actions/photoActions';
-import {fetchRelations, setTags, fetchTags} from '../../actions/tagActions';
-
 // React Components
+import TagHasPhotos from './TagHasPhotos';
 
 // Helpers
 import PropTypes from 'prop-types';
@@ -19,67 +16,113 @@ import {
 } from '../support/helpers';
 
 // ------------------------------------------------------------------------- //
-//                     LIST OF ALL TAGS AND THEIR PHOTOS                     //
+//                 LIST OF ALL TAGS AND RESPECTIVE THEIR PHOTOS              //
 // ------------------------------------------------------------------------- //
 
-function TagListAll(props) {
-  // MAYBE, TO PREVENT ALL TAGS FROM RE-RENDERING, MAKE EACH A STATEFUL COMPONENT
-  // THAT CAN BE EITHER ACTIVE OR INACTIVE (WITHIN ITS OWN CLASS)
-  // TAGS WILL BE LISTED ALPHABETICALLY, SO NO NEED TO MOVE THEM AROUND WHEN
-  // ACTIVE BECOMES INACTIVE OR VICE-VERSA
+// TODO: CURRENTLY ONLY TAGS THAT ALREADY HAVE A RELATIONSHIP WITH A PHOTO
+// WILL BE SHOWN
+// THIS COULD BE AN ISSUE / UX PROBLEM WHEN A USER CREATES A NEW TAG
+// OR DELETES ALL PHOTOS ASSOCIATED WITH A TAG // MAYBE FORCE USER TO ASSIGN THE TAG TO AT LEAST ONE PHOTO BEFORE CREATING // AND AUTOMATICALLY DELETE TAG WHEN LAST OF PHOTOS IS TO BE DELETED
+//    (PROMPT THEM OF COURSE)
+// OR REWORK CODE TO GENERATE LIST OF TAGS FROM 'ALL_TAGS' INSTEAD
 
-  // MAYBE FIND A SIMILAR WAY TO DO THAT FOR THE TAG SELECT BOX TOO, IF NEEDED
+class TagListAll extends Component {
+  constructor(props) {
+    super(props);
 
-  /*
-  props.tags.forEach(tag => {
-    if (tag.isActive) {
-      active.push(
-        <Button
-          key={tag.id}
-          className="active_tag"
-          variant="success"
-          id={tag.tagname}
-          onClick={this.props.onTagClick}>
-          {tag.tagname.toUpperCase()}
-        </Button>,
+    this.assignData = this.assignData.bind(this);
+  }
+
+  // RESTRUCTURE DATA FOR DISTRIBUTING PHOTOS BASED ON TAGS
+  assignData = () => {
+    console.log('assign data called');
+    // CREATE OBJECT TO STORE PHOTOS, USING THEIR IDS AS KEYS
+    var photos_object = {};
+    this.props.all_photos.forEach(photo => {
+      photos_object[photo.id] = photo;
+    });
+
+    // GROUP RELATIONS (original format is 1:1, photo to tag) BY TAG
+    const grouped_by_tag = groupByProperty(this.props.relations, 'tag');
+
+    // STORE TAGNAME AND ITS PHOTOS TO ARRAY OF TAGS
+    // STORE THE ACTUAL PHOTO OBJECTS TO THE ARRAY INSTEAD OF THEIR IDS
+    const tag_array = [];
+    for (const [key, value] of Object.entries(grouped_by_tag)) {
+      // STORE ALL RELATED PHOTOS FOR EACH TAG INTO AN ARRAY BY ACCESSING THE
+      // PHOTOS OBJECT HELD IN STATE USING THE RELATION'S PHOTO_ID KEY
+      var related_photos = [];
+      value.forEach(relation_photo => {
+        related_photos.push(photos_object[relation_photo.photo]);
+      });
+
+      // SORT PHOTOS UNDER TAG BY TITLE NAME (ALPHABETICAL)
+      related_photos.sort((a, b) => {
+        var title_a = a.title.toLowerCase();
+        var title_b = b.title.toLowerCase();
+        if (title_a < title_b) {
+          return -1;
+        }
+        if (title_a > title_b) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // APPEND VALUES TO TAG ARRAY
+      tag_array.push({
+        tagname: value[0].tagname,
+        photos: related_photos,
+      });
+    }
+
+    // SORT TAG ARRAY BY TAGNAME (ALPHABETICALLY)
+    tag_array.sort((a, b) => {
+      var tagname_a = a.tagname.toLowerCase();
+      var tagname_b = b.tagname.toLowerCase();
+      if (tagname_a < tagname_b) {
+        return -1;
+      }
+      if (tagname_a > tagname_b) {
+        return 1;
+      }
+      return 0;
+    });
+
+    // CONVERT TO JSX LIST
+    return tag_array.map(tag => (
+      <TagHasPhotos
+        key={tag.tagname}
+        tagname={tag.tagname}
+        photos={tag.photos}
+      />
+    ));
+  };
+
+  render() {
+    // GROUP RELATIONS BY TAG - IN ORDER TO ACCESS ALL PHOTOS OWNED BY TAG
+    if (this.props.all_photos_loaded) {
+      return (
+        <div>
+          <ul>{this.assignData()}</ul>
+          <h5>Delete Tags</h5>
+          <h5>Add Tags</h5>
+        </div>
       );
     } else {
-      var isDisabled;
-      related_photo_tag_ids.has(tag.id)
-        ? (isDisabled = false)
-        : (isDisabled = true);
-      inactive.push(
-        <Button
-          key={tag.id}
-          className="inactive_tag"
-          variant="danger"
-          disabled={isDisabled}
-          id={tag.tagname}
-          onClick={this.props.onTagClick}>
-          {tag.tagname.toUpperCase()}
-        </Button>,
-      );
+      return <h6>Photos Still Loading </h6>;
     }
-  });
-  */
-
-  return (
-    <div>
-      <h5>List All Tags ==> UNDER CONSTRUCTION}</h5>
-      <h5>Delete Tags</h5>
-      <h5>Add Tags</h5>
-    </div>
-  );
+  }
 }
 
 TagListAll.propTypes = {
   // PHOTOS
-  photos: PropTypes.array.isRequired,
-  photos_loaded: PropTypes.bool.isRequired,
+  all_photos: PropTypes.array.isRequired,
+  all_photos_loaded: PropTypes.bool.isRequired,
 
   // TAGS
-  tags: PropTypes.array.isRequired,
-  tags_loaded: PropTypes.bool.isRequired,
+  all_tags: PropTypes.array.isRequired,
+  all_tags_loaded: PropTypes.bool.isRequired,
 
   // RELATIONS
   relations: PropTypes.array.isRequired,
@@ -87,11 +130,11 @@ TagListAll.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  photos: state.photos.photos,
-  photos_loaded: state.photos.photos_loaded,
+  all_photos: state.photos.all_photos,
+  all_photos_loaded: state.photos.all_photos_loaded,
 
-  tags: state.tags.tags,
-  tags_loaded: state.tags.tags_loaded,
+  all_tags: state.tags.all_tags,
+  all_tags_loaded: state.all_tags_loaded,
 
   relations: state.tags.relations,
   relations_loaded: state.tags.relations_loaded,

@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {Router, withRouter, Redirect} from 'react-router-dom';
 
 // GET Requests for ALL photos/tags
-import {setPhotos} from '../../actions/photoActions'; // async
+import {setPhotos, fetchAllPhotos} from '../../actions/photoActions'; // async
 import {
   fetchTags, // async
   setTags, // synchronous
@@ -73,21 +73,28 @@ class Photo extends Component {
     if (!this.props.history.location.state.hydrated) {
       this.props.fetchRelations();
       this.props.fetchTags();
+      this.props.fetchAllPhotos();
     }
   }
-  
+
   // ------------------
-  // Component Updating 
+  // Component Updating
   // ------------------
-  
-  // PHOTO ROOT IS RESPONSIBLE HYDRATION AND LOADING ALL PHOTO CONTENT
+
+  // PHOTO ROOT IS RESPONSIBLE FOR HYDRATION AND LOADING ALL PHOTO CONTENT
   componentDidUpdate(prevProps) {
     // GET PROPS
     const {display} = this.props.match.params;
     const {hydrated} = this.props.history.location.state;
-    const {tags_loaded, tags, photo_loaded, photos} = this.props;
+    const {
+      tags_loaded,
+      tags,
+      all_photos_loaded,
+      photos_loaded,
+      photos,
+    } = this.props;
     // LOAD PHOTOS IF IF NOT HYDRATED
-    if (tags_loaded && !hydrated) {
+    if (tags_loaded && all_photos_loaded && !hydrated) {
       // IF AT PHOTO ROOT ('photo/') LOAD ALL PHOTOS
       if (display === undefined) {
         this.props.setPhotos('');
@@ -102,7 +109,7 @@ class Photo extends Component {
       this.props.history.push({state: {hydrated: true}});
     }
     // THERE SHOULD ALWAYS BE PHOTOS, IF NOT IT'S A BAD URL OR TAG COMBO
-    if (this.props.photos_loaded && this.props.photos.length === 0) {
+    if (photos_loaded && photos.length === 0) {
       this.props.history.push('/error/', {
         failure:
           'Either your URL is misconfigured, or no photo includes that combination of tags',
@@ -144,7 +151,7 @@ class Photo extends Component {
 
   launchTagsView = () => {
     // push to gallery route
-    this.props.history.push('/photo/tags/' + stringOfTags(this.props.tags), {
+    this.props.history.push('/photo/tags/', {
       hydrated: true,
     });
   };
@@ -191,7 +198,9 @@ Photo.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
+  all_photos_loaded: PropTypes.bool.isRequired,
   setPhotos: PropTypes.func.isRequired,
+  fetchAllPhotos: PropTypes.func.isRequired,
 
   // TAGS
   tags: PropTypes.array.isRequired,
@@ -208,6 +217,7 @@ Photo.propTypes = {
 const mapStateToProps = state => ({
   photos: state.photos.photos,
   photos_loaded: state.photos.photos_loaded,
+  all_photos_loaded: state.photos.all_photos_loaded,
 
   tags: state.tags.tags,
   tags_loaded: state.tags.tags_loaded,
@@ -219,6 +229,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {setPhotos, setTags, fetchTags, fetchRelations},
+    {setPhotos, setTags, fetchTags, fetchRelations, fetchAllPhotos},
   )(Photo),
 );

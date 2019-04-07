@@ -3,6 +3,9 @@ import {
   PHOTOS_SUCCESS,
   PHOTOS_LOADING,
   PHOTOS_FAILURE,
+  ALL_PHOTOS_SUCCESS,
+  ALL_PHOTOS_LOADING,
+  ALL_PHOTOS_FAILURE,
 } from './types';
 
 // Set photos to NOT loaded
@@ -32,6 +35,31 @@ export const setPhotos = tag_string => dispatch => {
     .catch(err =>
       dispatch({
         type: PHOTOS_FAILURE,
+        payload: err.message,
+      }),
+    );
+};
+
+// GET ALL PHOTOS, DON'T CHANGE CURRENT PHOTOS SET
+export const fetchAllPhotos = () => dispatch => {
+  dispatch({type: ALL_PHOTOS_LOADING});
+  const tagged_lookupOptions = {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  };
+  const tagged_endpoint = 'http://localhost:8000/api/photos/';
+
+  fetch(tagged_endpoint, tagged_lookupOptions)
+    .then(res => res.json())
+    .then(all_photos =>
+      dispatch({
+        type: ALL_PHOTOS_SUCCESS,
+        payload: all_photos,
+      }),
+    )
+    .catch(err =>
+      dispatch({
+        type: ALL_PHOTOS_FAILURE,
         payload: err.message,
       }),
     );

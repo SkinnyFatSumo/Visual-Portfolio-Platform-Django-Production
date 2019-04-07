@@ -4,6 +4,7 @@ import {
   RELATIONS_LOADING,
   // SUCCESS
   TAGS_SUCCESS,
+  ALL_TAGS_SUCCESS,
   RELATIONS_SUCCESS,
   // FAILURE
   TAGS_FAILURE,
@@ -15,14 +16,23 @@ import {
 const initialState = {
   // tags that come from get request
   tags: [],
+  all_tags: [],
   relations: [],
   tags_loaded: false,
+  all_tags_loaded: false,
   relations_loaded: false,
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     // SUCCESS
+    case ALL_TAGS_SUCCESS:
+      console.log('FROM REDUCER: inital batch of all tags reduced');
+      return {
+        ...state,
+        all_tags: action.payload,
+        all_tags_loaded: true,
+      };
     case TAGS_SUCCESS:
       console.log('FROM REDUCER: inital batch of all tags reduced');
       return {
@@ -63,11 +73,10 @@ export default function(state = initialState, action) {
       };
     // SYNCHRONOUS
     case SET_TAGS:
-      console.log("SET TAGS CALLED");
+      console.log('SET TAGS CALLED');
       return {
         ...state,
         tags: action.payload,
-        tags_loaded: true
       };
     // DEFAULT
     default:

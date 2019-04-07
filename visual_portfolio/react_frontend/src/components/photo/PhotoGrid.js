@@ -8,10 +8,14 @@ import {setPhotos} from '../../actions/photoActions';
 import {fetchRelations, setTags, fetchTags} from '../../actions/tagActions';
 
 // React Components
-
+import Gallery from 'react-photo-gallery';
 // Helpers
 import PropTypes from 'prop-types';
-import {groupByProperty, stringOfTags, tagStringFromURL} from '../support/helpers';
+import {
+  groupByProperty,
+  stringOfTags,
+  tagStringFromURL,
+} from '../support/helpers';
 
 // ------------------------------------------------------------------------- //
 //                               PHOTO GRID                                  //
@@ -24,6 +28,21 @@ function PhotoGrid(props) {
   //        IDK HOW I WANT TO CONSTRUCT THAT
   //        MAY HAVE TO MAKE THIS COMPONENT CLASSFUL
 
+  if (props.photos_loaded && props.tags_loaded) {
+    const photoList = props.photos.map(photo => ({
+      src: photo.thumbnail_source,
+      width: photo.thumbnail_width,
+      height: photo.thumbnail_height,
+    }));
+    return (
+      <div>
+        <Gallery photos={photoList} />
+      </div>
+    );
+  } else {
+    return 'Content still loading';
+  }
+  /*
   if (props.photos_loaded && props.tags_loaded) {
     const photoList = props.photos.map(photo => (
       <div key={photo.id}>
@@ -40,6 +59,7 @@ function PhotoGrid(props) {
   } else {
     return 'Content still loading';
   }
+  */
 }
 
 PhotoGrid.propTypes = {

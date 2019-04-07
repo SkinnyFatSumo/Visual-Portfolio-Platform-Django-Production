@@ -4,6 +4,7 @@ import {
   RELATIONS_LOADING,
   // SUCCESS
   TAGS_SUCCESS,
+  ALL_TAGS_SUCCESS,
   RELATIONS_SUCCESS,
   // FAILURE
   TAGS_FAILURE,
@@ -19,7 +20,7 @@ import {
 //                          ASYNCHRONOUS CALLS                                //
 //---------------------------------------------------------------------------//
 
-// Get all photo tags
+// Get all photo tags, assign as inactive
 export const fetchTags = () => dispatch => {
   console.log('Fetch Tags called in ACTIONS');
   dispatch({type: TAGS_LOADING});
@@ -32,19 +33,51 @@ export const fetchTags = () => dispatch => {
   fetch(get_endpoint, get_lookupOptions)
     .then(res => res.json())
     .then(tags => {
+      // FIRST DISPATCH THE UNALTERED, WHOLE SET OF TAGS
+      dispatch({
+        type: ALL_TAGS_SUCCESS,
+        payload: tags,
+      });
+      // THEN CREATE ACTIVATEABLE LIST, DEACTIVE BY DEFAULT
       tags.forEach(tag => {
         tag.isActive = false;
       });
       return tags;
     })
-    .then(updated_tags =>
+    .then(updated_tags => {
+      // SET TAGS TO DEACTIVATED TAG LIST
       dispatch({
         type: SET_TAGS,
         payload: updated_tags,
-      }),
-    );
-  //    .catch(err => dispatch({type: TAGS_FAILURE, payload: err.message}));
+      });
+      // DISPATCH ON SUCCESS
+      dispatch({
+        type: TAGS_SUCCESS,
+      });
+    })
+    .catch(err => dispatch({type: TAGS_FAILURE, payload: err.message}));
 };
+
+/*
+// GET ALL TAGS, DON'T WORRY ABOUT ACTIVATING OR DEACTIVATING THEM
+export const fetchAllTags = () => dispatch => {
+  dispatch({type: ALL_TAGS_LOADING});
+  const get_lookupOptions = {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  };
+  const get_endpoint = 'http://localhost:8000/api/photos/tags/';
+  fetch(get_endpoint, get_lookupOptions)
+    .then(res => res.json())
+    .then(tags =>
+      dispatch({
+        type: ALL_TAGS_SUCCESS,
+        payload: all_tags,
+      }),
+    )
+    .catch(err => dispatch({type: ALL_TAGS_FAILURE, payload: err.message}));
+};
+*/
 
 // Get all relationship identities between photos and tags
 export const fetchRelations = () => dispatch => {

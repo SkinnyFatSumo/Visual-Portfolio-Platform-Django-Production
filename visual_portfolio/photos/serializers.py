@@ -31,11 +31,12 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 class PhotoWithTagSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='photo-api:detail-pwt')
+    tagname = serializers.CharField(source='tag.tagname')
 
     class Meta:
         model = PhotoWithTag
         
-        fields = ('id', 'photo', 'tag', 'url')
+        fields = ('id', 'photo', 'tag', 'tagname', 'url')
 
 
 
