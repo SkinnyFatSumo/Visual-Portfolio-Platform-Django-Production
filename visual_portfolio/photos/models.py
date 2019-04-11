@@ -1,11 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.contrib.postgres.fields import ArrayField
+from django.conf import settings
+from .permissions import IsOwnerOrReadOnly
+
 
 
 # Create TAG (that can be associated with photos)
 class Tag(models.Model):
     tagname = models.SlugField(max_length=50, unique=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tags', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.tagname
@@ -18,6 +20,8 @@ class Tag(models.Model):
 class Photo(models.Model):
 
     title = models.CharField(max_length=50, unique=True)
+    # null is temporary, because we already have instances with no owner for dev
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='photos', on_delete=models.CASCADE, null=True)
 
     # color/bw & film/digital
     color = models.BooleanField()
@@ -68,22 +72,11 @@ class PhotoWithTag(models.Model):
    
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE, related_name='related_photos')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='related_tags')
-
-    def getTitle(self):
-        return self.photo.title
-
-    def getTagname(self):
-        return self.tag.tagname
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relations', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return 'photo: ' + self.photo.title + ' --- tag: ' + self.tag.tagname
-    '''
-    class Meta:
-        verbose_name = 'Photo with Tag'
-        verbose_name_plural = 'Photos with Tags'
-        ordering = ['photo']
-    '''
-
+    
 
 
 

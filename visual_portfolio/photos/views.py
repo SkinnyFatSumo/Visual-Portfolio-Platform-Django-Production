@@ -1,8 +1,8 @@
 # from .permissions import IsOwnerOrReadOnly
 # from .serializers import PhotoSerializer
 
-
 from rest_framework import generics, permissions
+from .permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import AllowAny
 from .models import Photo, Tag, PhotoWithTag
 from .serializers import PhotoSerializer, TagSerializer, PhotoWithTagSerializer
@@ -10,21 +10,19 @@ from .serializers import PhotoSerializer, TagSerializer, PhotoWithTagSerializer
 
 # Add photos and list all photos, url @ /photos/upload
 class PhotoListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = (AllowAny,)
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    # permission_classes  = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes  = (IsOwnerOrReadOnly,)
 
-    # def perform_create(self, serializer):
-        # serializer.save(user=self.request.user)
-    # Permission and user stuff only when you add users to associate
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 # Retrieve a specific photos, url @ /photos/<int:pk>
 class PhotoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    # permission_classes  = [IsOwnerOrReadOnly]
+    permission_classes  = (IsOwnerOrReadOnly,)
 
 
 # Get only photos that contain ALL tags received
@@ -79,22 +77,35 @@ class PhotoListByTagAPIView(generics.ListAPIView):
 class TagListCreateAPIView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer 
+    permission_classes  = (IsOwnerOrReadOnly,)
 
-# Destroy a tag
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+
+# Retrieve, Update, or Destroy a Tag
 class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     lookup_field = "tagname" 
+    permission_classes  = (IsOwnerOrReadOnly,)
+
 
 
 # Add relationship and list all relationshipsj 
 class PhotoWithTagListCreateAPIView(generics.ListCreateAPIView):
     queryset = PhotoWithTag.objects.all()
     serializer_class = PhotoWithTagSerializer
+    permission_classes  = (IsOwnerOrReadOnly,)
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
-# Destroy a tag
+
+
+# Retrieve, Update, or Destroy a relation
 class PhotoWithTagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PhotoWithTag.objects.all()
     serializer_class = PhotoWithTagSerializer
-
-
+    permission_classes  = (IsOwnerOrReadOnly,)

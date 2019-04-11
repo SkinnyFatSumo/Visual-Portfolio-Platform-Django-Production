@@ -109,6 +109,8 @@ class Photo extends Component {
       this.props.history.push({state: {hydrated: true}});
     }
     // THERE SHOULD ALWAYS BE PHOTOS, IF NOT IT'S A BAD URL OR TAG COMBO
+    // TODO: ^^^ NOT NECESSARILY, WHAT ABOUT IF NO PHOTOS HAVE BEEN UPLOADED YET?
+    //  we need a better way to check for bugs here
     if (photos_loaded && photos.length === 0) {
       this.props.history.push('/error/', {
         failure:

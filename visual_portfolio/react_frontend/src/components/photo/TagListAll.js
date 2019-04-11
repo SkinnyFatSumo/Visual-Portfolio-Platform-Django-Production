@@ -89,13 +89,15 @@ class TagListAll extends Component {
       return 0;
     });
 
+    // TODO: Set up side bar gallery element???
+
     // CONVERT TO JSX LIST
     return tag_array.map(tag => (
-      <TagHasPhotos
-        key={tag.tagname}
-        tagname={tag.tagname}
-        photos={tag.photos}
-      />
+        <TagHasPhotos
+          key={tag.tagname}
+          tagname={tag.tagname}
+          photos={tag.photos}
+        />
     ));
   };
 

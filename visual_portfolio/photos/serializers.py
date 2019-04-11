@@ -10,7 +10,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ('id', 'tagname', 'url')
+        fields = ('id', 'owner', 'tagname', 'url')
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class PhotoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Photo
-        fields = ('id', 'title', 'color', 'film',
+        fields = ('id', 'owner', 'title', 'color', 'film',
                   'film_comp', 'film_stock', 'iso',
                   'aperture','shutter', 'focal_length', 'aspect_ratio',
                   'camera_brand', 'camera_model', 'lens_brand', 'lens_model',
@@ -36,7 +36,7 @@ class PhotoWithTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhotoWithTag
         
-        fields = ('id', 'photo', 'tag', 'tagname', 'url')
+        fields = ('id', 'owner', 'photo', 'tag', 'tagname', 'url')
 
 
 

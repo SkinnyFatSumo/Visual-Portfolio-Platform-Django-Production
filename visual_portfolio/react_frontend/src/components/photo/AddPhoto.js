@@ -43,7 +43,7 @@ class AddPhoto extends Component {
       <div>
         <h4>Add Photo</h4>
         <form onSubmit={this.onSubmit}>
-          <fieldset Classname="required">
+          <fieldset className="required">
             <div>
               <label>Title: </label>
               <input

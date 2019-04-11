@@ -9,6 +9,7 @@ import {fetchRelations, setTags, fetchTags} from '../../actions/tagActions';
 
 // React Components
 import Gallery from 'react-photo-gallery';
+
 // Helpers
 import PropTypes from 'prop-types';
 import {
@@ -17,49 +18,57 @@ import {
   tagStringFromURL,
 } from '../support/helpers';
 
+// Components
+import AddPhoto from './AddPhoto';
+
+// CSS
+import '../../css/photo/photogrid.css';
+
 // ------------------------------------------------------------------------- //
 //                               PHOTO GRID                                  //
 // ------------------------------------------------------------------------- //
 
+function columns(containerWidth) {
+  let columns = 1;
+  if (containerWidth >= 400) columns = 2;
+  if (containerWidth >= 600) columns = 3;
+  if (containerWidth >= 800) columns = 4;
+  if (containerWidth >= 1000) columns = 5;
+  return columns;
+}
+
 function PhotoGrid(props) {
   // EVENT HANDLERS
 
-  // TODO: will need a hanlder for launching photo_detail
+  // TODO: will need a handler for launching photo_detail
   //        IDK HOW I WANT TO CONSTRUCT THAT
   //        MAY HAVE TO MAKE THIS COMPONENT CLASSFUL
 
   if (props.photos_loaded && props.tags_loaded) {
-    const photoList = props.photos.map(photo => ({
+    const photo_list = props.photos.map(photo => ({
       src: photo.thumbnail_source,
       width: photo.thumbnail_width,
       height: photo.thumbnail_height,
+      key: photo.id,
     }));
+    const photos_length = props.photos.length;
     return (
       <div>
-        <Gallery photos={photoList} />
+        <AddPhoto />
+        <div id="border">
+          <div id="container">
+            <Gallery
+              photos={photo_list}
+              direction={photos_length <= 4 ? 'column' : null}
+              columns={columns}
+            />
+          </div>
+        </div>
       </div>
     );
   } else {
     return 'Content still loading';
   }
-  /*
-  if (props.photos_loaded && props.tags_loaded) {
-    const photoList = props.photos.map(photo => (
-      <div key={photo.id}>
-        <h4>{photo.title}</h4>
-        <img src={photo.thumbnail_source} alt="random" />
-      </div>
-    ));
-    return (
-      <div>
-        <h1>{props.history.location.pathname}</h1>
-        <h5>{photoList}</h5>
-      </div>
-    );
-  } else {
-    return 'Content still loading';
-  }
-  */
 }
 
 PhotoGrid.propTypes = {
