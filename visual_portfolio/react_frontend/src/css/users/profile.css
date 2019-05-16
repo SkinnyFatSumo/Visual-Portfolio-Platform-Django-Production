@@ -1,0 +1,42 @@
+.dropdown-container
+{
+  border-radius: 10px;
+  border-color: grey;
+  background-color: yellow;
+  padding: 5px;
+}
+
+.dropdown
+{
+  border-radius: 10px;
+  opacity: 10%;
+  position: relative;
+}
+
+.dropdown .toggle
+{
+  border-color: black;
+  background-color: magenta;
+}
+
+
+
+#photos-toggle
+{
+  width: 100%;
+}
+
+.individual
+{
+  width: 100%;
+  text-align: center;
+  border-style: solid;
+  border-color: black;
+  border-radius: 5px;
+}
+
+
+#all
+{
+  margin:30px;
+}

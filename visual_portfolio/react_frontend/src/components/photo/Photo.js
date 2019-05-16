@@ -35,6 +35,7 @@ class Photo extends Component {
       isActive: null,
       gifs: null,
       collapsed: false,
+      username: null,
     };
     this.launchGalleryView = this.launchGalleryView.bind(this);
     this.launchGridView = this.launchGridView.bind(this);
@@ -48,7 +49,9 @@ class Photo extends Component {
 
   componentDidMount() {
     // Activate
-    const display = this.props.match.params.display;
+    const {display} = this.props.match.params;
+    const {username} = this.state;
+    this.setState({username: username});
     console.log('Mounting:', display);
     if (display === undefined) {
       display === 'photo';
@@ -61,7 +64,7 @@ class Photo extends Component {
     } else {
       // TODO: Create an ALERT to notify that the URL is bad and redirect
       console.log('params did not match');
-      this.props.history.push('/photo/');
+      this.props.history.push('/photo/' + username);
     }
 
     // CHECK IF HYDRATED, MAKE HYDRATION A STATE VARIABLE IN HISTORY
@@ -93,17 +96,18 @@ class Photo extends Component {
       photos_loaded,
       photos,
     } = this.props;
+    const {username} = this.state;
     // LOAD PHOTOS IF IF NOT HYDRATED
     if (tags_loaded && all_photos_loaded && !hydrated) {
       // IF AT PHOTO ROOT ('photo/') LOAD ALL PHOTOS
       if (display === undefined) {
-        this.props.setPhotos('');
+        this.props.setPhotos(username, '');
         // OTHERWISE SET TAGS BASED ON LAST PATH OF URL, FOLLOWING DISPLAY TYPE
       } else {
         var url_tags = tagStringFromURL(this.props.location.pathname);
         var tagnames = url_tags.split(',');
         tagnames.forEach(tagname => this.props.setTags(tagname, tags));
-        this.props.setPhotos(url_tags);
+        this.props.setPhotos(username, url_tags);
       }
       // SET AS HYDRATED
       this.props.history.push({state: {hydrated: true}});
@@ -131,24 +135,39 @@ class Photo extends Component {
     setTags(event.target.id, tags);
     const string_for_url = stringOfTags(tags);
     setPhotos(string_for_url);
-    const {display} = this.props.match.params;
-    this.props.history.push('/photo/' + display + '/' + string_for_url, {
-      hydrated: true,
-    });
+    const {username, display} = this.props.match.params;
+    this.props.history.push(
+      '/photo/' + display + '/' + this.state.username + '/' + string_for_url,
+      {
+        hydrated: true,
+      },
+    );
   };
 
   launchGalleryView = () => {
     // push to gallery route
-    this.props.history.push('/photo/gallery/' + stringOfTags(this.props.tags), {
-      hydrated: true,
-    });
+    this.props.history.push(
+      '/photo/gallery/' +
+        this.state.username +
+        '/' +
+        stringOfTags(this.props.tags),
+      {
+        hydrated: true,
+      },
+    );
   };
 
   launchGridView = () => {
     // push to gallery route
-    this.props.history.push('/photo/grid/' + stringOfTags(this.props.tags), {
-      hydrated: true,
-    });
+    this.props.history.push(
+      '/photo/grid/' +
+        this.state.username +
+        '/' +
+        stringOfTags(this.props.tags),
+      {
+        hydrated: true,
+      },
+    );
   };
 
   launchTagsView = () => {

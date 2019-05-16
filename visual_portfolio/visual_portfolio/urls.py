@@ -7,7 +7,7 @@ urlpatterns = [
     # ADMINISTRATION
     path('admin/', admin.site.urls),
 
-    # AUTHORIZATION
+    # AUTHORIZATION / AUTHENTICATION
     path('api/auth/', include('users.urls', namespace='users-api')),
 
     # PHOTOGRAPHY
@@ -15,6 +15,4 @@ urlpatterns = [
     
     # CATCH-ALL: EVERYTHING BUT APIs AND ADMIN GOES TO INDEX (FRONTEND)
     re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
-    #path('api/motion/', include('motion.urls', namespace="motion-api")),
-    #path('api/design/', include('design.urls', namespace="design-api"))
 ]

@@ -18,8 +18,16 @@ class TagSelectBox extends Component {
     const {isOpen} = this.state;
 
     // CREATE LISTS TO STORE ACTIVE VS. INACTIVE TAG BUTTONS
-    var active = [];
-    var inactive = [];
+    var active = [
+      <Button key="inactive" className="active">
+        ACTIVE:
+      </Button>,
+    ];
+    var inactive = [
+      <Button key="active" className="inactive">
+        INACTIVE:
+      </Button>,
+    ];
 
     // STORE IDS OF ALL CURRENT PHOTOS BEING DISPLAYED
     const photo_ids = this.props.photos.map(photo => photo.id);
@@ -70,7 +78,7 @@ class TagSelectBox extends Component {
           onClick={() => this.setState({isOpen: !isOpen})}
           aria-controls="collapse-tags-container"
           aria-expanded={isOpen}>
-          VIEW TAGS
+          {this.state.isOpen ? 'Hide Tags' : 'Show Tags'}
         </Button>
         <Collapse in={this.state.isOpen}>
           <div id="collapse-tags-container">

@@ -9,7 +9,7 @@ import {Button, ButtonToolbar, Collapse} from 'react-bootstrap';
 // CSS
 import '../../css/photo/taghasphotos.css';
 
-function columns(containerWidth) {
+function Columns(containerWidth) {
   let columns = 1;
   if (containerWidth >= 400) columns = 2;
   if (containerWidth >= 600) columns = 3;
@@ -58,7 +58,7 @@ class TagHasPhotos extends Component {
               <Gallery
                 photos={photo_list}
                 directions={photos_length <= 4 ? 'column' : null}
-                columns={columns}
+                columns={Columns}
               />
             </div>
           </div>

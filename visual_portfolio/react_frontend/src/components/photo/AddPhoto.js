@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import {Button, Form, Collapse, Col} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 // Redux
 import {connect} from 'react-redux';
+
 // Actions
 import {postPhoto} from '../../actions/photoActions';
 
@@ -10,11 +12,13 @@ class AddPhoto extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpen: false,
       title: '',
       photo_source: '',
       thumbnail_source: '',
       thumbnail_width: '',
       thumbnail_height: '',
+      owner: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -29,6 +33,7 @@ class AddPhoto extends Component {
     e.preventDefault();
     const photo = {
       title: this.state.title,
+      owner: this.props.user,
       photo_source: this.state.photo_source,
       thumbnail_source: this.state.thumbnail_source,
       thumbnail_width: this.state.thumbnail_width,
@@ -39,69 +44,89 @@ class AddPhoto extends Component {
   }
 
   render() {
+    const {isOpen} = this.state;
     return (
-      <div>
-        <h4>Add Photo</h4>
-        <form onSubmit={this.onSubmit}>
-          <fieldset className="required">
-            <div>
-              <label>Title: </label>
-              <input
-                type="text"
-                name="title"
-                onChange={this.onChange}
-                value={this.state.title}
-              />
-            </div>
-            <h5>Photo's Source Must be a URL</h5>
-            <div>
-              <label>Full Resolution: </label>
-              <input
-                type="url"
-                name="photo_source"
-                onChange={this.onChange}
-                value={this.state.photo_source}
-              />
-              <br />
-            </div>
-            <div>
-              <h5>
-                Please Provide The Height and Width in Pixels of Thumbnail
-              </h5>
-              <h6>This insures it displays correctly in the gallery</h6>
-              <div>
-                <label>Thumbnail: </label>
-                <input
-                  type="url"
-                  name="thumbnail_source"
-                  onChange={this.onChange}
-                  value={this.state.thumbnail_source}
-                />
-                <br />
-                <label>Height: </label>
-                <input
-                  type="number"
-                  name="thumbnail_height"
-                  onChange={this.onChange}
-                  min="0"
-                  step="1"
-                  value={this.state.thumbnail_height}
-                />
-                <br />
-                <label>Width: </label>
-                <input
-                  type="number"
-                  name="thumbnail_width"
-                  onChange={this.onChange}
-                  min="0"
-                  step="1"
-                  value={this.state.thumbnail_width}
-                />
-              </div>
-            </div>
-            <button type="submit">add photo</button>
-          </fieldset>
-        </form>
+      <div className="photo-add-box">
+        <Button
+          onClick={() => this.setState({isOpen: !isOpen})}
+          aria-controls="collapse-photo-box"
+          aria-expanded={isOpen}>
+          {isOpen ? 'Finish' : 'Add Photo'}
+        </Button>
+        <Collapse in={this.state.isOpen}>
+          <div id="collapse-photo-box">
+            <Form onSubmit={this.onSubmit}>
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="title"
+                    placeholder="an excellent title"
+                    onChange={this.onChange}
+                    required
+                    value={this.state.title}
+                  />
+                </Form.Group>
+              </Form.Row>
+
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Full Resolution URL</Form.Label>
+                  <Form.Control
+                    type="url"
+                    name="photo_source"
+                    placeholder="https://www.somehost.com/fullresurl"
+                    onChange={this.onChange}
+                    value={this.state.photo_source}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Label>Thumbnail URL</Form.Label>
+                  <Form.Control
+                    type="url"
+                    name="thumbnail_source"
+                    placeholder="https://www.somehost.com/thumbnailurl"
+                    onChange={this.onChange}
+                    value={this.state.thumbnail_source}
+                    required
+                  />
+                </Form.Group>
+              </Form.Row>
+
+              <Form.Row>
+                <Form.Group as={Col}>
+                  <Form.Label>Thumbnail Width</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="thumbnail_width"
+                    placeholder="integer"
+                    onChange={this.onChange}
+                    min="0"
+                    step="1"
+                    value={this.state.thumbnail_width}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group as={Col}>
+                  <Form.Label>Thumbnail Height</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="thumbnail_height"
+                    placeholder="integer"
+                    onChange={this.onChange}
+                    min="0"
+                    step="1"
+                    value={this.state.thumbnail_height}
+                    required
+                  />
+                </Form.Group>
+              </Form.Row>
+              <Button type="submit">Upload Photo</Button>
+            </Form>
+          </div>
+        </Collapse>
       </div>
     );
   }
@@ -109,6 +134,17 @@ class AddPhoto extends Component {
 
 AddPhoto.propTypes = {
   postPhoto: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.object,
 };
 
-export default connect(null, {postPhoto} )(AddPhoto);
+const mapStateToProps = state => ({
+  postPhoto: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.object,
+});
+
+export default connect(
+  mapStateToProps,
+  {postPhoto},
+)(AddPhoto);

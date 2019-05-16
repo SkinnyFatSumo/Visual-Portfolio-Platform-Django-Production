@@ -8,11 +8,9 @@ import {
   ALL_PHOTOS_FAILURE,
 } from './types';
 
-// Set photos to NOT loaded
-// export const photosNotLoaded = () => dispatch({type: PHOTOS_LOADING});
 
 // Set CURRENT PHOTOS based on tags
-export const setPhotos = tag_string => dispatch => {
+export const setPhotos = (username, tag_string) => dispatch => {
   dispatch({type: PHOTOS_LOADING});
   const tagged_lookupOptions = {
     method: 'GET',
@@ -20,9 +18,9 @@ export const setPhotos = tag_string => dispatch => {
   };
   var tagged_endpoint;
   tag_string == ''
-    ? (tagged_endpoint = 'http://localhost:8000/api/photos/')
+    ? (tagged_endpoint = 'http://localhost:8000/api/photos/' + username + '/list/')
     : (tagged_endpoint =
-        'http://localhost:8000/api/photos/sort?tags=' + tag_string);
+      'http://localhost:8000/api/photos/' + username + '/sort?tags=' + tag_string);
 
   fetch(tagged_endpoint, tagged_lookupOptions)
     .then(res => res.json())
@@ -41,13 +39,13 @@ export const setPhotos = tag_string => dispatch => {
 };
 
 // GET ALL PHOTOS, DON'T CHANGE CURRENT PHOTOS SET
-export const fetchAllPhotos = () => dispatch => {
+export const fetchAllPhotos = (username) => dispatch => {
   dispatch({type: ALL_PHOTOS_LOADING});
   const tagged_lookupOptions = {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
   };
-  const tagged_endpoint = 'http://localhost:8000/api/photos/';
+  const tagged_endpoint = 'http://localhost:8000/api/photos/' + username + '/list/';
 
   fetch(tagged_endpoint, tagged_lookupOptions)
     .then(res => res.json())
@@ -87,12 +85,14 @@ const loadPhoto = endpoint dispatch => {
 // Post NEW PHOTO to server, FOR LATER INTEGRATION!!!
 
 export const postPhoto = photoData => dispatch => {
+  console.log('PhotoData', photoData);
   const post_lookupOptions = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(photoData),
+    headers: {'Content-Type': 'application/json'}
   };
-  const post_endpoint = 'http://localhost:8000/api/photos/';
+
+  const post_endpoint = 'http://localhost:8000/api/photos/create';
 
   fetch(post_endpoint, post_lookupOptions)
     .then(res => res.json())

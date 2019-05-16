@@ -52,6 +52,7 @@ function PhotoGrid(props) {
       key: photo.id,
     }));
     const photos_length = props.photos.length;
+    console.log('photos length:', photos_length);
     return (
       <div>
         <AddPhoto />
@@ -59,7 +60,7 @@ function PhotoGrid(props) {
           <div id="container">
             <Gallery
               photos={photo_list}
-              direction={photos_length <= 4 ? 'column' : null}
+              direction={photos_length <= 4 ? 'row' : 'column'}
               columns={columns}
             />
           </div>

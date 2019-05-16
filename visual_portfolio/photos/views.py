@@ -2,41 +2,56 @@
 # from .serializers import PhotoSerializer
 
 from rest_framework import generics, permissions
-from .permissions import IsOwnerOrReadOnly
+from .permissions import (IsOwnerOrReadOnly,)
 from rest_framework.permissions import AllowAny
 from .models import Photo, Tag, PhotoWithTag
 from .serializers import PhotoSerializer, TagSerializer, PhotoWithTagSerializer
 
 
-# Add photos and list all photos, url @ /photos/upload
-class PhotoListCreateAPIView(generics.ListCreateAPIView):
+'''PHOTO'''
+# List all photos owned by a specific user
+class PhotoListAPIView(generics.ListAPIView):
+    serializer_class = PhotoSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Photo.objects.filter(owner__username=username)
+
+
+# Add a new photo owned by this user
+class PhotoCreateAPIView(generics.CreateAPIView):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes = [ permissions.IsAuthenticated ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 
+# TODO:
 # Retrieve a specific photos, url @ /photos/<int:pk>
 class PhotoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes  = [ permissions.IsAuthenticated ]
 
 
+'''PHOTO BY TAG'''
 # Get only photos that contain ALL tags received
 class PhotoListByTagAPIView(generics.ListAPIView):
     # ultimately we want to pull instances of photos
     serializer_class = PhotoSerializer
 
     def get_queryset(self):
+        # get username from url
+        username = self.kwargs['username']
+
         # pull all tag names listed in url following '?tags='
         url_tags = self.request.query_params.get('tags')
 
         # full sets
-        all_relations = PhotoWithTag.objects.all()
-        all_photos = Photo.objects.all()
+        all_relations = PhotoWithTag.objects.filter(owner__username=username)
+        all_photos = Photo.objects.filter(owner__username=username)
        
         # filtered sets
         filt_photos = all_photos
@@ -73,15 +88,23 @@ class PhotoListByTagAPIView(generics.ListAPIView):
         # !!!! THIS WOULD HAPPEN PRIOR TO BEING PASSED AS URL INFO
 
 
+'''TAG'''
 # Add tags and list all available tags
-class TagListCreateAPIView(generics.ListCreateAPIView):
+class TagListAPIView(generics.ListAPIView):
+    serializer_class = TagSerializer 
+    
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return Tag.objects.filter(owner__username=username)
+
+# Add tags and list all available tags
+class TagCreateAPIView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer 
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes = [ permissions.IsAuthenticated ]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
 
 
 # Retrieve, Update, or Destroy a Tag
@@ -89,19 +112,27 @@ class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     lookup_field = "tagname" 
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes = [ permissions.IsAuthenticated ]
 
 
+'''PHOTO WITH TAG'''
+# Add relationship and list all relationshipsj 
+class PhotoWithTagListAPIView(generics.ListAPIView):
+    serializer_class = PhotoWithTagSerializer
+    
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return PhotoWithTag.objects.filter(owner__username=username)
+    
 
 # Add relationship and list all relationshipsj 
-class PhotoWithTagListCreateAPIView(generics.ListCreateAPIView):
+class PhotoWithTagCreateAPIView(generics.ListCreateAPIView):
     queryset = PhotoWithTag.objects.all()
     serializer_class = PhotoWithTagSerializer
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes = [ permissions.IsAuthenticated ]
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
 
 
 # Retrieve, Update, or Destroy a relation

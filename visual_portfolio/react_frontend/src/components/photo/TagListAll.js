@@ -92,13 +92,16 @@ class TagListAll extends Component {
     // TODO: Set up side bar gallery element???
 
     // CONVERT TO JSX LIST
-    return tag_array.map(tag => (
+    const per_tag = tag_array.map(tag => (
+      <div>
         <TagHasPhotos
           key={tag.tagname}
           tagname={tag.tagname}
           photos={tag.photos}
         />
+      </div>
     ));
+    return <div>{per_tag}</div>;
   };
 
   render() {

@@ -7,7 +7,7 @@ from .permissions import IsOwnerOrReadOnly
 # Create TAG (that can be associated with photos)
 class Tag(models.Model):
     tagname = models.SlugField(max_length=50, unique=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tags', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tags', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.tagname
@@ -20,12 +20,11 @@ class Tag(models.Model):
 class Photo(models.Model):
 
     title = models.CharField(max_length=50, unique=True)
-    # null is temporary, because we already have instances with no owner for dev
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='photos', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='photos', on_delete=models.CASCADE)
 
     # color/bw & film/digital
-    color = models.BooleanField()
-    film = models.BooleanField()
+    color = models.BooleanField(blank=True, null=True)
+    film = models.BooleanField(blank=True, null=True)
 
     # film info
     film_comp = models.CharField(max_length=50, blank=True, null=True)
@@ -72,7 +71,7 @@ class PhotoWithTag(models.Model):
    
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE, related_name='related_photos')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='related_tags')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relations', on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relations', on_delete=models.CASCADE)
 
     def __str__(self):
         return 'photo: ' + self.photo.title + ' --- tag: ' + self.tag.tagname
