@@ -21,14 +21,14 @@ import {
 //---------------------------------------------------------------------------//
 
 // Get all photo tags, assign as inactive
-export const fetchTags = () => dispatch => {
+export const fetchTags = (username) => dispatch => {
   console.log('Fetch Tags called in ACTIONS');
   dispatch({type: TAGS_LOADING});
   const get_lookupOptions = {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
   };
-  const get_endpoint = 'http://localhost:8000/api/photos/tags/';
+  const get_endpoint = 'http://localhost:8000/api/photos/tags/' + username + '/list';
   console.log('JUST BEFORE FETCH');
   fetch(get_endpoint, get_lookupOptions)
     .then(res => res.json())
@@ -60,13 +60,13 @@ export const fetchTags = () => dispatch => {
 
 /*
 // GET ALL TAGS, DON'T WORRY ABOUT ACTIVATING OR DEACTIVATING THEM
-export const fetchAllTags = () => dispatch => {
+export const fetchAllTags = (username) => dispatch => {
   dispatch({type: ALL_TAGS_LOADING});
   const get_lookupOptions = {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
   };
-  const get_endpoint = 'http://localhost:8000/api/photos/tags/';
+  const get_endpoint = 'http://localhost:8000/api/photos/tags/' + username + '/list';
   fetch(get_endpoint, get_lookupOptions)
     .then(res => res.json())
     .then(tags =>
@@ -79,14 +79,15 @@ export const fetchAllTags = () => dispatch => {
 };
 */
 
+
 // Get all relationship identities between photos and tags
-export const fetchRelations = () => dispatch => {
+export const fetchRelations = (username) => dispatch => {
   dispatch({type: RELATIONS_LOADING});
   const get_lookupOptions = {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
   };
-  const get_endpoint = 'http://localhost:8000/api/photos/pwt/';
+  const get_endpoint = 'http://localhost:8000/api/photos/pwt/' + username + '/list';
 
   fetch(get_endpoint, get_lookupOptions)
     .then(res => res.json())

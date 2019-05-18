@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 
 // React Components
 import TagHasPhotos from './TagHasPhotos';
+import TagHasNoPhotos from './TagHasNoPhotos';
 
 // Helpers
 import PropTypes from 'prop-types';
@@ -47,7 +48,9 @@ class TagListAll extends Component {
 
     // STORE TAGNAME AND ITS PHOTOS TO ARRAY OF TAGS
     // STORE THE ACTUAL PHOTO OBJECTS TO THE ARRAY INSTEAD OF THEIR IDS
-    const tag_array = [];
+    var tag_array_with_photos = [];
+    var tag_array_no_photos = this.props.all_tags.slice();
+
     for (const [key, value] of Object.entries(grouped_by_tag)) {
       // STORE ALL RELATED PHOTOS FOR EACH TAG INTO AN ARRAY BY ACCESSING THE
       // PHOTOS OBJECT HELD IN STATE USING THE RELATION'S PHOTO_ID KEY
@@ -70,14 +73,25 @@ class TagListAll extends Component {
       });
 
       // APPEND VALUES TO TAG ARRAY
-      tag_array.push({
+      tag_array_with_photos.push({
         tagname: value[0].tagname,
         photos: related_photos,
       });
     }
+    
+    console.log('Tag Array NONE, before', tag_array_no_photos);
+
+    // CREATE A LIST OF UNUSED TAGS (THOSE WITH NO PHOTOS ASSOCIATED)
+    for (let i = 0; i < tag_array_with_photos.length; i++) {
+      tag_array_no_photos = tag_array_no_photos.filter(
+        all_tags => all_tags.tagname !== tag_array_with_photos[i].tagname,
+      );
+      console.log('t_a_n_p', tag_array_no_photos);
+    }
+
 
     // SORT TAG ARRAY BY TAGNAME (ALPHABETICALLY)
-    tag_array.sort((a, b) => {
+    tag_array_with_photos.sort((a, b) => {
       var tagname_a = a.tagname.toLowerCase();
       var tagname_b = b.tagname.toLowerCase();
       if (tagname_a < tagname_b) {
@@ -90,9 +104,11 @@ class TagListAll extends Component {
     });
 
     // TODO: Set up side bar gallery element???
+    console.log('Tag Array WITH', tag_array_with_photos);
+    console.log('Tag Array NONE, after', tag_array_no_photos);
 
-    // CONVERT TO JSX LIST
-    const per_tag = tag_array.map(tag => (
+    // CONVERT TO JSX LISTS
+    const per_tag_with_photos = tag_array_with_photos.map(tag => (
       <div>
         <TagHasPhotos
           key={tag.tagname}
@@ -101,7 +117,21 @@ class TagListAll extends Component {
         />
       </div>
     ));
-    return <div>{per_tag}</div>;
+
+    const per_tag_no_photos = tag_array_no_photos.map(tag => (
+      <div>
+        <TagHasNoPhotos key={tag.tagname} tagname={tag.tagname} />
+      </div>
+    ));
+
+    return (
+      <div>
+        <h3>Tags with Associated Photos</h3>
+        <div>{per_tag_with_photos}</div>
+        <h3>Tags without Associated Photos</h3>
+        <div>{per_tag_no_photos}</div>
+      </div>
+    );
   };
 
   render() {

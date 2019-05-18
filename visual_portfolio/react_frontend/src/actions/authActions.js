@@ -12,13 +12,7 @@ export const authenticateUser = () => (dispatch, getState) => {
   dispatch({type: AUTHENTICATION_LOADING});
 
   const token = getState().auth.token;
-
-  const blah = getState();
-
-  console.log('get state', blah);
-
-  console.log('token:', token);
-
+  const auth_endpoint = 'http://localhost:8000/api/auth/user';
   const auth_lookupOptions = {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
@@ -27,10 +21,6 @@ export const authenticateUser = () => (dispatch, getState) => {
   if (token) {
     auth_lookupOptions.headers['Authorization'] = `Token ${token}`;
   }
-
-  console.log('auth_lookupOptions', auth_lookupOptions);
-
-  const auth_endpoint = 'http://localhost:8000/api/auth/user';
 
   fetch(auth_endpoint, auth_lookupOptions)
     .then(response => {

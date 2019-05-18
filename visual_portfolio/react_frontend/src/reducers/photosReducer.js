@@ -1,5 +1,5 @@
 import {
-  NEW_PHOTO,
+  NEW_PHOTO_SUCCESS,
   PHOTOS_FAILURE,
   PHOTOS_SUCCESS,
   PHOTOS_LOADING,
@@ -9,11 +9,12 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  // photos that come from get/post request
+  photo_detail: null,
   photos: [],
   photos_loaded: false,
   all_photos: [],
   all_photos_loaded: false,
+  all_photos_current: true,
 };
 
 export default function(state = initialState, action) {
@@ -23,10 +24,11 @@ export default function(state = initialState, action) {
     //   ...state,
     //   all_photos: action.payload,
     // };
-    case NEW_PHOTO:
+    case NEW_PHOTO_SUCCESS:
       return {
         ...state,
-        all_photos: action.payload,
+        photo_detail: action.payload,
+        all_photos_current: false
       };
     case PHOTOS_LOADING:
       console.log('from reducer: photos loading...');
@@ -59,6 +61,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         all_photos_loaded: true,
+        all_photos_current: true,
         all_photos: action.payload,
       };
     case ALL_PHOTOS_FAILURE:

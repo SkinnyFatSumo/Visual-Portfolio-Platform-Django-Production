@@ -48,6 +48,7 @@ class TagHasPhotos extends Component {
 
     return (
       <div>
+        <h1>{photo_list.length}</h1>
         <button onClick={this.toggleActive}>{this.props.tagname}</button>
         {this.state.isActive ? (
           <div>

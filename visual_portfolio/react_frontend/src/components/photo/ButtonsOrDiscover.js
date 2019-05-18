@@ -5,47 +5,50 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 
 // Components
-import {PhotoButton, PhotoCard} from './Buttons_AND_Cards';
+import DisplayButtons from './DisplayButtons';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
 // ------------------------------------------------------------------------- //
 //         CHOOSE BETWEEN BUTTON OR CARD MENU FOR PHOTO DISPLAY TYPES        //
 // ------------------------------------------------------------------------- //
 
-export function Buttons_OR_Cards(props) {
+export function ButtonsOrDiscover(props) {
+  console.log('pathname:', props.location.pathname);
   if (props.location.pathname !== undefined) {
     const {pathname} = props.location;
-
-    // -------------------------------------------------------
-    // RETURN --CARD-- VIEW IF AT HOME PAGE OR PHOTO ROOT PAGE
-    // -------------------------------------------------------
-    
-    if (pathname === '/' || pathname === '/photo/') {
-      return <h1>CARDS</h1>;
+    const {display, username} = props.match.params;
+    console.log('Active in But or Dis: ', props.active);
+    console.log('params: ', props.match.params);
+    if (
+      display === null ||
+      display === undefined ||
+      username === null ||
+      username === undefined
+    ) {
+      return <h1>DISCOVER A USER</h1>;
+    }
 
     // ----------------------------------------------------------
     // RETURN BUTTON VIEW IF AT ONE OF THE PHOTO DISPLAYS ALREADY
     // ----------------------------------------------------------
-    
-    } else if (props.match.params.display !== undefined) {
-      const {display} = props.match.params;
+    else {
       if (display === 'gallery' || display === 'grid' || display === 'tags') {
         return (
           <ButtonToolbar>
-            <PhotoButton
+            <DisplayButtons
               handleClick={props.launchGallery}
-              active={props.active}
               name="Gallery"
+              active={props.active}
             />
-            <PhotoButton
+            <DisplayButtons
               handleClick={props.launchGrid}
-              active={props.active}
               name="Grid"
-            />
-            <PhotoButton
-              handleClick={props.launchTags}
               active={props.active}
+            />
+            <DisplayButtons
+              handleClick={props.launchTags}
               name="Tags"
+              active={props.active}
             />
           </ButtonToolbar>
         );
@@ -54,4 +57,4 @@ export function Buttons_OR_Cards(props) {
   }
 }
 
-export default withRouter(Buttons_OR_Cards);
+export default withRouter(ButtonsOrDiscover);

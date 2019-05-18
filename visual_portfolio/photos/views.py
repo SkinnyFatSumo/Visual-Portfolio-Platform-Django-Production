@@ -22,18 +22,17 @@ class PhotoListAPIView(generics.ListAPIView):
 class PhotoCreateAPIView(generics.CreateAPIView):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes = [ permissions.IsAuthenticated ]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 
-# TODO:
 # Retrieve a specific photos, url @ /photos/<int:pk>
 class PhotoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes  = [ permissions.IsAuthenticated ]
+    permission_classes  = [permissions.IsAuthenticated]
 
 
 '''PHOTO BY TAG'''
@@ -139,4 +138,4 @@ class PhotoWithTagCreateAPIView(generics.ListCreateAPIView):
 class PhotoWithTagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = PhotoWithTag.objects.all()
     serializer_class = PhotoWithTagSerializer
-    permission_classes  = (IsOwnerOrReadOnly,)
+    permission_classes = [ permissions.IsAuthenticated ]

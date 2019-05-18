@@ -17,7 +17,7 @@ import {
 
 // Components
 import TagSelectBox from './TagSelectBox';
-import Buttons_OR_Cards from './Buttons_OR_Cards';
+import ButtonsOrDiscover from './ButtonsOrDiscover';
 
 // Helpers
 import {stringOfTags, tagStringFromURL} from '../support/helpers';
@@ -35,7 +35,7 @@ class Photo extends Component {
       isActive: null,
       gifs: null,
       collapsed: false,
-      username: null,
+      username: 'c',
     };
     this.launchGalleryView = this.launchGalleryView.bind(this);
     this.launchGridView = this.launchGridView.bind(this);
@@ -49,9 +49,7 @@ class Photo extends Component {
 
   componentDidMount() {
     // Activate
-    const {display} = this.props.match.params;
-    const {username} = this.state;
-    this.setState({username: username});
+    const {username, display} = this.props.match.params;
     console.log('Mounting:', display);
     if (display === undefined) {
       display === 'photo';
@@ -74,9 +72,9 @@ class Photo extends Component {
       this.props.history.push({state: {hydrated: false}});
     }
     if (!this.props.history.location.state.hydrated) {
-      this.props.fetchRelations();
-      this.props.fetchTags();
-      this.props.fetchAllPhotos();
+      this.props.fetchRelations(username);
+      this.props.fetchTags(username);
+      this.props.fetchAllPhotos(username);
     }
   }
 
@@ -85,9 +83,16 @@ class Photo extends Component {
   // ------------------
 
   // PHOTO ROOT IS RESPONSIBLE FOR HYDRATION AND LOADING ALL PHOTO CONTENT
+  // TODO: I THINK I CAN GET RID OF ALL_PHOTOS_LOADED AND FETCH_ALL_PHOTOS
   componentDidUpdate(prevProps) {
+    // Update all relations, tags, and photos if we are looking at new user
+    if (this.props.match.params.username !== prevProps.match.params.username) {
+      this.props.fetchRelations(username);
+      this.props.fetchTags(username);
+      this.props.fetchAllPhotos(username);
+    }
     // GET PROPS
-    const {display} = this.props.match.params;
+    const {username, display} = this.props.match.params;
     const {hydrated} = this.props.history.location.state;
     const {
       tags_loaded,
@@ -96,9 +101,15 @@ class Photo extends Component {
       photos_loaded,
       photos,
     } = this.props;
-    const {username} = this.state;
-    // LOAD PHOTOS IF IF NOT HYDRATED
-    if (tags_loaded && all_photos_loaded && !hydrated) {
+    // LOAD PHOTOS IF NOT HYDRATED
+    //
+    // TODO: add conditions of !this.props.all_tags_current and !this.props.all_relations_current
+    if (
+      tags_loaded &&
+      all_photos_loaded &&
+      (!hydrated || !this.props.all_photos_current)
+    ) {
+      // TODO: CHANGE THIS TO DISCOVER USERS???
       // IF AT PHOTO ROOT ('photo/') LOAD ALL PHOTOS
       if (display === undefined) {
         this.props.setPhotos(username, '');
@@ -112,15 +123,20 @@ class Photo extends Component {
       // SET AS HYDRATED
       this.props.history.push({state: {hydrated: true}});
     }
+    if (!this.props.all_photos_current) {
+      this.props.fetchAllPhotos(username);
+    }
     // THERE SHOULD ALWAYS BE PHOTOS, IF NOT IT'S A BAD URL OR TAG COMBO
     // TODO: ^^^ NOT NECESSARILY, WHAT ABOUT IF NO PHOTOS HAVE BEEN UPLOADED YET?
     //  we need a better way to check for bugs here
+    /* 
     if (photos_loaded && photos.length === 0) {
       this.props.history.push('/error/', {
         failure:
           'Either your URL is misconfigured, or no photo includes that combination of tags',
       });
     }
+    */
   }
 
   // --------------
@@ -148,7 +164,7 @@ class Photo extends Component {
     // push to gallery route
     this.props.history.push(
       '/photo/gallery/' +
-        this.state.username +
+        this.props.match.params.username +
         '/' +
         stringOfTags(this.props.tags),
       {
@@ -161,9 +177,9 @@ class Photo extends Component {
     // push to gallery route
     this.props.history.push(
       '/photo/grid/' +
-        this.state.username +
-        '/' +
-        stringOfTags(this.props.tags),
+        this.props.match.params.username +
+        stringOfTags(this.props.tags) +
+        '/',
       {
         hydrated: true,
       },
@@ -172,9 +188,12 @@ class Photo extends Component {
 
   launchTagsView = () => {
     // push to gallery route
-    this.props.history.push('/photo/tags/', {
-      hydrated: true,
-    });
+    this.props.history.push(
+      '/photo/tags/' + this.props.match.params.username + '/',
+      {
+        hydrated: true,
+      },
+    );
   };
 
   // -------------------
@@ -186,20 +205,24 @@ class Photo extends Component {
 
     // Insure that hydration has occurred before activating display buttons
     var active;
+
     this.props.photos_loaded ? (active = true) : (active = false);
 
+    console.log('Active', active);
     // Get display type, we will only show tags for 'grid' and 'gallery'
     const {display} = this.props.match.params;
 
-    // TODO: set up card display menu
+    if (this.props.photos_loaded && this.props.photos.length === 0) {
+      return <DiscoverUsers />;
+    }
 
     return (
       <Fragment>
-        <Buttons_OR_Cards
-          active={active}
+        <ButtonsOrDiscover
           launchGallery={this.launchGalleryView}
           launchGrid={this.launchGridView}
           launchTags={this.launchTagsView}
+          active={active}
         />
         <br />
         {display === 'grid' || display === 'gallery' ? (
@@ -239,6 +262,7 @@ const mapStateToProps = state => ({
   photos: state.photos.photos,
   photos_loaded: state.photos.photos_loaded,
   all_photos_loaded: state.photos.all_photos_loaded,
+  all_photos_current: state.photos.all_photos_loaded,
 
   tags: state.tags.tags,
   tags_loaded: state.tags.tags_loaded,

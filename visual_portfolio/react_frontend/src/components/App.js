@@ -90,7 +90,7 @@ class App extends Component {
               <Route path="/register/" component={Register} />
               <Route path="/login/" component={Login} />
               <Route path="/profile/:username" component={Profile} />
-              <Route path="/photo/:display?/:username" component={Photo} />
+              <Route path="/photo/:display?/:username?" component={Photo} />
               <Route
                 path="/photo/gallery/:username/:url_tags?"
                 component={PhotoGallery}

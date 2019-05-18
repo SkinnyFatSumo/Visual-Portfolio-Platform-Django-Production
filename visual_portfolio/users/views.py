@@ -4,6 +4,15 @@ from knox.models import AuthToken
 from rest_framework.response import Response
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
+
+# List all Users
+class ListUserAPIView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.only("username")
+
+
 # Register User
 class RegisterUserAPIView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -29,7 +38,6 @@ class LoginUserAPIView(generics.GenericAPIView):
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]
         })
-
 
 # Retrive User 
 class GetUserAPIView(generics.RetrieveAPIView):
