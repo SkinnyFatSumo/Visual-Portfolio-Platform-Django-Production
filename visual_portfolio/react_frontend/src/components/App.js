@@ -16,10 +16,11 @@ import {Router, Route, Switch} from 'react-router-dom';
 
 // Authorization
 import {authenticateUser} from '../actions/authActions';
+import {fetchAllUsers} from '../actions/userActions';
 
 // COMPONENTS //
 // Photo
-import Photo from './photo/Photo';
+import ContentRoot from './photo/ContentRoot';
 import PhotoDetail from './photo/PhotoDetail';
 import PhotoGrid from './photo/PhotoGrid';
 import PhotoGallery from './photo/PhotoGallery';
@@ -30,6 +31,7 @@ import MyTags from './photo/TagListAll';
 import Register from './users/Register';
 import Login from './users/Login';
 import Profile from './users/Profile';
+import DiscoverUsers from './users/DiscoverUsers';
 
 // Support
 import ErrorPage from './support/ErrorPage';
@@ -73,6 +75,7 @@ class App extends Component {
   componentDidMount() {
     console.log('APP MOUNTED, HISTORY:', history);
     store.dispatch(authenticateUser());
+    store.dispatch(fetchAllUsers());
   }
   // <Route path="/photo/tags/:user?/:url_tags?" component={TagListAll} />
   // <Route path="/photo/grid/:user?/:url_tags?" component={PhotoGrid} />
@@ -89,18 +92,16 @@ class App extends Component {
             <Fragment>
               <Route path="/register/" component={Register} />
               <Route path="/login/" component={Login} />
-              <Route path="/profile/:username" component={Profile} />
-              <Route path="/photo/:display?/:username?" component={Photo} />
-              <Route
-                path="/photo/gallery/:username/:url_tags?"
+              <Route path="/user/:username/:display/:urltags?" component={ContentRoot} />
+              <Route path="/user/:username/profile/" component={Profile} />
+              <Route path="/user/:username/gallery/:urltags?"
                 component={PhotoGallery}
               />
-              <Route path="/photo/grid/:username/:url_tags?" component={PhotoGrid} />
-              <Route path="/photo/detail/:id" component={PhotoDetail} />
-              <Route
-                path="/photo/tags/:username/:url_tags?"
+              <Route path="/user/:username/grid/:urltags?" component={PhotoGrid} />
+              <Route path="/user/:username/tags/:urltags?"
                 component={TagListAll}
               />
+              <Route path="/discover/:reason?" component={DiscoverUsers} />
               <Route path="/error/" component={ErrorPage} />
             </Fragment>
           </Router>

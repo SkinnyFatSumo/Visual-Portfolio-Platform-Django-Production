@@ -7,6 +7,9 @@ import {connect} from 'react-redux';
 // React Router
 import {Router, withRouter, Redirect} from 'react-router-dom';
 
+import LaunchUser from './LaunchUser';
+
+// import {fetchAllUsers} from '../../actions/userActions';
 import PropTypes from 'prop-types';
 
 // ------------------------------------------------------------------------- //
@@ -16,16 +19,28 @@ import PropTypes from 'prop-types';
 class DiscoverUsers extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+  }
+
+  render() {
+    const all_users = this.props.users.map(user => (
+      <LaunchUser key={user.id} username={user.username} />
+    ));
+
+    return (
+      <div>
+        <h1>DISCOVER USERS</h1>
+        <ul>{all_users}</ul>
+      </div>
+    );
   }
 }
 
-Photo.propTypes = {
-  users: 
+DiscoverUsers.propTypes = {
+  users: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({
+  users: state.users.users,
 });
 
 export default withRouter(

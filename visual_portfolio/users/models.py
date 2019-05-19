@@ -1,9 +1,10 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
 
-class User(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=30, unique=True)
 
@@ -22,7 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   
 
 class OptionalUserInfo(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'User')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'User')
     
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
@@ -32,16 +33,16 @@ class OptionalUserInfo(models.Model):
 
 
 class FavoriteUsers(models.Model):
-    this_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'This_User')
-    other_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'Favorited_User')
+    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'This_User')
+    other_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'Favorited_User')
 
 
 class FavoritePhotos(models.Model):
-    this_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     favorited_photo = models.ForeignKey('photos.Photo', on_delete=models.CASCADE, related_name = 'Favorited_Photo')
 
 class FavoriteTags(models.Model):
-    this_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     favorited_tag = models.ForeignKey('photos.Tag', on_delete=models.CASCADE, related_name = 'Favorited_Tag')
 
 

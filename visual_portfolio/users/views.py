@@ -1,18 +1,18 @@
 from django.shortcuts import render
+from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions
 from knox.models import AuthToken
+from .models import CustomUser 
 from rest_framework.response import Response
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 
 
 # List all Users
 class ListUserAPIView(generics.ListAPIView):
+    user = get_user_model() 
+    queryset = user.objects.all()
     serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return User.objects.only("username")
-
-
+    
 # Register User
 class RegisterUserAPIView(generics.GenericAPIView):
     serializer_class = RegisterSerializer

@@ -61,6 +61,7 @@ class Profile extends Component {
       </Row>
     ));
     return (
+      <div>
       <Container>
         <Row>
           <Col>
@@ -93,6 +94,7 @@ class Profile extends Component {
           </Col>
         </Row>
       </Container>
+      </div>
     );
   }
 }

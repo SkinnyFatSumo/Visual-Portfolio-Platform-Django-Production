@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import photosReducer from './photosReducer';
 import tagsReducer from './tagsReducer';
 import authReducer from './authReducer';
-import usersReducer from './authReducer';
+import usersReducer from './usersReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,

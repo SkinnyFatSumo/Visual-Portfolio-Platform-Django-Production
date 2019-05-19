@@ -2,31 +2,46 @@ import {
   ALL_USERS_SUCCESS,
   ALL_USERS_LOADING,
   ALL_USERS_FAILURE,
-}
-from '../actions/types';
+  VIEWING_USER_SUCCESS,
+  VIEWING_USER_FAILURE,
+} from '../actions/types';
 
 const initialState = {
-  isLoading: false,
-  users: [] 
-}
+  allUsersLoaded: false,
+  users: [],
+  isViewing: null,
+  validUser: false,
+};
 
 export default function(state = initialState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case ALL_USERS_LOADING:
       return {
         ...state,
-        isLoading: true
-      }
+        allUsersLoaded: false,
+      };
     case ALL_USERS_SUCCESS:
       return {
         ...state,
-        isLoading: false,
-        users: action.payload
-      }
+        allUsersLoaded: true,
+        users: action.payload,
+      };
     case ALL_USERS_FAILURE:
       return {
         ...state,
-        isLoading: false
+        allUsersLoaded: false,
+      };
+    case VIEWING_USER_SUCCESS:
+      return {
+        ...state,
+        isViewing: action.payload,
+        validUser: true,
+      };
+    case VIEWING_USER_FAILURE:
+      return {
+        ...state,
+        isViewing: null,
+        validUser: false,
       };
     default:
       return state;
