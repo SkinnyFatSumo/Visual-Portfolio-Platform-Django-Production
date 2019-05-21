@@ -4,86 +4,93 @@ import {Router, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 // Redux Actions
-import {setPhotos} from '../../actions/photoActions';
-import {fetchRelations, setTags, fetchTags} from '../../actions/tagActions';
-
-// React Components
-import PhotoDetail from './PhotoDetail';
+import {fetchRelations} from '../../actions/tagActions';
 
 // Helpers
 import PropTypes from 'prop-types';
-import {stringOfTags, tagStringFromURL} from '../support/helpers';
 
-//import AddPhoto from './AddPhoto';
-
-////// I DONT LIKE THIS !!!! ///////
-// TODO: DON'T MAP PROPS TO STATE //
-// COULD CAUSE BUGS, VIOLATE SINGLE SOURCE OF TRUTH //
-
-// Present Individual Photos, with all Content Availalbe
-class PhotoGallery extends Component {
+class PhotoDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-
-    this.loadPhoto = this.loadPhoto.bind(this);
-  }
-
-  // get detail of photo from url endpoint
-  loadPhoto(endpoint) {
-    const lookupOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    fetch(endpoint, lookupOptions)
-      .then(res => res.json())
-      .then(data => {
-        // set state for all passed keys
-        // json keys exactly match state var names
-        Object.keys(data).forEach(key => {
-          this.setState({
-            [key]: data[key],
-          });
-        });
-        // load successful (TO DO: add loading status)
-        this.setState({
-          loaded: true,
-        });
-        // insure id entered via url actually exists
-        if (this.state.id !== null) {
-          this.setState({id_exists: true});
-        }
-        console.log('Values received');
-      })
-      .catch(function(error) {
-        console.log('error', error);
-      });
-  }
-
-  componentDidMount() {
-    this.loadPhoto('/api/photos/' + this.props.photo_id + '/');
   }
 
   render() {
-    if (!this.state.loaded) {
-      return <h5>Loading...</h5>;
-    }
-    if (!this.state.id_exists) {
-      return <h5>The photo you're looking for isn't here :(</h5>;
-    } else {
-      return (
-        <div>
-          <div>
-            <h5>{this.state.title}</h5>
-            <img src={this.state.photo_source} alt="placeholder" />
-            <h5>{this.state.id}</h5>
-          </div>
-        </div>
+    // STORE ALL TAGS RELATED TO THIS PHOTOS IN A SET
+    var associated_tag_ids = new Set();
+
+    // ADD TAG IDS FROM RELATIONS THAT HAVE THIS PHOTO
+    this.props.relations.forEach(relation =>
+      if (relation.photo === this.props.current_photo.id) {
+        associated_tag_ids.add(relation.tag)
+      })
+
+    // INITIALIZE UNASSOCIATED TAGS LIST TO ALL TAGS
+    var unassociated_tags = this.props.all_tags.splice();
+    // INITIALIZE ASSOCIATED TAGS LIST TO EMPTY ARRAY
+    var associated_tags = [];
+
+    // GET ACTUAL TAGS FROM THEIR IDS
+    associated_tag_ids.forEach(tag_id =>
+      associated_tags.push(this.props.all_tags.find(tag => tag.id === tag_id)))
+
+    // GET ALL TAGS THAT AREN'T ASSOCIATED BY FILTERING OUT THOSE THAT ARE
+    associated_tags.forEach(as_tag => {
+      unassociated_tags = unassociated_tags.filter(
+        un_tag => un_tag.id !== as_tag.id,
       );
-    }
+    });
+
+    return <h1>Hi</h1>;
   }
 }
 
-export default PhotoGallery;
+PhotoDetail.propTypes = {
+  // PHOTOS
+  all_photos: PropTypes.array.isRequired,
+  all_photos_loaded: PropTypes.bool.isRequired,
+  all_photos_loading: PropTypes.bool.isRequired,
+
+  // TAGS
+  all_tags: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  tags_loaded: PropTypes.bool.isRequired,
+  tags_loading: PropTypes.bool.isRequired,
+
+  // RELATIONS
+  relations: PropTypes.array.isRequired,
+  relations_loaded: PropTypes.bool.isRequired,
+  relations_loading: PropTypes.bool.isRequired,
+  fetchRelations: PropTypes.func.isRequired,
+
+  // USERS
+  users: PropTypes.array.isRequired,
+  allUsersLoaded: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => ({
+  all_photos: state.photos.all_photos,
+  all_photos_loaded: state.photos.all_photos_loaded,
+  all_photos_loading: state.photos.all_photos_loading,
+
+  all_tags: state.tags.all_tags,
+  tags: state.tags.tags,
+  tags_loaded: state.tags.tags_loaded,
+  tags_loading: state.tags.tags_loading,
+
+  relations: state.tags.relations,
+  relations_loaded: state.tags.relations_loaded,
+  relations_loading: state.tags.relations_loading,
+
+  users: state.users.users,
+  allUsersLoaded: state.users.allUsersLoaded,
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      fetchRelations,
+    },
+  )(PhotoDetail),
+);

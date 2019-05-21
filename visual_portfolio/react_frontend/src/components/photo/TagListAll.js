@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 // React Components
 import TagHasPhotos from './TagHasPhotos';
 import TagHasNoPhotos from './TagHasNoPhotos';
+import AddTag from './AddTag';
 
 // Helpers
 import PropTypes from 'prop-types';
@@ -20,12 +21,6 @@ import {
 //                 LIST OF ALL TAGS AND RESPECTIVE THEIR PHOTOS              //
 // ------------------------------------------------------------------------- //
 
-// TODO: CURRENTLY ONLY TAGS THAT ALREADY HAVE A RELATIONSHIP WITH A PHOTO
-// WILL BE SHOWN
-// THIS COULD BE AN ISSUE / UX PROBLEM WHEN A USER CREATES A NEW TAG
-// OR DELETES ALL PHOTOS ASSOCIATED WITH A TAG // MAYBE FORCE USER TO ASSIGN THE TAG TO AT LEAST ONE PHOTO BEFORE CREATING // AND AUTOMATICALLY DELETE TAG WHEN LAST OF PHOTOS IS TO BE DELETED
-//    (PROMPT THEM OF COURSE)
-// OR REWORK CODE TO GENERATE LIST OF TAGS FROM 'ALL_TAGS' INSTEAD
 
 class TagListAll extends Component {
   constructor(props) {
@@ -46,6 +41,7 @@ class TagListAll extends Component {
     // GROUP RELATIONS (original format is 1:1, photo to tag) BY TAG
     const grouped_by_tag = groupByProperty(this.props.relations, 'tag');
 
+    console.log('GROUPED BY TAG', grouped_by_tag);
     // STORE TAGNAME AND ITS PHOTOS TO ARRAY OF TAGS
     // STORE THE ACTUAL PHOTO OBJECTS TO THE ARRAY INSTEAD OF THEIR IDS
     var tag_array_with_photos = [];
@@ -56,13 +52,17 @@ class TagListAll extends Component {
       // PHOTOS OBJECT HELD IN STATE USING THE RELATION'S PHOTO_ID KEY
       var related_photos = [];
       value.forEach(relation_photo => {
-        related_photos.push(photos_object[relation_photo.photo]);
+        related_photos.push({
+          photo_info: photos_object[relation_photo.photo],
+          relation_id: relation_photo.id,
+          owner: relation_photo.owner,
+        });
       });
 
       // SORT PHOTOS UNDER TAG BY TITLE NAME (ALPHABETICAL)
       related_photos.sort((a, b) => {
-        var title_a = a.title.toLowerCase();
-        var title_b = b.title.toLowerCase();
+        var title_a = a.photo_info.title.toLowerCase();
+        var title_b = b.photo_info.title.toLowerCase();
         if (title_a < title_b) {
           return -1;
         }
@@ -72,13 +72,15 @@ class TagListAll extends Component {
         return 0;
       });
 
+
       // APPEND VALUES TO TAG ARRAY
       tag_array_with_photos.push({
         tagname: value[0].tagname,
+        tag_id: value[0].tag,
         photos: related_photos,
       });
     }
-    
+
     console.log('Tag Array NONE, before', tag_array_no_photos);
 
     // CREATE A LIST OF UNUSED TAGS (THOSE WITH NO PHOTOS ASSOCIATED)
@@ -88,7 +90,6 @@ class TagListAll extends Component {
       );
       console.log('t_a_n_p', tag_array_no_photos);
     }
-
 
     // SORT TAG ARRAY BY TAGNAME (ALPHABETICALLY)
     tag_array_with_photos.sort((a, b) => {
@@ -103,33 +104,35 @@ class TagListAll extends Component {
       return 0;
     });
 
-    // TODO: Set up side bar gallery element???
     console.log('Tag Array WITH', tag_array_with_photos);
     console.log('Tag Array NONE, after', tag_array_no_photos);
 
     // CONVERT TO JSX LISTS
     const per_tag_with_photos = tag_array_with_photos.map(tag => (
-      <div>
-        <TagHasPhotos
-          key={tag.tagname}
-          tagname={tag.tagname}
-          photos={tag.photos}
-        />
-      </div>
+      <TagHasPhotos
+        key={tag.tagname}
+        tag_id={tag.tag_id}
+        tagname={tag.tagname}
+        photos={tag.photos}
+        all_photos={this.props.all_photos}
+      />
     ));
 
     const per_tag_no_photos = tag_array_no_photos.map(tag => (
-      <div>
-        <TagHasNoPhotos key={tag.tagname} tagname={tag.tagname} />
-      </div>
+      <TagHasNoPhotos key={tag.tagname} tagname={tag.tagname} tag_id ={tag.tag_id}/>
     ));
 
     return (
-      <div>
-        <h3>Tags with Associated Photos</h3>
-        <div>{per_tag_with_photos}</div>
-        <h3>Tags without Associated Photos</h3>
-        <div>{per_tag_no_photos}</div>
+      <div className="tag-container" id="tag-list-container">
+        <h4>All Tags</h4>
+        <div className="tag-container" id="tag-has-photos-container">
+          <h6>Tags with Associated Photos</h6>
+          <div>{per_tag_with_photos}</div>
+        </div>
+        <div className="tag-container" id="tag-no-photos-container">
+          <h6>Tags without Associated Photos</h6>
+          <div>{per_tag_no_photos}</div>
+        </div>
       </div>
     );
   };
@@ -141,7 +144,7 @@ class TagListAll extends Component {
         <div>
           <ul>{this.assignData()}</ul>
           <h5>Delete Tags</h5>
-          <h5>Add Tags</h5>
+          <AddTag />
         </div>
       );
     } else {

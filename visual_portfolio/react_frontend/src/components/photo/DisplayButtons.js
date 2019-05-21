@@ -6,17 +6,16 @@ import {Card} from 'react-bootstrap';
 //                               BUTTONS MENU                                //
 // ------------------------------------------------------------------------- //
 
-const DisplayButtons = (props) => {
+const DisplayButtons = props => {
   var handleClick;
   var active;
-  props.active ? (handleClick = props.handleClick) : (handleClick = console.log('no'));
-  console.log('active', props.active);
+  props.active ? (handleClick = props.handleClick) : (handleClick = null);
 
   return (
-    <Button onClick={handleClick} variant='dark' className={active}>
+    <Button onClick={handleClick} variant="dark" className={active}>
       {props.name.toUpperCase()}
     </Button>
   );
-}
+};
 
 export default DisplayButtons;

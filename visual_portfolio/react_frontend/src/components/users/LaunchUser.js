@@ -23,7 +23,7 @@ class LaunchUser extends Component {
 
   launchUserProfile = () => {
     // push to gallery route
-    this.props.history.push('/profile/' + this.props.username + '/', {
+    this.props.history.push('/user/' + this.props.username + '/profile/', {
       hydrated: true,
     });
   };

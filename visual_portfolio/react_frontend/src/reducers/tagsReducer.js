@@ -1,14 +1,23 @@
 import {
-  // LOADING
+  // ASYNC  
   TAGS_LOADING,
-  RELATIONS_LOADING,
-  // SUCCESS
   TAGS_SUCCESS,
-  ALL_TAGS_SUCCESS,
-  RELATIONS_SUCCESS,
-  // FAILURE
   TAGS_FAILURE,
+  
+  NEW_TAG_LOADING,
+  NEW_TAG_SUCCESS,
+  NEW_TAG_FAILURE,
+  
+  RELATIONS_LOADING,
+  RELATIONS_SUCCESS,
   RELATIONS_FAILURE,
+  
+  NEW_RELATION_LOADING,
+  NEW_RELATION_SUCCESS,
+  NEW_RELATION_FAILURE,
+
+  ALL_TAGS_SUCCESS,
+
   // SYNCHRONOUS
   SET_TAGS,
 } from '../actions/types';
@@ -18,62 +27,130 @@ const initialState = {
   tags: [],
   all_tags: [],
   relations: [],
+  relation: null,
+
   tags_loaded: false,
+  tags_loading: false,
+  new_tag_loaded: false,
+  new_tag_loading: false,
+
   all_tags_loaded: false,
+  all_tags_loading: false,
+
   relations_loaded: false,
+  relations_loading: false,
+  new_relation_loaded: false,
+  new_relation_loading: false,
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     // SUCCESS
     case ALL_TAGS_SUCCESS:
-      console.log('FROM REDUCER: inital batch of all tags reduced');
       return {
         ...state,
         all_tags: action.payload,
         all_tags_loaded: true,
+        all_tags_loading: false,
       };
-    case TAGS_SUCCESS:
-      console.log('FROM REDUCER: inital batch of all tags reduced');
-      return {
-        ...state,
-        tags_loaded: true,
-      };
-    case RELATIONS_SUCCESS:
-      console.log('relations reduced');
-      return {
-        ...state,
-        relations: action.payload,
-        relations_loaded: true,
-      };
-    // LOADING
+
     case TAGS_LOADING:
-      console.log('FROM REDUCER: tags loading');
       return {
         ...state,
         tags_loaded: false,
+        tags_loading: true,
+        all_tags_loading: true,
       };
-    case RELATIONS_LOADING:
+    case TAGS_SUCCESS:
       return {
         ...state,
-        relations_loaded: false,
+        tags_loaded: true,
+        tags_loading: false,
+        all_tags_loading: false,
       };
-    // FAILURE
     case TAGS_FAILURE:
       return {
         ...state,
         tags_loaded: false,
+        tags_loading: false,
+        all_tags_loading: false,
       };
-    case RELATIONS_FAILURE:
-      console.log('THERE WAS A FAILURE');
-      console.log('failrure:', action.payload);
+    
+    case NEW_TAG_LOADING:
+      return {
+        ...state,
+        tags_loaded: false,
+        tags_loading: false,
+        all_tags_loading: false,
+        new_tag_loaded: false,
+        new_tag_loading: true,
+      };
+    case NEW_TAG_SUCCESS:
+      return {
+        ...state,
+        tags_loaded: false,
+        tags_loading: false,
+        all_tags_loading: false,
+        new_tag_loaded: true,
+        new_tag_loading: false,
+      };
+    case NEW_TAG_FAILURE:
+      return {
+        ...state,
+        tags_loaded: true,
+        tags_loading: false,
+        all_tags_loading: false,
+        new_tag_loaded: false,
+        new_tag_loading: false,
+      };
+
+    case RELATIONS_LOADING:
       return {
         ...state,
         relations_loaded: false,
+        relations_loading: true,
       };
+    case RELATIONS_SUCCESS:
+      return {
+        ...state,
+        relations: action.payload,
+        relations_loaded: true,
+        relations_loading: false,
+      };
+    case RELATIONS_FAILURE:
+      return {
+        ...state,
+        relations_loaded: false,
+        relations_loading: false,
+      };
+    case NEW_RELATION_LOADING:
+      return {
+        ...state,
+        relations_loaded: false,
+        relations_loading: false,
+        new_relation_loaded: false,
+        new_relation_loading: true,
+      };
+    case NEW_RELATION_SUCCESS:
+      return {
+        ...state,
+        relation: action.payload,
+        relations_loaded: false,
+        relations_loading: false,
+        new_relation_loaded: true,
+        new_relation_loading: false,
+      };
+    case NEW_RELATION_FAILURE:
+      return {
+        ...state,
+        relations_loaded: true,
+        relations_loading: false,
+        new_relation_loaded: false,
+        new_relation_loading: false,
+      };
+      
     // SYNCHRONOUS
     case SET_TAGS:
-      console.log('SET TAGS CALLED');
       return {
         ...state,
         tags: action.payload,

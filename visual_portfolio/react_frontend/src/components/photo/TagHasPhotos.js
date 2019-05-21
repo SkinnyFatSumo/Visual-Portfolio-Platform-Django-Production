@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 
+import {Router, withRouter, Redirect} from 'react-router-dom';
+
 // React Components
 import Gallery from 'react-photo-gallery';
-
+import AddRelationDefaultTag from './AddRelationDefaultTag';
 // Bootstrap Components
-import {Button, ButtonToolbar, Collapse} from 'react-bootstrap';
+import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 
 // CSS
 import '../../css/photo/taghasphotos.css';
@@ -23,12 +25,43 @@ class TagHasPhotos extends Component {
     super(props);
     this.state = {isActive: false};
 
+    this.launchDetailView = this.launchDetailView.bind(this);
     this.getTitles = this.getTitles.bind(this);
     this.toggleActive = this.toggleActive.bind(this);
   }
 
+  launchDetailView = event => {
+    event.preventDefault();
+    //  PUSH TO GALLERY VIEW
+    this.props.history.push(
+      '/user/' +
+        this.props.match.params.username +
+        '/detail/' +
+        event.target.id,
+    );
+  };
+
+  /* 
+  removeRelation = event => {
+    event.preventDefault();
+    //  PUSH TO GALLERY VIEW
+    this.props.history.push(
+      '/user/' +
+        this.props.match.params.username +
+        '/detail/' + event.target.id
+        )
+  };
+  */
+
   getTitles = photos => {
-    var titles_list = photos.map(photo => <li>{photo.title}</li>);
+    var titles_list = photos.map(photo => (
+      <ButtonGroup key={photo.id}>
+        <Button onClick={this.launchDetailView}>{photo.title}</Button>
+        <Button onClick={console.log('REMOVE RELATIONSHIP, TODO')}>
+          Remove
+        </Button>
+      </ButtonGroup>
+    ));
     return titles_list;
   };
 
@@ -38,22 +71,43 @@ class TagHasPhotos extends Component {
 
   render() {
     const photo_list = this.props.photos.map(photo => ({
-      src: photo.thumbnail_source,
-      width: photo.thumbnail_width,
-      height: photo.thumbnail_height,
-      key: photo.id,
+      src: photo.photo_info.thumbnail_source,
+      width: photo.photo_info.thumbnail_width,
+      height: photo.photo_info.thumbnail_height,
+      key: photo.photo_info.id.toString(),
     }));
+
+    const associated_photos = this.props.photos.map(photo => ({
+      id: photo.photo_info.id,
+      title: photo.photo_info.title,
+    }));
+    var unassociated_photos = this.props.all_photos.map(photo => ({
+      id: photo.id,
+      title: photo.title,
+    }));
+
+    associated_photos.forEach(as_photo => {
+      unassociated_photos = unassociated_photos.filter(
+        un_photo => un_photo.id !== as_photo.id,
+      );
+    });
 
     const photos_length = this.props.photos.length;
 
     return (
       <div>
-        <h1>{photo_list.length}</h1>
         <button onClick={this.toggleActive}>{this.props.tagname}</button>
         {this.state.isActive ? (
           <div>
-            <div id="left">
-              <ul>{this.getTitles(this.props.photos)}</ul>
+            <div id="associated-photos-container">
+              <ul>{this.getTitles(associated_photos)}</ul>
+            </div>
+            <div id="add-associated-photo-container">
+              <AddRelationDefaultTag
+                tagname={this.props.tagname}
+                tag_id={this.props.tag_id}
+                unassociated_photos={unassociated_photos}
+              />
             </div>
             <div id="right">
               <Gallery
@@ -69,4 +123,4 @@ class TagHasPhotos extends Component {
   }
 }
 
-export default TagHasPhotos;
+export default withRouter(TagHasPhotos);

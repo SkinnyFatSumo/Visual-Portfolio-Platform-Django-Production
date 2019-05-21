@@ -10,6 +10,7 @@ import {
 
 // Set CURRENT PHOTOS based on tags
 export const setPhotos = (username, tag_string) => dispatch => {
+  console.log('SET PHOTOS CALLED');
   dispatch({type: PHOTOS_LOADING});
   const tagged_lookupOptions = {
     method: 'GET',
@@ -43,6 +44,7 @@ export const setPhotos = (username, tag_string) => dispatch => {
 
 // GET ALL PHOTOS, DON'T CHANGE CURRENT PHOTOS SET
 export const fetchAllPhotos = username => dispatch => {
+  console.log('FETCH ALL PHOTOS CALLED');
   dispatch({type: ALL_PHOTOS_LOADING});
   const tagged_lookupOptions = {
     method: 'GET',
@@ -52,6 +54,12 @@ export const fetchAllPhotos = username => dispatch => {
     'http://localhost:8000/api/photos/' + username + '/list';
 
   fetch(tagged_endpoint, tagged_lookupOptions)
+    .then(res => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
+    })
     .then(res => res.json())
     .then(all_photos =>
       dispatch({
@@ -69,6 +77,7 @@ export const fetchAllPhotos = username => dispatch => {
 
 // POST / CREATE PHOTO
 export const postPhoto = photoData => (dispatch, getState) => {
+  console.log('POST PHOTO CALLED');
   const post_lookupOptions = {
     method: 'POST',
     body: JSON.stringify(photoData),
@@ -84,20 +93,32 @@ export const postPhoto = photoData => (dispatch, getState) => {
   const post_endpoint = 'http://localhost:8000/api/photos/create';
 
   fetch(post_endpoint, post_lookupOptions)
+    .then(res => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      return res;
+    })
     .then(res => res.json())
-    .then(photos =>
+    .then(photo =>
       dispatch({
-        type: NEW_PHOTO,
-        payload: photos,
+        type: NEW_PHOTO_SUCCESS,
+        payload: photo,
       }),
     )
-    .catch(function(error) {
-      console.log('error', error);
+    .catch(err => {
+      dispatch({
+        type: NEW_PHOTO_FAILURE,
+        payload: err,
+      }),
+      console.log('error', err);
     });
 };
 
+
 // Retrieve, Update, Destroy
 export const rudPhoto = (id, method) => (dispatch, getState) => {
+  console.log('RUD PHOTO CALLED');
   // TODO: deal with retrieve/update vs destroy headers and return values/statuses
   const rud_lookupOptions = {
     method: method,

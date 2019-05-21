@@ -33,11 +33,11 @@ class AddPhoto extends Component {
     e.preventDefault();
     const photo = {
       title: this.state.title,
-      owner: this.props.user,
       photo_source: this.state.photo_source,
       thumbnail_source: this.state.thumbnail_source,
       thumbnail_width: this.state.thumbnail_width,
       thumbnail_height: this.state.thumbnail_height,
+      owner: this.props.user.id,
     };
 
     this.props.postPhoto(photo);
@@ -139,9 +139,8 @@ AddPhoto.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  postPhoto: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
-  user: PropTypes.object,
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
 });
 
 export default connect(

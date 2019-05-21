@@ -37,8 +37,6 @@ class ContentRoot extends Component {
     this.state = {
       // options are: photo, gallery, grid, tag
       isActive: null,
-      gifs: null,
-      collapsed: false,
       viewed_user: null,
     };
     this.launchProfileView = this.launchProfileView.bind(this);
@@ -59,19 +57,24 @@ class ContentRoot extends Component {
       display === 'gallery' ||
       display === 'grid' ||
       display === 'tags' ||
-      display === 'profile'
+      display === 'profile' ||
+      display === 'detail'
     ) {
       this.setState({isActive: display});
     } else {
-      this.props.history.push('/discover/' + 'baddisplay');
+      this.props.history.push('/discover/' + 'bad-display-type');
     }
 
-    // WAIT TIL ALL USERS ARE LOADED TO CHECK IF USER EXISTS
+    // INSURE THAT USERNAME IN URL MATCHES STORED USERNAME IN STATE
     if (username !== this.state.viewed_user) {
+      // IF NOT, INSURE ALL USERS ARE LOADED PRIOR TO CHECK
       if (this.props.allUsersLoaded) {
+        // INSURE THAT USERNAME IN URL ACTUALLY EXISTS, IF NOT, REDIRECT
         if (!this.props.users.some(user => user.username === username)) {
           this.props.history.push('/discover/' + 'user-does-not-exist');
+          // IF USER EXISTS, UPDATE LOCAL STATE AND REDUX STATE
         } else {
+          console.log('LOADING NEW USER in MOUNT');
           this.setState({viewed_user: username});
           this.props.fetchRelations(username);
           this.props.fetchTags(username);
@@ -87,44 +90,51 @@ class ContentRoot extends Component {
   // ------------------
 
   componentDidUpdate(prevProps) {
-    // Update all relations, tags, and photos if we are looking at new user
+    var activating_new_user = false;
+    // STORE ALL VARIABLES NEEDED FROM URL PARAMS AND PROPS
     const {username, display, urltags} = this.props.match.params;
-    // GET PROPS
     const {
       allUsersLoaded,
       tags_loaded,
+      tags_loading,
       tags,
       all_photos_loaded,
+      all_photos_loading,
       photos_loaded,
+      photos_loading,
       photos,
       relations_loaded,
+      relations_loading,
       relations,
     } = this.props;
 
-    console.log('this.props.match.params', this.props.match.params);
-    console.log('urltags', urltags);
-    console.log('update, username --', username);
-
-    // INSURE DISPLAY TYPE IS VALID
+    // INSURE DISPLAY TYPE IS VALID, SET STATE IF IT IS
     if (display !== this.state.isActive) {
       if (
         display === 'gallery' ||
         display === 'grid' ||
         display === 'tags' ||
-        display === 'profile'
+        display === 'profile' ||
+        display === 'detail'
       ) {
         this.setState({isActive: display});
+        // OTHERWISE REDIRECT DUE TO BAD DISPLAY TYPE
       } else {
-        this.props.history.push('/discover/' + 'baddisplay');
+        this.props.history.push('/discover/' + 'bad-display-type');
       }
     }
 
-    // WAIT TIL ALL USERS ARE LOADED TO CHECK IF USER EXISTS
+    // INSURE THAT ALL USERS ARE LOADED
     if (this.props.allUsersLoaded) {
+      // IF SO, CHECK IF USER IN URL IS SAME AS USER STORED IN STATE
       if (this.state.viewed_user !== username) {
+        // IF NOT, INSURE USER IN URL ACTUALLY EXISTS, REDIRECT IF NOT
         if (!this.props.users.some(user => user.username === username)) {
           this.props.history.push('/discover/' + 'user-does-not-exist');
+          // OTHERWISE UPDATE LOCAL AND REDUX STATE FOR CURRENT VIEWED USER
         } else {
+          activating_new_user = true;
+          console.log('LOADING NEW USER');
           this.setState({viewed_user: username});
           this.props.fetchRelations(username);
           this.props.fetchTags(username);
@@ -132,25 +142,30 @@ class ContentRoot extends Component {
           // this.props.fetchUserInfo
         }
       }
-      if (!this.props.tags_loaded) {
+      if (!tags_loaded && !tags_loading && !activating_new_user) {
+        console.log('tags_loading', tags_loading);
+        console.log('tags_loaded', tags_loaded);
+        console.log('had to load tags');
         this.props.fetchTags(username);
       }
-      if (!this.props.all_photos_loaded) {
+      if (!all_photos_loaded && !all_photos_loading && !activating_new_user) {
+        console.log('had to load photos');
         this.props.fetchAllPhotos(username);
       }
-      if (!this.props.relations_loaded) {
+      if (!relations_loaded && !relations_loading && !activating_new_user) {
+        console.log('had to load relations');
         this.props.fetchRelations(username);
       }
     }
 
-    // LOAD PHOTOS ONCE TAGS AND ALL_PHOTOS ARE READY
-    if (tags_loaded && all_photos_loaded && !photos_loaded) {
-      // IF NO URL TAGS, LOADING ALL USER'S PHOTOS
+    // LOAD ACTIVE PHOTOS ONCE ALL TAGS AND ALL PHOTOS ARE LOADED
+    if (tags_loaded && all_photos_loaded && !photos_loaded && !photos_loading) {
+      // IF NO URL TAGS, LOAD ALL USER'S PHOTOS
+
       if (urltags === undefined) {
         this.props.setPhotos(username, '');
         // OTHERWISE SET TAGS BASED ON TAGS IN URL
       } else {
-        // var url_tags = tagStringFromURL(this.props.location.pathname);
         var tagnames = urltags.split(',');
         tagnames.forEach(tagname => this.props.setTags(tagname, tags));
         this.props.setPhotos(username, urltags);
@@ -164,15 +179,19 @@ class ContentRoot extends Component {
 
   handleTagClick = event => {
     event.preventDefault();
-    // set tags based on tag clicked, then get new url and set photos
-    // and new path using it. maintain current display type
-    const {tags, setTags, setPhotos} = this.props;
-    setTags(event.target.id, tags);
-    const string_for_url = stringOfTags(tags);
-    setPhotos(string_for_url);
     const {username, display} = this.props.match.params;
+    const {tags, setTags, setPhotos} = this.props;
+    // SET TAGS BASED ON THE TAG CLICKED
+    setTags(event.target.id, tags);
+    // GET NEW TAG STRING BASED ON UPDATED LIST OF ACTIVE TAGS
+    const string_for_url = stringOfTags(tags);
+    // THEN GET PHOTOS BASED ON UPDATED TAG URL
+    setPhotos(username, string_for_url);
+    // PUSH TO NEW URL WITH UPDATED TAGS
+    //
+    console.log('handle tag click username is', username);
     this.props.history.push(
-      '/photo/' + display + '/' + this.state.username + '/' + string_for_url,
+      '/user/' + username + '/' + display + '/' + string_for_url,
       {
         hydrated: true,
       },
@@ -180,7 +199,7 @@ class ContentRoot extends Component {
   };
 
   launchGalleryView = () => {
-    // push to gallery route
+    //  PUSH TO GALLERY VIEW
     this.props.history.push(
       '/user/' +
         this.props.match.params.username +
@@ -193,10 +212,11 @@ class ContentRoot extends Component {
   };
 
   launchGridView = () => {
-    // push to gallery route
+    // PUSH TO GRID VIEW
     this.props.history.push(
       '/user/' +
-      this.props.match.params.username + '/grid/' +
+        this.props.match.params.username +
+        '/grid/' +
         stringOfTags(this.props.tags),
       {
         hydrated: true,
@@ -205,7 +225,7 @@ class ContentRoot extends Component {
   };
 
   launchTagsView = () => {
-    // push to gallery route
+    // PUSH TO TAGS VIEW
     this.props.history.push(
       '/user/' + this.props.match.params.username + '/tags/',
       {
@@ -213,9 +233,9 @@ class ContentRoot extends Component {
       },
     );
   };
-  
+
   launchProfileView = () => {
-    // push to gallery route
+    // PUSH TO PROFILE VIEW
     this.props.history.push(
       '/user/' + this.props.match.params.username + '/profile/',
       {
@@ -229,15 +249,11 @@ class ContentRoot extends Component {
   // -------------------
 
   render() {
-    console.log('Rendering Photo', this.props.history);
-
-    // Insure that hydration has occurred before activating display buttons
     var active;
-
     this.props.photos_loaded ? (active = true) : (active = false);
 
-    console.log('Active', active);
-    // Get display type, we will only show tags for 'grid' and 'gallery'
+    // STORE DISPLAY TYPE, BECAUSE WE WILL ONLY SHOW TAG SELECT BOX FOR
+    // GRID AND GALLERY VIEWS
     const {display} = this.props.match.params;
 
     if (this.props.photos_loaded && this.props.photos.length === 0) {
@@ -291,19 +307,23 @@ ContentRoot.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
+  photos_loading: PropTypes.bool.isRequired,
   all_photos_loaded: PropTypes.bool.isRequired,
+  all_photos_loading: PropTypes.bool.isRequired,
   setPhotos: PropTypes.func.isRequired,
   fetchAllPhotos: PropTypes.func.isRequired,
 
   // TAGS
   tags: PropTypes.array.isRequired,
   tags_loaded: PropTypes.bool.isRequired,
+  tags_loading: PropTypes.bool.isRequired,
   setTags: PropTypes.func.isRequired,
   fetchTags: PropTypes.func.isRequired,
 
   // RELATIONS
   relations: PropTypes.array.isRequired,
   relations_loaded: PropTypes.bool.isRequired,
+  relations_loading: PropTypes.bool.isRequired,
   fetchRelations: PropTypes.func.isRequired,
 
   // USERS
@@ -315,14 +335,17 @@ ContentRoot.propTypes = {
 const mapStateToProps = state => ({
   photos: state.photos.photos,
   photos_loaded: state.photos.photos_loaded,
+  photos_loading: state.photos.photos_loading,
   all_photos_loaded: state.photos.all_photos_loaded,
-  all_photos_current: state.photos.all_photos_loaded,
+  all_photos_loading: state.photos.all_photos_loading,
 
   tags: state.tags.tags,
   tags_loaded: state.tags.tags_loaded,
+  tags_loading: state.tags.tags_loading,
 
   relations: state.tags.relations,
   relations_loaded: state.tags.relations_loaded,
+  relations_loading: state.tags.relations_loading,
 
   users: state.users.users,
   allUsersLoaded: state.users.allUsersLoaded,
