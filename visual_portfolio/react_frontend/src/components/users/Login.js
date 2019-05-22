@@ -29,24 +29,22 @@ class Login extends Component {
     e.preventDefault();
     const user = {
       email: this.state.email,
-      password: this.state.password
-    }
-    console.log('user:' , user);
+      password: this.state.password,
+    };
+    console.log('user:', user);
     this.props.loginUser(user);
     console.log('login form submitted');
-
   };
 
   handleChange = e => this.setState({[e.target.name]: e.target.value});
 
   render() {
-    if(this.props.isAuthenticated) {
-      return <Redirect to="/" />;
+    if (this.props.isAuthenticated) {
+      const user_profile_endpoint =
+        '/user/' + this.props.user.username + '/profile/';
+      return <Redirect to={user_profile_endpoint} />;
     }
-    const {
-      email,
-      password
-    } = this.state;
+    const {email, password} = this.state;
     return (
       <div className="formContainer" id="all">
         <div className="formContainer" id="login">
@@ -54,14 +52,13 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="formGroupEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control 
-                type="email" 
+              <Form.Control
+                type="email"
                 name="email"
                 value={email}
-                placeholder="Enter Email" 
-                onChange={this.handleChange} 
+                placeholder="Enter Email"
+                onChange={this.handleChange}
               />
-              
             </Form.Group>
             <Form.Group controlId="formGroupPassword">
               <Form.Label>Password</Form.Label>
@@ -90,13 +87,14 @@ class Login extends Component {
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
 });
-
 
 export default withRouter(
   connect(

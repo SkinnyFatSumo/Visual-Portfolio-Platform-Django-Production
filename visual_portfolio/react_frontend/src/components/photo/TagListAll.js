@@ -137,8 +137,10 @@ class TagListAll extends Component {
     const per_tag_no_photos = tag_array_no_photos.map(tag => (
       <TagHasNoPhotos
         key={tag.tagname}
+        tag_id={tag.id}
         tagname={tag.tagname}
-        tag_id={tag.tag_id}
+        all_photos={this.props.all_photos}
+        relations={this.props.relations}
       />
     ));
 

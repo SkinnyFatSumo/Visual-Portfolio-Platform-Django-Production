@@ -45,9 +45,7 @@ class TagHasPhotos extends Component {
     console.log('tag_id', tag_id);
     var titles_list = photos.map(photo => (
       <ButtonGroup key={photo.id}>
-        <Button
-          id={photo.id}
-          onClick={this.launchDetailView}>
+        <Button id={photo.id} onClick={this.launchDetailView}>
           {photo.title}
         </Button>
         <Button
@@ -96,7 +94,13 @@ class TagHasPhotos extends Component {
         {this.state.isActive ? (
           <div>
             <div id="associated-photos-container">
-              <ul>{this.getTitles(associated_photos, this.props.tag_id, this.props.destroyRelation)}</ul>
+              <ul>
+                {this.getTitles(
+                  associated_photos,
+                  this.props.tag_id,
+                  this.props.destroyRelation,
+                )}
+              </ul>
             </div>
             <div id="add-associated-photo-container">
               <AddRelationDefaultTag

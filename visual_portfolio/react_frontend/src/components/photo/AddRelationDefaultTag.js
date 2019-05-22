@@ -56,6 +56,17 @@ class AddRelationDefaultTag extends Component {
           .toLowerCase()
           .includes(this.state.photo_title.toLowerCase()),
       )
+      .sort((a, b) => {
+        var title_a = a.title.toLowerCase();
+        var title_b = b.title.toLowerCase();
+        if (title_a < title_b) {
+          return -1;
+        }
+        if (title_a > title_b) {
+          return 1;
+        }
+        return 0;
+      })
       .map(remaining_photo => (
         <ButtonGroup key={remaining_photo.id} className="new-tag-button-group">
           <Button id={remaining_photo.id} onClick={this.launchDetailView}>
@@ -85,7 +96,7 @@ class AddRelationDefaultTag extends Component {
             </Form.Row>
             <Form.Row>
               <div>
-                <h3>{photo_buttons}</h3>
+                {photo_buttons.length > 0 ? photo_buttons : <h6>no matches</h6>}
               </div>
             </Form.Row>
           </Form>
