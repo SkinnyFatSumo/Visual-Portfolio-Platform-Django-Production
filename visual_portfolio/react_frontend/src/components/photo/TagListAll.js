@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import TagHasPhotos from './TagHasPhotos';
 import TagHasNoPhotos from './TagHasNoPhotos';
 import AddTag from './AddTag';
-
+import {rudRelation} from '../../actions/tagActions';
 // Helpers
 import PropTypes from 'prop-types';
 import {
@@ -21,13 +21,28 @@ import {
 //                 LIST OF ALL TAGS AND RESPECTIVE THEIR PHOTOS              //
 // ------------------------------------------------------------------------- //
 
-
 class TagListAll extends Component {
   constructor(props) {
     super(props);
 
     this.assignData = this.assignData.bind(this);
+    this.destroyRelation = this.destroyRelation.bind(this);
   }
+
+  destroyRelation = event => {
+    event.preventDefault();
+    console.log('destroyRelation called');
+    console.log('this.props.relations', this.props.relations);
+    console.log(event.target.getAttribute('data-photo_id'));
+    console.log(event.target.getAttribute('data-tag_id'));
+    var relation = this.props.relations.find(
+      relation =>
+        relation.photo == event.target.getAttribute('data-photo_id') &&
+        relation.tag == event.target.getAttribute('data-tag_id'),
+    );
+    console.log('relation', relation);
+    this.props.rudRelation(relation.id, 'DELETE');
+  };
 
   // RESTRUCTURE DATA FOR DISTRIBUTING PHOTOS BASED ON TAGS
   assignData = () => {
@@ -72,7 +87,6 @@ class TagListAll extends Component {
         return 0;
       });
 
-
       // APPEND VALUES TO TAG ARRAY
       tag_array_with_photos.push({
         tagname: value[0].tagname,
@@ -115,11 +129,17 @@ class TagListAll extends Component {
         tagname={tag.tagname}
         photos={tag.photos}
         all_photos={this.props.all_photos}
+        relations={this.props.relations}
+        destroyRelation={this.destroyRelation}
       />
     ));
 
     const per_tag_no_photos = tag_array_no_photos.map(tag => (
-      <TagHasNoPhotos key={tag.tagname} tagname={tag.tagname} tag_id ={tag.tag_id}/>
+      <TagHasNoPhotos
+        key={tag.tagname}
+        tagname={tag.tagname}
+        tag_id={tag.tag_id}
+      />
     ));
 
     return (
@@ -165,6 +185,7 @@ TagListAll.propTypes = {
   // RELATIONS
   relations: PropTypes.array.isRequired,
   relations_loaded: PropTypes.bool.isRequired,
+  rudRelation: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -181,6 +202,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    {rudRelation},
   )(TagListAll),
 );

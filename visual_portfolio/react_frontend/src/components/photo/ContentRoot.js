@@ -161,8 +161,8 @@ class ContentRoot extends Component {
     // LOAD ACTIVE PHOTOS ONCE ALL TAGS AND ALL PHOTOS ARE LOADED
     if (tags_loaded && all_photos_loaded && !photos_loaded && !photos_loading) {
       // IF NO URL TAGS, LOAD ALL USER'S PHOTOS
-
-      if (urltags === undefined) {
+      console.log('URL TAGS IS...', urltags);
+      if (urltags === undefined || display === 'detail') {
         this.props.setPhotos(username, '');
         // OTHERWISE SET TAGS BASED ON TAGS IN URL
       } else {
@@ -256,7 +256,7 @@ class ContentRoot extends Component {
     // GRID AND GALLERY VIEWS
     const {display} = this.props.match.params;
 
-    if (this.props.photos_loaded && this.props.photos.length === 0) {
+    if (this.props.all_photos_loaded && this.props.all_photos.length === 0) {
       return <h1>This User has No Photos</h1>;
     }
 
@@ -306,6 +306,7 @@ class ContentRoot extends Component {
 ContentRoot.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
+  all_photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
   photos_loading: PropTypes.bool.isRequired,
   all_photos_loaded: PropTypes.bool.isRequired,
@@ -334,6 +335,7 @@ ContentRoot.propTypes = {
 
 const mapStateToProps = state => ({
   photos: state.photos.photos,
+  all_photos: state.photos.all_photos,
   photos_loaded: state.photos.photos_loaded,
   photos_loading: state.photos.photos_loading,
   all_photos_loaded: state.photos.all_photos_loaded,

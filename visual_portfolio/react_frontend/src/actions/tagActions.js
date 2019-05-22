@@ -4,17 +4,20 @@ import {
   NEW_TAG_LOADING,
   RELATIONS_LOADING,
   NEW_RELATION_LOADING,
+  RUD_RELATION_LOADING,
   // SUCCESS
   TAGS_SUCCESS,
   ALL_TAGS_SUCCESS,
   NEW_TAG_SUCCESS,
   RELATIONS_SUCCESS,
   NEW_RELATION_SUCCESS,
+  RUD_RELATION_SUCCESS,
   // FAILURE
   TAGS_FAILURE,
   NEW_TAG_FAILURE,
   RELATIONS_FAILURE,
   NEW_RELATION_FAILURE,
+  RUD_RELATION_FAILURE,
   // SYNCHRONOUS
   SET_TAGS,
 } from './types';
@@ -64,7 +67,7 @@ export const fetchTags = username => dispatch => {
     .catch(err => dispatch({type: TAGS_FAILURE, payload: err.message}));
 };
 
-// POST / CREATE RELATION 
+// POST / CREATE RELATION
 export const postRelation = relationData => (dispatch, getState) => {
   console.log('POST TAG CALLED');
   dispatch({
@@ -73,7 +76,7 @@ export const postRelation = relationData => (dispatch, getState) => {
 
   const post_lookupOptions = {
     method: 'POST',
-    body: JSON.stringify(tagData),
+    body: JSON.stringify(relationData),
     headers: {'Content-Type': 'application/json'},
   };
 
@@ -173,10 +176,12 @@ export const fetchRelations = username => dispatch => {
     )
     .catch(err => dispatch({type: RELATIONS_FAILURE, payload: err.message}));
 };
-/*
+
 // Retrieve, Update, Destroy
-export const rudPhoto = (id, method) => (dispatch, getState) => {
-  console.log('RUD PHOTO CALLED');
+export const rudRelation = (id, method) => (dispatch, getState) => {
+  dispatch({type: RUD_RELATION_LOADING});
+
+  console.log('RUD RELATION CALLED');
   // TODO: deal with retrieve/update vs destroy headers and return values/statuses
   const rud_lookupOptions = {
     method: method,
@@ -185,7 +190,8 @@ export const rudPhoto = (id, method) => (dispatch, getState) => {
     },
   };
 
-  const rud_endpoint = 'http://localhost:8000/api/photos/' + id.toString();
+  const rud_endpoint =
+    'http://localhost:8000/api/photos/pwt/rud/' + id.toString();
 
   const token = getState().auth.token;
   if (token) {
@@ -194,16 +200,15 @@ export const rudPhoto = (id, method) => (dispatch, getState) => {
   // TODO: else, dispatch an error
   // TODO: catch status code, return alert based on success or failure / type
 
-  fetch(endpoint, lookupOptions)
-    .then(res => res.json())
-    .then(photo => {
-      dispatch({type: RUD_PHOTO_SUCCESS, payload: photo});
+  fetch(rud_endpoint, rud_lookupOptions)
+    .then(relation => {
+      dispatch({type: RUD_RELATION_SUCCESS, payload: relation});
     })
     .catch(function(error) {
       console.log('error', error);
     });
 };
-*/
+
 //---------------------------------------------------------------------------//
 //                          SYNCHRONOUS CALLS
 //---------------------------------------------------------------------------//

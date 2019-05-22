@@ -19,11 +19,13 @@ class PhotoDetail extends Component {
     // STORE ALL TAGS RELATED TO THIS PHOTOS IN A SET
     var associated_tag_ids = new Set();
 
+    console.log('relations:', this.props.relations);
     // ADD TAG IDS FROM RELATIONS THAT HAVE THIS PHOTO
-    this.props.relations.forEach(relation =>
-      if (relation.photo === this.props.current_photo.id) {
-        associated_tag_ids.add(relation.tag)
-      })
+    this.props.relations.forEach(relation => {
+      if (relation.photo === this.props.match.params.id) {
+        associated_tag_ids.add(relation.tag);
+      }
+    });
 
     // INITIALIZE UNASSOCIATED TAGS LIST TO ALL TAGS
     var unassociated_tags = this.props.all_tags.splice();
@@ -32,7 +34,10 @@ class PhotoDetail extends Component {
 
     // GET ACTUAL TAGS FROM THEIR IDS
     associated_tag_ids.forEach(tag_id =>
-      associated_tags.push(this.props.all_tags.find(tag => tag.id === tag_id)))
+      associated_tags.push(this.props.all_tags.find(tag => tag.id === tag_id)),
+    );
+
+    console.log('1, associated_tags', associated_tags);
 
     // GET ALL TAGS THAT AREN'T ASSOCIATED BY FILTERING OUT THOSE THAT ARE
     associated_tags.forEach(as_tag => {
@@ -41,6 +46,8 @@ class PhotoDetail extends Component {
       );
     });
 
+    console.log('2, associated_tags', associated_tags);
+    console.log('2, unassociated_tags', unassociated_tags);
     return <h1>Hi</h1>;
   }
 }

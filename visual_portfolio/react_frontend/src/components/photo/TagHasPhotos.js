@@ -41,23 +41,19 @@ class TagHasPhotos extends Component {
     );
   };
 
-  /* 
-  removeRelation = event => {
-    event.preventDefault();
-    //  PUSH TO GALLERY VIEW
-    this.props.history.push(
-      '/user/' +
-        this.props.match.params.username +
-        '/detail/' + event.target.id
-        )
-  };
-  */
-
-  getTitles = photos => {
+  getTitles = (photos, tag_id, destroyRelation) => {
+    console.log('tag_id', tag_id);
     var titles_list = photos.map(photo => (
       <ButtonGroup key={photo.id}>
-        <Button onClick={this.launchDetailView}>{photo.title}</Button>
-        <Button onClick={console.log('REMOVE RELATIONSHIP, TODO')}>
+        <Button
+          id={photo.id}
+          onClick={this.launchDetailView}>
+          {photo.title}
+        </Button>
+        <Button
+          data-photo_id={photo.id}
+          data-tag_id={tag_id}
+          onClick={destroyRelation}>
           Remove
         </Button>
       </ButtonGroup>
@@ -100,7 +96,7 @@ class TagHasPhotos extends Component {
         {this.state.isActive ? (
           <div>
             <div id="associated-photos-container">
-              <ul>{this.getTitles(associated_photos)}</ul>
+              <ul>{this.getTitles(associated_photos, this.props.tag_id, this.props.destroyRelation)}</ul>
             </div>
             <div id="add-associated-photo-container">
               <AddRelationDefaultTag

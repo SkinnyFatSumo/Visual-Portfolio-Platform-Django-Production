@@ -16,6 +16,10 @@ import {
   NEW_RELATION_SUCCESS,
   NEW_RELATION_FAILURE,
 
+  RUD_RELATION_LOADING,
+  RUD_RELATION_SUCCESS,
+  RUD_RELATION_FAILURE,
+
   ALL_TAGS_SUCCESS,
 
   // SYNCHRONOUS
@@ -39,8 +43,8 @@ const initialState = {
 
   relations_loaded: false,
   relations_loading: false,
-  new_relation_loaded: false,
-  new_relation_loading: false,
+  //  new_relation_loaded: false,
+  //  new_relation_loading: false,
 };
 
 export default function(state = initialState, action) {
@@ -105,6 +109,7 @@ export default function(state = initialState, action) {
       };
 
     case RELATIONS_LOADING:
+      
       return {
         ...state,
         relations_loaded: false,
@@ -124,29 +129,32 @@ export default function(state = initialState, action) {
         relations_loading: false,
       };
     case NEW_RELATION_LOADING:
+    case RUD_RELATION_LOADING:
       return {
         ...state,
         relations_loaded: false,
         relations_loading: false,
-        new_relation_loaded: false,
-        new_relation_loading: true,
+        //new_relation_loaded: false,
+        //new_relation_loading: true,
       };
     case NEW_RELATION_SUCCESS:
+    case RUD_RELATION_SUCCESS:
       return {
         ...state,
         relation: action.payload,
         relations_loaded: false,
         relations_loading: false,
-        new_relation_loaded: true,
-        new_relation_loading: false,
+        //new_relation_loaded: true,
+        //new_relation_loading: false,
       };
     case NEW_RELATION_FAILURE:
+    case RUD_RELATION_FAILURE:
       return {
         ...state,
         relations_loaded: true,
         relations_loading: false,
-        new_relation_loaded: false,
-        new_relation_loading: false,
+        //new_relation_loaded: false,
+        //new_relation_loading: false,
       };
       
     // SYNCHRONOUS

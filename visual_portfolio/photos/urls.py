@@ -43,5 +43,5 @@ urlpatterns = [
     # CREATE
     path('pwt/create', PhotoWithTagCreateAPIView.as_view()),
     # RETRIEVE, UPDATE, DESTROY
-    re_path(r'^pwt/(?P<pk>\d+)$', PhotoWithTagRetrieveUpdateDestroyAPIView.as_view(), name='detail-pwt')
+    re_path(r'^pwt/rud/(?P<pk>\d+)$', PhotoWithTagRetrieveUpdateDestroyAPIView.as_view(), name='detail-pwt')
 ]
