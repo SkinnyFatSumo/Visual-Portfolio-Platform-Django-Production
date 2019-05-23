@@ -38,12 +38,6 @@ function columns(containerWidth) {
 }
 
 function PhotoGrid(props) {
-  // EVENT HANDLERS
-
-  // TODO: will need a handler for launching photo_detail
-  //        IDK HOW I WANT TO CONSTRUCT THAT
-  //        MAY HAVE TO MAKE THIS COMPONENT CLASSFUL
-
   if (props.photos_loaded && props.tags_loaded) {
     const photo_list = props.photos.map(photo => ({
       src: photo.thumbnail_source,
@@ -54,16 +48,13 @@ function PhotoGrid(props) {
     const photos_length = props.photos.length;
     console.log('photos length:', photos_length);
     return (
-      <div>
-        <AddPhoto />
-        <div id="border">
-          <div id="container">
-            <Gallery
-              photos={photo_list}
-              direction={photos_length <= 4 ? 'row' : 'column'}
-              columns={columns}
-            />
-          </div>
+      <div id="border">
+        <div id="container">
+          <Gallery
+            photos={photo_list}
+            direction={photos_length <= 4 ? 'row' : 'column'}
+            columns={columns}
+          />
         </div>
       </div>
     );

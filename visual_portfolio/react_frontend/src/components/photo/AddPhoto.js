@@ -43,17 +43,19 @@ class AddPhoto extends Component {
     this.props.postPhoto(photo);
   }
 
+  //onClick={() => this.setState({isOpen: !isOpen})}
   render() {
     const {isOpen} = this.state;
     return (
       <div className="photo-add-box">
         <Button
-          onClick={() => this.setState({isOpen: !isOpen})}
+          id="add-photo-button"
+          onClick={this.props.toggleOpen}
           aria-controls="collapse-photo-box"
-          aria-expanded={isOpen}>
-          {isOpen ? 'Finish' : 'Add Photo'}
+          aria-expanded={this.props.isOpen}>
+          {this.props.isOpen ? 'Finish' : 'Add Photo'}
         </Button>
-        <Collapse in={this.state.isOpen}>
+        <Collapse in={this.props.isOpen}>
           <div id="collapse-photo-box">
             <Form onSubmit={this.onSubmit}>
               <Form.Row>

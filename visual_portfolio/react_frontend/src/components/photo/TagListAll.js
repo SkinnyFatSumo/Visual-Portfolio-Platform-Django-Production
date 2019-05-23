@@ -8,7 +8,11 @@ import {connect} from 'react-redux';
 import TagHasPhotos from './TagHasPhotos';
 import TagHasNoPhotos from './TagHasNoPhotos';
 import AddTag from './AddTag';
+import FindTagByName from './FindTagByName';
 import {rudRelation} from '../../actions/tagActions';
+
+// React Bootstrap
+import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 // Helpers
 import PropTypes from 'prop-types';
 import {
@@ -24,10 +28,29 @@ import {
 class TagListAll extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      addTagActive: false,
+      searchTagActive: false,
+    };
 
+    this.handleAddVsSearch = this.handleAddVsSearch.bind(this);
     this.assignData = this.assignData.bind(this);
     this.destroyRelation = this.destroyRelation.bind(this);
   }
+
+  handleAddVsSearch = event => {
+    if (event.target.id === 'search-tag-toggle-button') {
+      if (this.state.addTagActive) {
+        this.setState({addTagActive: false});
+      }
+      this.setState({searchTagActive: !this.state.searchTagActive});
+    } else if (event.target.id === 'add-tag-toggle-button') {
+      if (this.state.searchTagActive) {
+        this.setState({searchTagActive: false});
+      }
+      this.setState({addTagActive: !this.state.addTagActive});
+    }
+  };
 
   destroyRelation = event => {
     event.preventDefault();
@@ -124,6 +147,7 @@ class TagListAll extends Component {
     // CONVERT TO JSX LISTS
     const per_tag_with_photos = tag_array_with_photos.map(tag => (
       <TagHasPhotos
+        id={tag.tagname + '-dropdown'}
         key={tag.tagname}
         tag_id={tag.tag_id}
         tagname={tag.tagname}
@@ -131,6 +155,8 @@ class TagListAll extends Component {
         all_photos={this.props.all_photos}
         relations={this.props.relations}
         destroyRelation={this.destroyRelation}
+        user={this.props.user}
+        isAuthenticated={this.props.isAuthenticated}
       />
     ));
 
@@ -141,6 +167,8 @@ class TagListAll extends Component {
         tagname={tag.tagname}
         all_photos={this.props.all_photos}
         relations={this.props.relations}
+        user={this.props.user}
+        isAuthenticated={this.props.isAuthenticated}
       />
     ));
 
@@ -164,9 +192,18 @@ class TagListAll extends Component {
     if (this.props.all_photos_loaded) {
       return (
         <div>
+          <ButtonToolbar>
+            <AddTag
+              isOpen={this.state.addTagActive}
+              toggleOpen={this.handleAddVsSearch}
+            />
+            <FindTagByName
+              isOpen={this.state.searchTagActive}
+              toggleOpen={this.handleAddVsSearch}
+            />
+          </ButtonToolbar>
           <ul>{this.assignData()}</ul>
           <h5>Delete Tags</h5>
-          <AddTag />
         </div>
       );
     } else {
@@ -188,6 +225,10 @@ TagListAll.propTypes = {
   relations: PropTypes.array.isRequired,
   relations_loaded: PropTypes.bool.isRequired,
   rudRelation: PropTypes.func.isRequired,
+
+  // USER
+  user: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -199,6 +240,9 @@ const mapStateToProps = state => ({
 
   relations: state.tags.relations,
   relations_loaded: state.tags.relations_loaded,
+
+  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default withRouter(

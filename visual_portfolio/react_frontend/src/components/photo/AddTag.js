@@ -12,7 +12,6 @@ class AddTag extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
       tagname: '',
     };
 
@@ -35,17 +34,17 @@ class AddTag extends Component {
   }
 
   render() {
-    const {isOpen} = this.state;
     return (
       <div className="tag-add-box">
         <Button
-          onClick={() => this.setState({isOpen: !isOpen})}
-          aria-controls="collapse-tag-box"
-          aria-expanded={isOpen}>
-          {isOpen ? 'Finish' : 'Add Tag'}
+          id='add-tag-toggle-button'
+          onClick={this.props.toggleOpen}
+          aria-controls="collapse-add-tag-box"
+          aria-expanded={this.props.isOpen}>
+          {this.props.isOpen ? 'Close' : 'Add Tag'}
         </Button>
-        <Collapse in={this.state.isOpen}>
-          <div id="collapse-tag-box">
+        <Collapse in={this.props.isOpen}>
+          <div id="collapse-add-tag-box">
             <Form onSubmit={this.onSubmit}>
               <Form.Row>
                 <Form.Group as={Col}>

@@ -19,6 +19,7 @@ class AddRelationDefaultTag extends Component {
     this.onChange = this.onChange.bind(this);
     this.addRelation = this.addRelation.bind(this);
     this.launchDetailView = this.launchDetailView.bind(this);
+    this.filterOutput = this.filterOutput.bind(this);
   }
 
   onChange(e) {
@@ -36,6 +37,7 @@ class AddRelationDefaultTag extends Component {
     console.log('relation', relation);
     console.log('json relation', JSON.stringify(relation));
     this.props.postRelation(relation);
+    this.setState({photo_title: ''});
   }
 
   launchDetailView(e) {
@@ -47,6 +49,16 @@ class AddRelationDefaultTag extends Component {
         '/detail/' +
         event.target.id,
     );
+  }
+
+  filterOutput(photo_buttons) {
+    if (photo_buttons.length === this.props.unassociated_photos.length) {
+      return <h6>No Info Entered</h6>;
+    } else if (photo_buttons.length > 0) {
+      return photo_buttons;
+    } else {
+      return <h6>no matches</h6>;
+    }
   }
 
   render() {
@@ -95,9 +107,7 @@ class AddRelationDefaultTag extends Component {
               </Form.Group>
             </Form.Row>
             <Form.Row>
-              <div>
-                {photo_buttons.length > 0 ? photo_buttons : <h6>no matches</h6>}
-              </div>
+              <div>{this.filterOutput(photo_buttons)}</div>
             </Form.Row>
           </Form>
         </div>

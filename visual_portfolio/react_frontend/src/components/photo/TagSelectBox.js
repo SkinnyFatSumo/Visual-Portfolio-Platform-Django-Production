@@ -71,16 +71,18 @@ class TagSelectBox extends Component {
         );
       }
     });
+    // onClick={() => this.setState({isOpen: !isOpen})}
 
     return (
       <div className="collapse-tags-all">
         <Button
-          onClick={() => this.setState({isOpen: !isOpen})}
+          id='tag-select-box-button'
+          onClick={this.props.toggleOpen}
           aria-controls="collapse-tags-container"
-          aria-expanded={isOpen}>
-          {this.state.isOpen ? 'Hide Tags' : 'Show Tags'}
+          aria-expanded={this.props.isOpen}>
+          {this.props.isOpen ? 'Hide Tags' : 'Show Tags'}
         </Button>
-        <Collapse in={this.state.isOpen}>
+        <Collapse in={this.props.isOpen}>
           <div id="collapse-tags-container">
             <div className="collapse-tags-box" id="collapse-tags-active">
               <h6>active tags</h6>

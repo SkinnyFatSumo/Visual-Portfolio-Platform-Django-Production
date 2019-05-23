@@ -26,7 +26,7 @@ class TagHasPhotos extends Component {
     this.state = {isActive: false};
 
     this.launchDetailView = this.launchDetailView.bind(this);
-    this.getTitles = this.getTitles.bind(this);
+    this.mapPhotoButtons = this.mapPhotoButtons.bind(this);
     this.toggleActive = this.toggleActive.bind(this);
   }
 
@@ -41,21 +41,29 @@ class TagHasPhotos extends Component {
     );
   };
 
-  getTitles = (photos, tag_id, destroyRelation) => {
+  mapPhotoButtons = (photos, tag_id, destroyRelation) => {
     console.log('tag_id', tag_id);
-    var titles_list = photos.map(photo => (
-      <ButtonGroup key={photo.id}>
-        <Button id={photo.id} onClick={this.launchDetailView}>
+    var titles_list = photos.map(photo =>
+      this.props.user !== null &&
+      this.props.user.username === this.props.match.params.username &&
+      this.props.isAuthenticated ? (
+        <ButtonGroup key={photo.id}>
+          <Button id={photo.id} onClick={this.launchDetailView}>
+            {photo.title}
+          </Button>
+          <Button
+            data-photo_id={photo.id}
+            data-tag_id={tag_id}
+            onClick={destroyRelation}>
+            Remove
+          </Button>
+        </ButtonGroup>
+      ) : (
+        <Button key={photo.id} id={photo.id} onClick={this.launchDetailView}>
           {photo.title}
         </Button>
-        <Button
-          data-photo_id={photo.id}
-          data-tag_id={tag_id}
-          onClick={destroyRelation}>
-          Remove
-        </Button>
-      </ButtonGroup>
-    ));
+      ),
+    );
     return titles_list;
   };
 
@@ -64,6 +72,8 @@ class TagHasPhotos extends Component {
   };
 
   render() {
+    console.log('this.props.user', this.props.user);
+
     const photo_list = this.props.photos.map(photo => ({
       src: photo.photo_info.thumbnail_source,
       width: photo.photo_info.thumbnail_width,
@@ -90,25 +100,29 @@ class TagHasPhotos extends Component {
 
     return (
       <div>
-        <button onClick={this.toggleActive}>{this.props.tagname}</button>
+        <Button id={this.props.tagname + '-dropdown'} onClick={this.toggleActive}>{this.props.tagname}</Button>
         {this.state.isActive ? (
           <div>
             <div id="associated-photos-container">
               <ul>
-                {this.getTitles(
+                {this.mapPhotoButtons(
                   associated_photos,
                   this.props.tag_id,
                   this.props.destroyRelation,
                 )}
               </ul>
             </div>
-            <div id="add-associated-photo-container">
-              <AddRelationDefaultTag
-                tagname={this.props.tagname}
-                tag_id={this.props.tag_id}
-                unassociated_photos={unassociated_photos}
-              />
-            </div>
+            {this.props.user !== null &&
+            this.props.user.username === this.props.match.params.username &&
+            this.props.isAuthenticated ? (
+              <div id="add-associated-photo-container">
+                <AddRelationDefaultTag
+                  tagname={this.props.tagname}
+                  tag_id={this.props.tag_id}
+                  unassociated_photos={unassociated_photos}
+                />
+              </div>
+            ) : null}
             <div id="right">
               <Gallery
                 photos={photo_list}

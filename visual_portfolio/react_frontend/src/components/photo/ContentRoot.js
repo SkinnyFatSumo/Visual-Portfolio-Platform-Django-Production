@@ -16,9 +16,11 @@ import {
 } from '../../actions/tagActions';
 import {viewingUser} from '../../actions/userActions';
 
-// Components
-import TagSelectBox from './TagSelectBox';
+// Photo/Tag Components
+import AddPhoto from './AddPhoto';
 import DisplayButtons from './DisplayButtons';
+import TagSelectBox from './TagSelectBox';
+// Other Components
 import DiscoverUsers from '../users/DiscoverUsers';
 
 // Helpers
@@ -38,12 +40,15 @@ class ContentRoot extends Component {
       // options are: photo, gallery, grid, tag
       isActive: null,
       viewed_user: null,
+      viewTagsActive: false,
+      addPhotoActive: false,
     };
     this.launchProfileView = this.launchProfileView.bind(this);
     this.launchGalleryView = this.launchGalleryView.bind(this);
     this.launchGridView = this.launchGridView.bind(this);
     this.launchTagsView = this.launchTagsView.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
+    this.handlePhotoVsTags = this.handlePhotoVsTags.bind(this);
   }
 
   // ------------------
@@ -176,6 +181,19 @@ class ContentRoot extends Component {
   // --------------
   // Event Handlers
   // --------------
+  handlePhotoVsTags = event => {
+    if (event.target.id === 'add-photo-button') {
+      if (this.state.viewTagsActive) {
+        this.setState({viewTagsActive: false});
+      }
+      this.setState({addPhotoActive: !this.state.addPhotoActive});
+    } else if (event.target.id === 'tag-select-box-button') {
+      if (this.state.addPhotoActive) {
+        this.setState({addPhotoActive: false});
+      }
+      this.setState({viewTagsActive: !this.state.viewTagsActive});
+    }
+  };
 
   handleTagClick = event => {
     event.preventDefault();
@@ -188,7 +206,6 @@ class ContentRoot extends Component {
     // THEN GET PHOTOS BASED ON UPDATED TAG URL
     setPhotos(username, string_for_url);
     // PUSH TO NEW URL WITH UPDATED TAGS
-    //
     console.log('handle tag click username is', username);
     this.props.history.push(
       '/user/' + username + '/' + display + '/' + string_for_url,
@@ -227,7 +244,7 @@ class ContentRoot extends Component {
   launchTagsView = () => {
     // PUSH TO TAGS VIEW
     this.props.history.push(
-      '/user/' + this.props.match.params.username + '/tags/',
+      '/user/' + this.props.match.params.username + '/tags',
       {
         hydrated: true,
       },
@@ -291,12 +308,26 @@ class ContentRoot extends Component {
         </ButtonToolbar>
         <br />
         {display === 'grid' || display === 'gallery' ? (
-          <TagSelectBox
-            photos={this.props.photos}
-            relations={this.props.relations}
-            tags={this.props.tags}
-            onTagClick={this.handleTagClick}
-          />
+          <ButtonToolbar>
+            <TagSelectBox
+              photos={this.props.photos}
+              relations={this.props.relations}
+              tags={this.props.tags}
+              onTagClick={this.handleTagClick}
+              isOpen={this.state.viewTagsActive}
+              toggleOpen={this.handlePhotoVsTags}
+            />
+            {// Only allow a photo to be added if a user is logged in and this
+            // is their content
+            this.props.user !== null &&
+            this.props.user.username === this.props.match.params.username &&
+            this.props.isAuthenticated ? (
+              <AddPhoto
+                isOpen={this.state.addPhotoActive}
+                toggleOpen={this.handlePhotoVsTags}
+              />
+            ) : null}
+          </ButtonToolbar>
         ) : null}
       </Fragment>
     );
@@ -331,6 +362,10 @@ ContentRoot.propTypes = {
   users: PropTypes.array.isRequired,
   viewingUser: PropTypes.func.isRequired,
   allUsersLoaded: PropTypes.bool.isRequired,
+
+  // AUTHENTICATED USER
+  user: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -351,6 +386,9 @@ const mapStateToProps = state => ({
 
   users: state.users.users,
   allUsersLoaded: state.users.allUsersLoaded,
+
+  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default withRouter(
