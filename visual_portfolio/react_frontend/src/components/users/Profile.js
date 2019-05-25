@@ -27,7 +27,7 @@ import {
   fetchRelations, // async
 } from '../../actions/tagActions';
 
-import AddPhoto from '../photo/AddPhoto';
+import CreateOrEditPhoto from '../photo/CreateOrEditPhoto';
 import '../../css/users/profile.css';
 
 class Profile extends Component {
@@ -62,38 +62,42 @@ class Profile extends Component {
     ));
     return (
       <div>
-      <Container>
-        <Row>
-          <Col>
-            <h6>USERNAME</h6>
-            <h5>IMAGE</h5>
-            <h6>First Last</h6>
-          </Col>
-          <Col>
-            <p>This is the bio here. However it's totally optional.</p>
-          </Col>
-        </Row>
+        <Container>
+          <Row>
+            <Col>
+              <h6>USERNAME</h6>
+              <h5>IMAGE</h5>
+              <h6>First Last</h6>
+            </Col>
+            <Col>
+              <p>This is the bio here. However it's totally optional.</p>
+            </Col>
+          </Row>
 
-        <Row>
-          <Col>
-            <h4>Edit / Add / Delete</h4>
-            <div id="content-holder">
-              <Button
-                id="photo-button"
-                className="toggle-button"
-                onClick={this.toggleActivePhotos}>
-                Photos
-              </Button>
-              <div id="photo-dropdown-list" className="dropdown-list">
-                {this.state.isActivePhotos ? (
-                  <AddPhoto id="photo-form" className="list-item" />
-                ) : null}
-                <h6>Something Else</h6>
+          <Row>
+            <Col>
+              <h4>Edit / Add / Delete</h4>
+              <div id="content-holder">
+                <Button
+                  id="photo-button"
+                  className="toggle-button"
+                  onClick={this.toggleActivePhotos}>
+                  Photos
+                </Button>
+                <div id="photo-dropdown-list" className="dropdown-list">
+                  {this.state.isActivePhotos ? (
+                    <CreateOrEditPhoto
+                      isOpen={true}
+                      id="photo-form"
+                      className="list-item"
+                    />
+                  ) : null}
+                  <h6>Something Else</h6>
+                </div>
               </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

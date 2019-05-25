@@ -1,12 +1,24 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import CustomUser
+from .models import CustomUser, OptionalUserInfo, Favorites 
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'username', 'email')
+
+class OptionalUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptionalUserInfo
+        fields = ('first_name', 'last_name', 'photo', 'bio', 'owner')
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorites
+        fields = ('owner', 'other_user', 'is_favorited_user', 'favorited_user', 'favorited_user')
+
+
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):

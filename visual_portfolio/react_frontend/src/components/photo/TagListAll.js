@@ -193,10 +193,16 @@ class TagListAll extends Component {
       return (
         <div>
           <ButtonToolbar>
-            <AddTag
-              isOpen={this.state.addTagActive}
-              toggleOpen={this.handleAddVsSearch}
-            />
+            {// Only allow a tag to be added if a user is logged in and this
+            // is their content
+            this.props.user !== null &&
+            this.props.user.username === this.props.match.params.username &&
+            this.props.isAuthenticated ? (
+              <AddTag
+                isOpen={this.state.addTagActive}
+                toggleOpen={this.handleAddVsSearch}
+              />
+            ) : null}
             <FindTagByName
               isOpen={this.state.searchTagActive}
               toggleOpen={this.handleAddVsSearch}

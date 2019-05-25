@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 // Actions
 import {postPhoto} from '../../actions/photoActions';
 
-class AddPhoto extends Component {
+class CreateOrEditPhoto extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,25 +25,52 @@ class AddPhoto extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    const {photo} = this.props;
+    if (this.props.action === 'edit') {
+      this.setState({
+        title: photo.title,
+        photo_source: photo.photo_source,
+        thumbnail_source: photo.thumbnail_source,
+        thumbnail_width: photo.thumbnail_width,
+        thumbnail_height: photo.thumbnail_height,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {photo} = this.props;
+    if (prevProps.photo !== photo && this.props.action === 'edit') {
+      this.setState({
+        title: photo.title,
+        photo_source: photo.photo_source,
+        thumbnail_source: photo.thumbnail_source,
+        thumbnail_width: photo.thumbnail_width,
+        thumbnail_height: photo.thumbnail_height,
+      });
+    }
+  }
+
   onChange(e) {
     this.setState({[e.target.name]: e.target.value});
   }
 
   onSubmit(e) {
     e.preventDefault();
-    const photo = {
-      title: this.state.title,
-      photo_source: this.state.photo_source,
-      thumbnail_source: this.state.thumbnail_source,
-      thumbnail_width: this.state.thumbnail_width,
-      thumbnail_height: this.state.thumbnail_height,
-      owner: this.props.user.id,
-    };
 
-    this.props.postPhoto(photo);
+    if (this.props.action === 'create') {
+      const photo = {
+        title: this.state.title,
+        photo_source: this.state.photo_source,
+        thumbnail_source: this.state.thumbnail_source,
+        thumbnail_width: this.state.thumbnail_width,
+        thumbnail_height: this.state.thumbnail_height,
+        owner: this.props.user.id,
+      };
+      this.props.postPhoto(photo);
+    }
   }
 
-  //onClick={() => this.setState({isOpen: !isOpen})}
   render() {
     const {isOpen} = this.state;
     return (
@@ -134,7 +161,7 @@ class AddPhoto extends Component {
   }
 }
 
-AddPhoto.propTypes = {
+CreateOrEditPhoto.propTypes = {
   postPhoto: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
@@ -148,4 +175,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {postPhoto},
-)(AddPhoto);
+)(CreateOrEditPhoto);

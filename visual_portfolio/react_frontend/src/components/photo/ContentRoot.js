@@ -17,7 +17,7 @@ import {
 import {viewingUser} from '../../actions/userActions';
 
 // Photo/Tag Components
-import AddPhoto from './AddPhoto';
+import CreateOrEditPhoto from './CreateOrEditPhoto';
 import DisplayButtons from './DisplayButtons';
 import TagSelectBox from './TagSelectBox';
 // Other Components
@@ -41,7 +41,7 @@ class ContentRoot extends Component {
       isActive: null,
       viewed_user: null,
       viewTagsActive: false,
-      addPhotoActive: false,
+      createOrEditPhotoActive: false,
     };
     this.launchProfileView = this.launchProfileView.bind(this);
     this.launchGalleryView = this.launchGalleryView.bind(this);
@@ -101,8 +101,7 @@ class ContentRoot extends Component {
     const {
       allUsersLoaded,
       tags_loaded,
-      tags_loading,
-      tags,
+      tags_loading, tags,
       all_photos_loaded,
       all_photos_loading,
       photos_loaded,
@@ -186,10 +185,10 @@ class ContentRoot extends Component {
       if (this.state.viewTagsActive) {
         this.setState({viewTagsActive: false});
       }
-      this.setState({addPhotoActive: !this.state.addPhotoActive});
+      this.setState({createOrEditPhotoActive: !this.state.createOrEditPhotoActive});
     } else if (event.target.id === 'tag-select-box-button') {
-      if (this.state.addPhotoActive) {
-        this.setState({addPhotoActive: false});
+      if (this.state.createOrEditPhotoActive) {
+        this.setState({createOrEditPhotoActive: false});
       }
       this.setState({viewTagsActive: !this.state.viewTagsActive});
     }
@@ -322,9 +321,10 @@ class ContentRoot extends Component {
             this.props.user !== null &&
             this.props.user.username === this.props.match.params.username &&
             this.props.isAuthenticated ? (
-              <AddPhoto
-                isOpen={this.state.addPhotoActive}
+              <CreateOrEditPhoto
+                isOpen={this.state.createOrEditPhotoActive}
                 toggleOpen={this.handlePhotoVsTags}
+                action='create'
               />
             ) : null}
           </ButtonToolbar>
@@ -359,7 +359,7 @@ ContentRoot.propTypes = {
   fetchRelations: PropTypes.func.isRequired,
 
   // USERS
-  users: PropTypes.array.isRequired,
+  users: PropTypes.array,
   viewingUser: PropTypes.func.isRequired,
   allUsersLoaded: PropTypes.bool.isRequired,
 

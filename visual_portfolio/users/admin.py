@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import CustomUser, FavoriteUsers, FavoritePhotos, FavoriteTags
+from .models import CustomUser, OptionalUserInfo, Favorites
 
 admin.site.register(CustomUser)
-admin.site.register(FavoriteUsers)
-admin.site.register(FavoritePhotos)
-admin.site.register(FavoriteTags)
+admin.site.register(OptionalUserInfo)
+admin.site.register(Favorites)
+
 

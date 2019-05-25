@@ -24,6 +24,7 @@ class TagHasNoPhotos extends Component {
 
   render() {
     if (
+      this.props.user !== null &&
       this.props.user.username === this.props.match.params.username &&
       this.props.isAuthenticated
     ) {

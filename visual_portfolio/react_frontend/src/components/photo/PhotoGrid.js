@@ -18,8 +18,6 @@ import {
   tagStringFromURL,
 } from '../support/helpers';
 
-// Components
-import AddPhoto from './AddPhoto';
 
 // CSS
 import '../../css/photo/photogrid.css';

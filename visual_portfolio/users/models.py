@@ -32,17 +32,10 @@ class OptionalUserInfo(models.Model):
     bio = models.CharField(max_length=2000, blank=True, null=True)
 
 
-class FavoriteUsers(models.Model):
-    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'This_User')
-    other_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'Favorited_User')
-
-
-class FavoritePhotos(models.Model):
-    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    favorited_photo = models.ForeignKey('photos.Photo', on_delete=models.CASCADE, related_name = 'Favorited_Photo')
-
-class FavoriteTags(models.Model):
-    this_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    favorited_tag = models.ForeignKey('photos.Tag', on_delete=models.CASCADE, related_name = 'Favorited_Tag')
-
+class Favorites(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'This_User')
+    other_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'Other_User')
+    is_favorited_user = models.BooleanField();
+    favorited_photo = models.ForeignKey('photos.Photo', on_delete=models.CASCADE, related_name = 'Favorited_Photo', blank=True, null=True)
+    favorited_tag = models.ForeignKey('photos.Tag', on_delete=models.CASCADE, related_name = 'Favorited_Tag', blank=True, null=True)
 

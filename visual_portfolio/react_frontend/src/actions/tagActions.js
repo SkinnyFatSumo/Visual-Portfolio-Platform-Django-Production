@@ -178,7 +178,7 @@ export const fetchRelations = username => dispatch => {
 };
 
 // Retrieve, Update, Destroy
-export const rudRelation = (id, method) => (dispatch, getState) => {
+export const rudRelation = (id, method, data) => (dispatch, getState) => {
   dispatch({type: RUD_RELATION_LOADING});
 
   console.log('RUD RELATION CALLED');
@@ -197,6 +197,10 @@ export const rudRelation = (id, method) => (dispatch, getState) => {
   if (token) {
     rud_lookupOptions.headers['Authorization'] = `Token ${token}`;
   }
+  if (data !== 'destroy' && data !== 'retrieve') {
+    rud_lookupOptions.body = JSON.stringify(data);
+  }
+
   // TODO: else, dispatch an error
   // TODO: catch status code, return alert based on success or failure / type
 
