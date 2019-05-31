@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, ButtonGroup, Form, Collapse, Col} from 'react-bootstrap';
+import {Button, ButtonGroup, ButtonToolbar, Form, Collapse, Col} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -52,12 +52,10 @@ class AddRelationDefaultTag extends Component {
   }
 
   filterOutput(photo_buttons) {
-    if (photo_buttons.length === this.props.unassociated_photos.length) {
-      return <h6>No Info Entered</h6>;
-    } else if (photo_buttons.length > 0) {
+    if (photo_buttons.length > 0) {
       return photo_buttons;
     } else {
-      return <h6>no matches</h6>;
+      return <Button>no matches</Button>;
     }
   }
 
@@ -82,10 +80,10 @@ class AddRelationDefaultTag extends Component {
       .map(remaining_photo => (
         <ButtonGroup key={remaining_photo.id} className="new-tag-button-group">
           <Button id={remaining_photo.id} onClick={this.launchDetailView}>
-            {remaining_photo.title.toUpperCase()}
+            {remaining_photo.title}
           </Button>
           <Button id={remaining_photo.id} onClick={this.addRelation}>
-            ADD TO TAG
+            Add
           </Button>
         </ButtonGroup>
       ));
@@ -107,7 +105,9 @@ class AddRelationDefaultTag extends Component {
               </Form.Group>
             </Form.Row>
             <Form.Row>
-              <div>{this.filterOutput(photo_buttons)}</div>
+              <ButtonToolbar>
+                {this.filterOutput(photo_buttons)}
+              </ButtonToolbar>
             </Form.Row>
           </Form>
         </div>

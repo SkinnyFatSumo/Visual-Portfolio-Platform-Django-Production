@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import {withRouter} from 'react-router-dom';
 
@@ -30,7 +30,9 @@ class TagHasNoPhotos extends Component {
     ) {
       return (
         <div>
-          <Button onClick={this.toggleActive}>{this.props.tagname}</Button>
+          <Button onClick={this.toggleActive} size="lg" block>
+            {this.props.tagname}
+          </Button>
           {this.state.isActive ? (
             <div>
               <AddRelationDefaultTag

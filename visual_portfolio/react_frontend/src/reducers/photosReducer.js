@@ -77,6 +77,7 @@ export default function(state = initialState, action) {
         ...state,
         all_photos_loaded: false,
         all_photos_loading: true,
+        photos_loaded: false,
       };
     case ALL_PHOTOS_SUCCESS:
       return {

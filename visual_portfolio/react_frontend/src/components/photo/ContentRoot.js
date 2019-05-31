@@ -58,6 +58,7 @@ class ContentRoot extends Component {
   componentDidMount() {
     // Activate
     const {username, display} = this.props.match.params;
+    console.log('mounted,', username, display);
     if (
       display === 'gallery' ||
       display === 'grid' ||
@@ -95,13 +96,18 @@ class ContentRoot extends Component {
   // ------------------
 
   componentDidUpdate(prevProps) {
+    console.log('prevprops', prevProps);
+    console.log('props', this.props);
     var activating_new_user = false;
     // STORE ALL VARIABLES NEEDED FROM URL PARAMS AND PROPS
     const {username, display, urltags} = this.props.match.params;
+    console.log('updated,', username, display);
+    console.log('viewed user', this.state.viewed_user);
     const {
       allUsersLoaded,
       tags_loaded,
-      tags_loading, tags,
+      tags_loading,
+      tags,
       all_photos_loaded,
       all_photos_loading,
       photos_loaded,
@@ -147,8 +153,6 @@ class ContentRoot extends Component {
         }
       }
       if (!tags_loaded && !tags_loading && !activating_new_user) {
-        console.log('tags_loading', tags_loading);
-        console.log('tags_loaded', tags_loaded);
         console.log('had to load tags');
         this.props.fetchTags(username);
       }
@@ -168,8 +172,10 @@ class ContentRoot extends Component {
       console.log('URL TAGS IS...', urltags);
       if (urltags === undefined || display === 'detail') {
         this.props.setPhotos(username, '');
+        console.log('Setting Photos');
         // OTHERWISE SET TAGS BASED ON TAGS IN URL
       } else {
+        console.log('Setting Photos');
         var tagnames = urltags.split(',');
         tagnames.forEach(tagname => this.props.setTags(tagname, tags));
         this.props.setPhotos(username, urltags);
@@ -181,11 +187,13 @@ class ContentRoot extends Component {
   // Event Handlers
   // --------------
   handlePhotoVsTags = event => {
-    if (event.target.id === 'add-photo-button') {
+    if (event.target.id === 'add-photo-toggle-button') {
       if (this.state.viewTagsActive) {
         this.setState({viewTagsActive: false});
       }
-      this.setState({createOrEditPhotoActive: !this.state.createOrEditPhotoActive});
+      this.setState({
+        createOrEditPhotoActive: !this.state.createOrEditPhotoActive,
+      });
     } else if (event.target.id === 'tag-select-box-button') {
       if (this.state.createOrEditPhotoActive) {
         this.setState({createOrEditPhotoActive: false});
@@ -280,7 +288,6 @@ class ContentRoot extends Component {
       return <h1>Loading All Users</h1>;
     }
 
-    // add launchProfile
     return (
       <Fragment>
         <ButtonToolbar>
@@ -324,7 +331,7 @@ class ContentRoot extends Component {
               <CreateOrEditPhoto
                 isOpen={this.state.createOrEditPhotoActive}
                 toggleOpen={this.handlePhotoVsTags}
-                action='create'
+                action="create"
               />
             ) : null}
           </ButtonToolbar>

@@ -37,7 +37,7 @@ class AddTag extends Component {
     return (
       <div className="tag-add-box">
         <Button
-          id='add-tag-toggle-button'
+          id="add-tag-toggle-button"
           onClick={this.props.toggleOpen}
           aria-controls="collapse-add-tag-box"
           aria-expanded={this.props.isOpen}>
@@ -48,7 +48,6 @@ class AddTag extends Component {
             <Form onSubmit={this.onSubmit}>
               <Form.Row>
                 <Form.Group as={Col}>
-                  <Form.Label>Title</Form.Label>
                   <Form.Control
                     type="text"
                     name="tagname"
@@ -58,7 +57,9 @@ class AddTag extends Component {
                     value={this.state.title}
                   />
                 </Form.Group>
-                <Button type="submit">Create Tag</Button>
+                <Form.Group as={Col}>
+                  <Button type="submit">Create Tag</Button>
+                </Form.Group>
               </Form.Row>
             </Form>
           </div>

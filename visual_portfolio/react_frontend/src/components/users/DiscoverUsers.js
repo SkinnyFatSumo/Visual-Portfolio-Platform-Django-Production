@@ -7,7 +7,9 @@ import {connect} from 'react-redux';
 // React Router
 import {Router, withRouter, Redirect} from 'react-router-dom';
 
-import LaunchUser from './LaunchUser';
+import SearchUsers from './SearchUsers';
+
+import {Button, Form, Collapse, Col} from 'react-bootstrap';
 
 // import {fetchAllUsers} from '../../actions/userActions';
 import PropTypes from 'prop-types';
@@ -19,27 +21,29 @@ import PropTypes from 'prop-types';
 class DiscoverUsers extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      username: '',
+      isActive: false,
+    };
   }
-
+  
   render() {
-    const all_users = this.props.users.map(user => (
-      <LaunchUser key={user.id} username={user.username} />
-    ));
-
     return (
       <div>
-        <h1>DISCOVER USERS</h1>
-        <ul>{all_users}</ul>
+        <SearchUsers quantity={20} source='discover_users'/>
       </div>
-    );
+    )
   }
 }
 
+
 DiscoverUsers.propTypes = {
+  allUsersLoaded: PropTypes.bool.isRequired,
   users: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({
+  allUsersLoaded: state.users.allUsersLoaded,
   users: state.users.users,
 });
 

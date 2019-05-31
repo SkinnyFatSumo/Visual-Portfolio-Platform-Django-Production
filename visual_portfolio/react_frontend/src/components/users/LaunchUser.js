@@ -14,23 +14,3 @@ import PropTypes from 'prop-types';
 //                 ROOT COMPONENT FOR ALL --PHOTO-- MATERIAL                 //
 // ------------------------------------------------------------------------- //
 
-class LaunchUser extends Component {
-  constructor(props) {
-    super(props);
-
-    this.launchUserProfile = this.launchUserProfile.bind(this);
-  }
-
-  launchUserProfile = () => {
-    // push to gallery route
-    this.props.history.push('/user/' + this.props.username + '/profile/', {
-      hydrated: true,
-    });
-  };
-
-  render() {
-    return <Button onClick={this.launchUserProfile}>{this.props.username}</Button>;
-  }
-}
-
-export default withRouter(LaunchUser);

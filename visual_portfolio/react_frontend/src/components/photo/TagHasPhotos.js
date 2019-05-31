@@ -6,7 +6,13 @@ import {Router, withRouter, Redirect} from 'react-router-dom';
 import Gallery from 'react-photo-gallery';
 import AddRelationDefaultTag from './AddRelationDefaultTag';
 // Bootstrap Components
-import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Collapse,
+  Container,
+} from 'react-bootstrap';
 
 // CSS
 import '../../css/photo/taghasphotos.css';
@@ -23,7 +29,7 @@ function Columns(containerWidth) {
 class TagHasPhotos extends Component {
   constructor(props) {
     super(props);
-    this.state = {isActive: false};
+    this.state = {isActive: false, buttonClass: 'button-inactive'};
 
     this.launchDetailView = this.launchDetailView.bind(this);
     this.mapPhotoButtons = this.mapPhotoButtons.bind(this);
@@ -68,7 +74,16 @@ class TagHasPhotos extends Component {
   };
 
   toggleActive = () => {
-    this.setState({isActive: !this.state.isActive});
+    console.log('toggling active');
+    var new_button_state;
+    this.state.buttonClass === 'button-active'
+      ? (new_button_state = 'button-inactive')
+      : (new_button_state = 'button-active');
+    console.log('button state', this.state.buttonClass);
+    this.setState({
+      isActive: !this.state.isActive,
+      buttonClass: new_button_state,
+    });
   };
 
   render() {
@@ -85,6 +100,7 @@ class TagHasPhotos extends Component {
       id: photo.photo_info.id,
       title: photo.photo_info.title,
     }));
+
     var unassociated_photos = this.props.all_photos.map(photo => ({
       id: photo.id,
       title: photo.title,
@@ -100,17 +116,23 @@ class TagHasPhotos extends Component {
 
     return (
       <div>
-        <Button id={this.props.tagname + '-dropdown'} onClick={this.toggleActive}>{this.props.tagname}</Button>
+        <Button
+          id={this.props.tagname + '-dropdown'}
+          onClick={this.toggleActive}
+          variant='outline-danger'
+          block>
+          {this.props.tagname}
+        </Button>
         {this.state.isActive ? (
-          <div>
+          <Container>
             <div id="associated-photos-container">
-              <ul>
+              <ButtonToolbar>
                 {this.mapPhotoButtons(
                   associated_photos,
                   this.props.tag_id,
                   this.props.destroyRelation,
                 )}
-              </ul>
+              </ButtonToolbar>
             </div>
             {this.props.user !== null &&
             this.props.user.username === this.props.match.params.username &&
@@ -130,7 +152,7 @@ class TagHasPhotos extends Component {
                 columns={Columns}
               />
             </div>
-          </div>
+          </Container>
         ) : null}
       </div>
     );

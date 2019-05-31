@@ -6,6 +6,7 @@ from .permissions import (IsOwnerOrReadOnly,)
 from rest_framework.permissions import AllowAny
 from .models import Photo, Tag, PhotoWithTag
 from .serializers import PhotoSerializer, TagSerializer, PhotoWithTagSerializer
+from django.db.models import Count
 
 
 '''PHOTO'''
@@ -60,9 +61,37 @@ class PhotoListByTagAPIView(generics.ListAPIView):
         # append tags to list (they are comma separated)
         tag_list = url_tags.split(',')
 
+        '''
+        possible fix for slow queries: get all relations that have one of the
+        tags in the url list
+        count the occurence of each photo in that list of relations
+        only return photos with as many occurences as tags listed
+        '''
         # if any tags exist, cycle through them to filter relations & photos
         if url_tags == '':
-            queryset = all_photos
+            queryset = Photo.objects.filter(owner__username=username)
+        else:
+
+            photo_list = PhotoWithTag.objects.filter(owner__username=username).filter(tag__tagname__in=(tag_list)).values('photo', 'owner').annotate(total=Count('photo')).filter(total=len(tag_list))
+
+            my_photos = []
+            for photo_dict in photo_list:
+                my_photos.append(photo_dict['photo'])
+
+            queryset = Photo.objects.filter(pk__in=my_photos)
+
+            '''
+            all_related_photos = Photo.objects.filter(owner__username=username).filter(related_photos__tag__tagname__in=tag_list))
+
+            reduced_photos = all_relation_photos.values('title').annotate(total=Count('title')).filter(total=len(tag_list))
+           ''' 
+
+
+                    
+        # in=(PhotoWithTag.objects.filter(owner__username=username).filter(tag__tagname__in=url_tags)))
+        print(queryset)
+        return queryset
+        '''
         else:
             for current_tag in tag_list:
                 # from the remaining relationships (starting with all of them)
@@ -80,6 +109,7 @@ class PhotoListByTagAPIView(generics.ListAPIView):
             queryset = filt_photos.filter(related_photos__in=filt_relations).distinct()
         
         return queryset
+        '''
 
         # i think you should order the tag names in url in ascending
         # alphabetical order to make sure the same url always leads to

@@ -79,7 +79,7 @@ class FindTagByName extends Component {
           {this.props.isOpen ? 'Close' : 'Find Tag'}
         </Button>
         <Collapse in={this.props.isOpen}>
-          <div id="collapse-search-tag-box">
+          <container id="collapse-search-tag-box">
             <Form>
               <Form.Row>
                 <Form.Group as={Col}>
@@ -103,7 +103,7 @@ class FindTagByName extends Component {
                 </div>
               </Form.Row>
             </Form>
-          </div>
+          </container>
         </Collapse>
       </div>
     );

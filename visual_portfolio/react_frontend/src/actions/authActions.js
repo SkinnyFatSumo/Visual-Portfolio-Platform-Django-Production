@@ -4,6 +4,8 @@ import {
   AUTHENTICATION_FAILURE,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
 } from './types';
 
 // CHECK TOKEN AND LOAD USER
@@ -72,6 +74,39 @@ export const loginUser = userData => dispatch => {
       console.log(error);
       dispatch({
         type: LOGIN_FAILURE,
+      });
+    });
+};
+
+
+export const registerUser = userData => dispatch => {
+  const register_lookupOptions = {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(userData),
+  };
+
+  const register_endpoint = 'http://localhost:8000/api/auth/register';
+
+  fetch(register_endpoint, register_lookupOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log('response', response);
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: response,
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      dispatch({
+        type: REGISTER_FAILURE,
       });
     });
 };

@@ -11,15 +11,22 @@ import AddTag from './AddTag';
 import FindTagByName from './FindTagByName';
 import {rudRelation} from '../../actions/tagActions';
 
-// React Bootstrap
-import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 // Helpers
 import PropTypes from 'prop-types';
+import {groupByProperty} from '../support/helpers';
+
+// React Bootstrap
 import {
-  groupByProperty,
-  stringOfTags,
-  tagStringFromURL,
-} from '../support/helpers';
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Form,
+  Collapse,
+  Container,
+} from 'react-bootstrap';
+
+// CSS
+import '../../css/photo/taglistall.css';
 
 // ------------------------------------------------------------------------- //
 //                 LIST OF ALL TAGS AND RESPECTIVE THEIR PHOTOS              //
@@ -173,15 +180,27 @@ class TagListAll extends Component {
     ));
 
     return (
-      <div className="tag-container" id="tag-list-container">
-        <h4>All Tags</h4>
-        <div className="tag-container" id="tag-has-photos-container">
-          <h6>Tags with Associated Photos</h6>
-          <div>{per_tag_with_photos}</div>
-        </div>
-        <div className="tag-container" id="tag-no-photos-container">
-          <h6>Tags without Associated Photos</h6>
-          <div>{per_tag_no_photos}</div>
+      <div className="tag-container" id="tags-area">
+        <h3 className="tag-container" id="all-tags-header" className="header">
+          ALL TAGS
+        </h3>
+        <div id="tags-list">
+          <div className="tag-container" id="tags-with-photos-container">
+            <h4 id="tags-with-photos-header" className="header">
+              Tags With Associated Photos
+            </h4>
+            <div id="tags-with-photos-body" className="body">
+              {per_tag_with_photos}
+            </div>
+          </div>
+          <div className="tag-container" id="tags-no-photos-container">
+            <h4 id="tags-without-photos-header" className="header">
+              Tags Without Associated Photos
+            </h4>
+            <div id="tags-without-photos-body" className="body">
+              {per_tag_no_photos}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -191,25 +210,28 @@ class TagListAll extends Component {
     // GROUP RELATIONS BY TAG - IN ORDER TO ACCESS ALL PHOTOS OWNED BY TAG
     if (this.props.all_photos_loaded) {
       return (
-        <div>
-          <ButtonToolbar>
-            {// Only allow a tag to be added if a user is logged in and this
-            // is their content
-            this.props.user !== null &&
-            this.props.user.username === this.props.match.params.username &&
-            this.props.isAuthenticated ? (
-              <AddTag
-                isOpen={this.state.addTagActive}
+        <div id="tag-view-content-container" className="content-container">
+          <div id="find-add-tag-container" className="content-container">
+            <ButtonToolbar id="find-add-tag-toolbar" className="button-toolbar">
+              {// Only allow a tag to be added if a user is logged in and this
+              // is their content
+              this.props.user !== null &&
+              this.props.user.username === this.props.match.params.username &&
+              this.props.isAuthenticated ? (
+                <AddTag
+                  isOpen={this.state.addTagActive}
+                  toggleOpen={this.handleAddVsSearch}
+                />
+              ) : null}
+              <FindTagByName
+                isOpen={this.state.searchTagActive}
                 toggleOpen={this.handleAddVsSearch}
               />
-            ) : null}
-            <FindTagByName
-              isOpen={this.state.searchTagActive}
-              toggleOpen={this.handleAddVsSearch}
-            />
-          </ButtonToolbar>
-          <ul>{this.assignData()}</ul>
-          <h5>Delete Tags</h5>
+            </ButtonToolbar>
+          </div>
+          <div id="all-tags-content-container" className="content-container">
+            <Form id="all-tags-body-form">{this.assignData()}</Form>
+          </div>
         </div>
       );
     } else {

@@ -33,11 +33,16 @@ import Login from './users/Login';
 import Profile from './users/Profile';
 import DiscoverUsers from './users/DiscoverUsers';
 
+// General
+import Navigation from './general/Navigation';
+
 // Support
 import ErrorPage from './support/ErrorPage';
 import Alerts from './support/Alerts';
 
 import {createBrowserHistory} from 'history';
+
+import '../css/app.css';
 
 // Alert Options
 const alertOptions = {
@@ -45,14 +50,11 @@ const alertOptions = {
   position: 'top center',
 };
 
-// Temporary Styling
-const headerStyle = {
-  margin: '10px',
-  backgroundColor: 'LightSlateGrey',
-};
-
 // Track browser history to control redux state operations and push routes
+// for more complex requests
 const history = createBrowserHistory();
+
+// TODO: YOU SHOULD BE ABLE TO REMOVE THE LAST OF THIS, IT'S OUTDATED
 // if there is history of a location with hydrated in it's state
 // set hydrated to false, to insure page hydrates on refresh
 if (
@@ -77,19 +79,15 @@ class App extends Component {
     store.dispatch(authenticateUser());
     store.dispatch(fetchAllUsers());
   }
-  // <Route path="/photo/tags/:user?/:url_tags?" component={TagListAll} />
-  // <Route path="/photo/grid/:user?/:url_tags?" component={PhotoGrid} />
-  // <Route path="/photo/gallery/:user?/:url_tags?" component={PhotoGallery} />
-
-
 
   render() {
     return (
+      <div id='body'>
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>
-          <h1 style={headerStyle}>This is the Navigation Bar</h1>
           <Router history={history}>
             <Fragment>
+              <Route path="/" component={Navigation} />
               <Route path="/register/" component={Register} />
               <Route path="/login/" component={Login} />
               <Route path="/user/:username/:display/:urltags?" component={ContentRoot} />
@@ -108,6 +106,7 @@ class App extends Component {
           </Router>
         </AlertProvider>
       </Provider>
+    </div>
     );
   }
 }

@@ -7,7 +7,7 @@ from .permissions import IsOwnerOrReadOnly
 # Create TAG (that can be associated with photos)
 class Tag(models.Model):
     # GET RID OF UNIQUE = TRUE, BECAUSE DIFFERENT OWNERS NEED TO BE ABLE TO SHARE A TAG
-    tagname = models.SlugField(max_length=50, unique=True)
+    tagname = models.SlugField(max_length=50)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tags', on_delete=models.CASCADE)
 
     def __str__(self):

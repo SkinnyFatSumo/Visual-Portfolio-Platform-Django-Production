@@ -1,5 +1,5 @@
 import {
-  AUTHENTICATION_SUCCESS, AUTHENTICATION_LOADING, AUTHENTICATION_FAILURE, LOGIN_SUCCESS, LOGIN_FAILURE
+  AUTHENTICATION_SUCCESS, AUTHENTICATION_LOADING, AUTHENTICATION_FAILURE, LOGIN_SUCCESS, LOGIN_FAILURE, REGISTER_SUCCESS, REGISTER_FAILURE
 }
 from '../actions/types';
 
@@ -25,6 +25,7 @@ export default function(state = initialState, action) {
         isLoading: false,
         user: action.payload
       }
+    case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       localStorage.setItem('token', action.payload.token);
       console.log('login success payload: ', action.payload);
@@ -35,6 +36,7 @@ export default function(state = initialState, action) {
         isLoading: false
       };
     case AUTHENTICATION_FAILURE:
+    case REGISTER_FAILURE:
     case LOGIN_FAILURE:
       console.log('authentication failure');
       localStorage.removeItem('token');

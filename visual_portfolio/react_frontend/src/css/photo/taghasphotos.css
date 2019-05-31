@@ -1,0 +1,18 @@
+.button-active
+{
+  background-color: red;
+  color: red;
+}
+
+.button-inactive
+{
+  background-color: yellow;
+  color: yellow;
+}
+
+.btn-maroon
+{
+  background-color: red;
+  color: white;
+}
+

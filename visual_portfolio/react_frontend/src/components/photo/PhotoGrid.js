@@ -31,7 +31,6 @@ function columns(containerWidth) {
   if (containerWidth >= 400) columns = 2;
   if (containerWidth >= 600) columns = 3;
   if (containerWidth >= 800) columns = 4;
-  if (containerWidth >= 1000) columns = 5;
   return columns;
 }
 

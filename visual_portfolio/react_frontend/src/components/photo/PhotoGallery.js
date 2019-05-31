@@ -4,8 +4,9 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 // React Components
-// import PhotoDetail from './PhotoDetail';
+import AddRelationDefaultPhoto from './AddRelationDefaultPhoto';
 import Carousel from 'react-bootstrap/Carousel';
+import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 import CreateOrEditPhoto from './CreateOrEditPhoto';
 // Helpers
 import PropTypes from 'prop-types';
@@ -18,30 +19,16 @@ class PhotoGallery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: true,
+      tagActive: false,
+      photoActive: false,
       index: 0,
       direction: null,
       mapping: null,
     };
 
-    this.toggleOpen = this.toggleOpen.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handlePhotoVsTag = this.handlePhotoVsTag.bind(this);
   }
-
-    /*
-  componentDidMount() {
-    const mapped = this.props.photos.forEach(photo => mapper.push(photo));
-    this.setState({mapping: mapped});
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.photos.length !== this.props.photos.length) {
-      const mapped = [];
-      this.props.photos.forEach(photo => mapped.push(photo));
-      this.setState({mapping: mapped});
-    }
-  }
-  */
 
   handleSelect = (selectedIndex, e) => {
     console.log('index from handle', this.state.index);
@@ -51,18 +38,37 @@ class PhotoGallery extends Component {
       direction: e.direction,
     });
   };
-
-  toggleOpen = () => {
-    this.setState({isOpen: !this.state.isOpen});
+  
+  handlePhotoVsTag= event => {
+    if (event.target.id === 'edit-photo-toggle-button') {
+      if (this.state.tagActive) {
+        this.setState({tagActive: false});
+      }
+      this.setState({photoActive: !this.state.photoActive});
+    } else if (event.target.id === 'edit-tag-toggle-button') {
+      if (this.state.photoActive) {
+        this.setState({photoActive: false});
+      }
+      this.setState({tagActive: !this.state.tagActive});
+    }
   };
 
   render() {
-    const {index, direction, isOpen} = this.state;
-    console.log('INDEX', index);
+    const {index, direction, isOpen, tagActive, photoActive} = this.state;
+    var action;
+    var disabled;
     if (
-      this.props.photos_loaded &&
-      this.props.tags_loaded
+      this.props.user !== null &&
+      this.props.user.username === this.props.match.params.username &&
+      this.props.isAuthenticated
     ) {
+      action = 'edit';
+    } else {
+      action = 'info';
+      disabled = 'disabled';
+    }
+    console.log('INDEX', index);
+    if (this.props.photos_loaded && this.props.tags_loaded) {
       return (
         <div>
           <Carousel
@@ -86,18 +92,23 @@ class PhotoGallery extends Component {
               </Carousel.Item>
             ))}
           </Carousel>
-          <div>
-            {this.props.user !== null &&
-            this.props.user.username === this.props.match.params.username &&
-            this.props.isAuthenticated ? (
-              <CreateOrEditPhoto
-                action="edit"
-                isOpen={this.state.isOpen}
-                photo={this.props.photos[index]}
-                toggleOpen={this.toggleOpen}
+          <ButtonGroup>
+            <CreateOrEditPhoto
+              action={action}
+              isOpen={photoActive}
+              toggleOpen={this.handlePhotoVsTag}
+              photo={this.props.photos[index]}
+              disabled={disabled}
+            />
+            {action === 'edit' ? (
+              <AddRelationDefaultPhoto
+                isOpen={tagActive}
+                toggleOpen={this.handlePhotoVsTag}
+                photo_id={this.props.photos[index].id}
               />
             ) : null}
-          </div>
+            }
+          </ButtonGroup>
         </div>
       );
     } else {
