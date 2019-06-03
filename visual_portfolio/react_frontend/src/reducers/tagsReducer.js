@@ -20,6 +20,10 @@ import {
   RUD_RELATION_SUCCESS,
   RUD_RELATION_FAILURE,
 
+  RUD_TAG_LOADING,
+  RUD_TAG_SUCCESS,
+  RUD_TAG_FAILURE,
+
   ALL_TAGS_SUCCESS,
 
   // SYNCHRONOUS
@@ -71,6 +75,7 @@ export default function(state = initialState, action) {
         tags_loaded: true,
         tags_loading: false,
         all_tags_loading: false,
+        all_tags_loaded: true,
       };
     case TAGS_FAILURE:
       return {
@@ -81,29 +86,28 @@ export default function(state = initialState, action) {
       };
     
     case NEW_TAG_LOADING:
+    case RUD_TAG_LOADING:
       return {
         ...state,
-        tags_loaded: false,
-        tags_loading: false,
-        all_tags_loading: false,
         new_tag_loaded: false,
         new_tag_loading: true,
       };
     case NEW_TAG_SUCCESS:
+    case RUD_TAG_SUCCESS:
+      console.log('RUD TAG SUCCESS');
       return {
         ...state,
         tags_loaded: false,
         tags_loading: false,
-        all_tags_loading: false,
+        relations_loaded: false,
+        all_tags_loaded: false,
         new_tag_loaded: true,
         new_tag_loading: false,
       };
     case NEW_TAG_FAILURE:
+    case RUD_TAG_FAILURE:
       return {
         ...state,
-        tags_loaded: true,
-        tags_loading: false,
-        all_tags_loading: false,
         new_tag_loaded: false,
         new_tag_loading: false,
       };

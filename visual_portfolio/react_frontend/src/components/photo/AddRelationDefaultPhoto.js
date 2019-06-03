@@ -10,6 +10,9 @@ import {connect} from 'react-redux';
 // Actions
 import {postRelation} from '../../actions/tagActions';
 
+// CSS
+import '../../css/photo/addrelationdefaultphoto.css';
+
 class AddRelationDefaultPhoto extends Component {
   constructor(props) {
     super(props);

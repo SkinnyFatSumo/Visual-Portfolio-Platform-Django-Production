@@ -6,10 +6,10 @@ import {withRouter} from 'react-router-dom';
 import AddRelationDefaultTag from './AddRelationDefaultTag';
 
 // Bootstrap Components
-import {Button, ButtonToolbar} from 'react-bootstrap';
+import {Button, ButtonToolbar, Container} from 'react-bootstrap';
 
 // CSS
-// import '../../css/photo/taghasphotos.css';
+import '../../css/photo/taghasnophotos.css';
 
 class TagHasNoPhotos extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class TagHasNoPhotos extends Component {
     this.toggleActive = this.toggleActive.bind(this);
   }
 
-  toggleActive = () => {
+  toggleActive = e => {
+    e.preventDefault();
     this.setState({isActive: !this.state.isActive});
   };
 
@@ -30,17 +31,28 @@ class TagHasNoPhotos extends Component {
     ) {
       return (
         <div>
-          <Button onClick={this.toggleActive} size="lg" block>
+          <button onClick={this.toggleActive} className="tagname-button">
             {this.props.tagname}
-          </Button>
+          </button>
           {this.state.isActive ? (
-            <div>
+            <div className="associated-photos-container">
               <AddRelationDefaultTag
                 tagname={this.props.tagname}
                 tag_id={this.props.tag_id}
                 unassociated_photos={this.props.all_photos}
               />
             </div>
+          ) : null}
+          {this.props.user !== null &&
+          this.props.user.username === this.props.match.params.username &&
+          this.props.isAuthenticated ? (
+            <Button
+              variant="danger"
+              className="remove-tag-button"
+              id={this.props.tag_id}
+              onClick={this.props.destroyTag}>
+              Delete Tag
+            </Button>
           ) : null}
         </div>
       );

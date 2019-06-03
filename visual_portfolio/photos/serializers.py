@@ -4,13 +4,10 @@ from django.urls import reverse
 
 
 class TagSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(
-            view_name='photo-api:detail-tag',
-            lookup_field='tagname')
 
     class Meta:
         model = Tag
-        fields = ('id', 'owner', 'tagname', 'url')
+        fields = ('id', 'owner', 'tagname')
 
 
 class PhotoSerializer(serializers.ModelSerializer):

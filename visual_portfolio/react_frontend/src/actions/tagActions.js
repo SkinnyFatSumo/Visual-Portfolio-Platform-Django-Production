@@ -1,23 +1,28 @@
 import {
-  // LOADING
   TAGS_LOADING,
-  NEW_TAG_LOADING,
-  RELATIONS_LOADING,
-  NEW_RELATION_LOADING,
-  RUD_RELATION_LOADING,
-  // SUCCESS
   TAGS_SUCCESS,
-  ALL_TAGS_SUCCESS,
-  NEW_TAG_SUCCESS,
-  RELATIONS_SUCCESS,
-  NEW_RELATION_SUCCESS,
-  RUD_RELATION_SUCCESS,
-  // FAILURE
   TAGS_FAILURE,
+  ALL_TAGS_SUCCESS,
+  
+  NEW_TAG_LOADING,
+  NEW_TAG_SUCCESS,
   NEW_TAG_FAILURE,
+  
+  RELATIONS_LOADING,
+  RELATIONS_SUCCESS,
   RELATIONS_FAILURE,
+  
+  NEW_RELATION_LOADING,
+  NEW_RELATION_SUCCESS,
   NEW_RELATION_FAILURE,
+  
+  RUD_RELATION_LOADING,
+  RUD_RELATION_SUCCESS,
   RUD_RELATION_FAILURE,
+  
+  RUD_TAG_LOADING,
+  RUD_TAG_SUCCESS,
+  RUD_TAG_FAILURE,
   // SYNCHRONOUS
   SET_TAGS,
 } from './types';
@@ -213,6 +218,42 @@ export const rudRelation = (id, method, data) => (dispatch, getState) => {
     });
 };
 
+
+// Retrieve, Update, Destroy
+export const rudTag = (id, method, username, tags, data) => (dispatch, getState) => {
+  dispatch({type: RUD_TAG_LOADING});
+
+  console.log('RUD TAG CALLED');
+  // TODO: deal with retrieve/update vs destroy headers and return values/statuses
+  const rud_lookupOptions = {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const rud_endpoint =
+    'http://localhost:8000/api/photos/tags/rud/' + username + '/' + id;
+
+  const token = getState().auth.token;
+  if (token) {
+    rud_lookupOptions.headers['Authorization'] = `Token ${token}`;
+  }
+  if (data !== 'undefined') {
+    rud_lookupOptions.body = JSON.stringify(data);
+  }
+
+  // TODO: else, dispatch an error
+  // TODO: catch status code, return alert based on success or failure / type
+
+  fetch(rud_endpoint, rud_lookupOptions)
+    .then(tag => {
+      dispatch({type: RUD_TAG_SUCCESS, payload: tag});
+    })
+    .catch(function(error) {
+      console.log('error', error);
+    });
+};
 //---------------------------------------------------------------------------//
 //                          SYNCHRONOUS CALLS
 //---------------------------------------------------------------------------//

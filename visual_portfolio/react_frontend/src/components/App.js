@@ -86,7 +86,6 @@ class App extends Component {
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>
           <Router history={history}>
-            <Fragment>
               <Route path="/" component={Navigation} />
               <Route path="/register/" component={Register} />
               <Route path="/login/" component={Login} />
@@ -102,7 +101,6 @@ class App extends Component {
               <Route path="/user/:username/detail/:id" component={PhotoDetail} />
               <Route path="/discover/:reason?" component={DiscoverUsers} />
               <Route path="/error/" component={ErrorPage} />
-            </Fragment>
           </Router>
         </AlertProvider>
       </Provider>

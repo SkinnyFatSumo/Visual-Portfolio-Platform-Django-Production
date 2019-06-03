@@ -136,6 +136,7 @@ class ContentRoot extends Component {
 
     // INSURE THAT ALL USERS ARE LOADED
     if (this.props.allUsersLoaded) {
+      console.log('all users loaded')
       // IF SO, CHECK IF USER IN URL IS SAME AS USER STORED IN STATE
       if (this.state.viewed_user !== username) {
         // IF NOT, INSURE USER IN URL ACTUALLY EXISTS, REDIRECT IF NOT

@@ -36,7 +36,7 @@ urlpatterns = [
     # CREATE
     re_path(r'^tags/create$', TagCreateAPIView.as_view()),
     # RETRIEVE, UPDATE, DESTROY
-    re_path(r'^tags/(?P<tagname>[\w-]+)$', TagRetrieveUpdateDestroyAPIView.as_view(), name='detail-tag'),
+    re_path(r'^tags/rud/(?P<username>[\w-]+)/(?P<pk>\d+)$', TagRetrieveUpdateDestroyAPIView.as_view(), name='detail-tag'),
     
     # LIST
     re_path(r'^pwt/(?P<username>[\w-]+)/list$', PhotoWithTagListAPIView.as_view()),

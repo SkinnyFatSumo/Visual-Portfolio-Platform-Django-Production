@@ -15,12 +15,13 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ['tagname']
+        unique_together = ('owner', 'tagname',)
 
 
 # Create PHOTO (that can be associated with tags)
 class Photo(models.Model):
 
-    title = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=50)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='photos', on_delete=models.CASCADE)
 
     # color/bw & film/digital
@@ -65,6 +66,7 @@ class Photo(models.Model):
 
     class Meta:
         ordering = ['taken']
+        unique_together = ('owner','title',)
 
 
 # Use for many-to-many relationship between tags and photos

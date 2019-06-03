@@ -1,3 +1,147 @@
+.add-button
+{
+  background-image: url("/static/app_main/plus-white.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.add-button:hover
+{
+  background-image: url("/static/app_main/plus-maroon.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#all-tags-header
+{
+  background-color: #332d2d;
+  color: white;
+  border-bottom-width: 3px !important;
+}
+
+.associated-photos-container
+{
+  display: inline-block;
+  width: 95%;
+  margin: 5px 0px 0px 0px;
+  padding: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: maroon;
+  border-radius: 10px;
+  background-color: rgba(117, 16, 16, 0.05);
+  text-align: center;
+}
+
+button:hover
+{
+  background-color: #6b0700;
+}
+
+#gallery
+{
+  background-color: #332d2d;
+}
+
+
+h3
+{
+  color: white;
+}
+
+.header
+{
+  background-color: #d8d4d4);
+  text-align: center;
+  padding: 5px 0px 5px 0px;
+  border-radius: 10px 10px 0px 0px;
+  border-bottom-color: #840000;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+hr
+{
+  display: block;
+  position: relative;
+  clear: both;
+  border: none;
+  width: 95%;
+  background-color: #332d2d; 
+  height: 1px;
+  margin: 0px 0px 5px 0px;
+} 
+
+#photo-name-textbox
+{
+  width: 100%;
+  margin: 3px 0px 3px 0px;
+  background-color: rgba(117, 16, 16, 0.05);
+  border-style: solid;
+  border-width: 1px 0px 1px 0px;
+  border-color: black;
+}
+
+.photo-button-group .btn
+{
+  margin: 2px;
+  background-color: #332d2d;
+  border-color: black;
+}
+
+.photo-button-group:hover .btn:hover
+{
+  border-color: maroon;
+  background-color: rgba(33, 29, 29, 1);
+}
+
+.photo-button-group:active .btn:active
+{
+  background-color: rgba(33, 29, 29, 1);
+  border-color: maroon;
+}
+
+.remove-button
+{
+  background-image: url("/static/app_main/garbage-white.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.remove-tag-button
+{
+  display: inline-block;
+  margin: 5px 0px 5px 0px;
+}
+
+.sub-header
+{
+  font-size: 16px;
+  font-weight: bold;
+  margin: 3px;
+  text-align: center;
+} 
+
+.tagname-button
+{
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 1px;
+  background-color: maroon;
+  border-color: black;
+  color: white;
+  margin-bottom: 1px;
+}
+
+.tag-content-container
+{
+  text-align: center;
+}
+
 #tags-area
 {
   margin-left: 15px;
@@ -13,8 +157,9 @@
 {
   margin: 5px 10px 5px 10px;
   border-style: solid;
+  border-opacity: 10%;
   border-width: 2px;
-  border-color: black;
+  border-color: rgba(51, 45, 45, 0.1);
   border-radius: 10px;
 
 }
@@ -23,6 +168,7 @@
 {
   margin-top: 10px;
   border-style: solid;
+  border-color: rgba(51, 45, 45, 0.1);
 }
 
 #tags-with-photos-body
@@ -30,34 +176,4 @@
   padding: 0px 5px 0px 5px;
 }
 
-#all-tags-header
-{
-  background-color: #33373e;
-  color: white;
-}
-
-h3
-{
-  color: white;
-}
-
-.body
-{
-
-}
-
-.header
-{
-  background-color: rgba(155, 155, 155, 0.32);
-  text-align: center;
-  padding: 5px 0px 5px 0px;
-  border-radius: 10px 10px 0px 0px;
-  border-bottom-color: #840000;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-
-.content-container
-{
-}
 

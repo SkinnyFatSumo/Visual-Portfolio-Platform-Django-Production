@@ -12,6 +12,7 @@ import {
   ButtonToolbar,
   Collapse,
   Container,
+  Row,
 } from 'react-bootstrap';
 
 // CSS
@@ -53,27 +54,33 @@ class TagHasPhotos extends Component {
       this.props.user !== null &&
       this.props.user.username === this.props.match.params.username &&
       this.props.isAuthenticated ? (
-        <ButtonGroup key={photo.id}>
-          <Button id={photo.id} onClick={this.launchDetailView}>
+        <ButtonGroup className="photo-button-group" key={photo.id}>
+          <Button
+            className="photo-button-name"
+            id={photo.id}
+            onClick={this.launchDetailView}>
             {photo.title}
           </Button>
           <Button
+            className="remove-button"
             data-photo_id={photo.id}
             data-tag_id={tag_id}
-            onClick={destroyRelation}>
-            Remove
-          </Button>
+            onClick={destroyRelation}
+          />
         </ButtonGroup>
       ) : (
-        <Button key={photo.id} id={photo.id} onClick={this.launchDetailView}>
-          {photo.title}
-        </Button>
+        <ButtonGroup className="photo-button-group">
+          <Button key={photo.id} id={photo.id} onClick={this.launchDetailView}>
+            {photo.title}
+          </Button>
+        </ButtonGroup>
       ),
     );
     return titles_list;
   };
 
-  toggleActive = () => {
+  toggleActive = e => {
+    e.preventDefault();
     console.log('toggling active');
     var new_button_state;
     this.state.buttonClass === 'button-active'
@@ -116,28 +123,29 @@ class TagHasPhotos extends Component {
 
     return (
       <div>
-        <Button
+        <button
+          className="tagname-button"
           id={this.props.tagname + '-dropdown'}
-          onClick={this.toggleActive}
-          variant='outline-danger'
-          block>
+          onClick={this.toggleActive}>
           {this.props.tagname}
-        </Button>
+        </button>
         {this.state.isActive ? (
-          <Container>
-            <div id="associated-photos-container">
-              <ButtonToolbar>
+          <div className="tag-content-container">
+            <div className="general-outer-container">
+              <h4 className="sub-header">Photos</h4>
+              <hr />
+              <div>
                 {this.mapPhotoButtons(
                   associated_photos,
                   this.props.tag_id,
                   this.props.destroyRelation,
                 )}
-              </ButtonToolbar>
+              </div>
             </div>
             {this.props.user !== null &&
             this.props.user.username === this.props.match.params.username &&
             this.props.isAuthenticated ? (
-              <div id="add-associated-photo-container">
+              <div className="general-outer-container">
                 <AddRelationDefaultTag
                   tagname={this.props.tagname}
                   tag_id={this.props.tag_id}
@@ -145,14 +153,25 @@ class TagHasPhotos extends Component {
                 />
               </div>
             ) : null}
-            <div id="right">
+            <div id="gallery" className="general-outer-container">
               <Gallery
                 photos={photo_list}
                 directions={photos_length <= 4 ? 'column' : null}
                 columns={Columns}
               />
             </div>
-          </Container>
+            {this.props.user !== null &&
+            this.props.user.username === this.props.match.params.username &&
+            this.props.isAuthenticated ? (
+              <Button
+                variant="danger"
+                className="remove-tag-button"
+                id={this.props.tag_id}
+                onClick={this.props.destroyTag}>
+                Delete Tag
+              </Button>
+            ) : null}
+          </div>
         ) : null}
       </div>
     );

@@ -16,6 +16,7 @@ import {
   Col,
   Row,
   Container,
+  Nav,
 } from 'react-bootstrap';
 import LaunchUser from './LaunchUser';
 // import {fetchAllUsers} from '../../actions/userActions';
@@ -79,7 +80,7 @@ class SearchUsers extends Component {
           .slice(0, this.props.quantity);
         this.setState({
           valid_users: resulting_users.map(user => user.username),
-        });
+       });
       }
     }
   }
@@ -121,22 +122,28 @@ class SearchUsers extends Component {
     console.log('valid users', this.state.valid_users);
 
     return (
-      <Form onSubmit={this.onFormSubmit}>
-        <InputGroup>
-          <FormControl
-            autoComplete="off"
-            type="text"
-            name="username"
-            placeholder="find a user"
-            onChange={this.onChange}
-            value={this.state.username}
-            list="users-list"
-          />
-        </InputGroup>
+      <form
+        className="general-form-container"
+        id="search-users-form"
+        onSubmit={this.onFormSubmit}>
+        <input
+          autoComplete="off"
+          className="general-input"
+          id="search-users-input"
+          list="users-list"
+          name="username"
+          onChange={this.onChange}
+          placeholder="find a user"
+          type="text"
+          value={this.state.username}
+        />
         {this.props.allUsersLoaded && this.state.isActive ? (
-          <datalist id="users-list">{user_buttons}</datalist>
+          <datalist className="general-dropdown-list" id="users-list">
+            {user_buttons}
+          </datalist>
         ) : null}
-      </Form>
+        <button id='search-users-input-button' onSubmit={this.onFormSubmit}>Go</button>
+      </form>
     );
   }
 }

@@ -9,7 +9,7 @@ import TagHasPhotos from './TagHasPhotos';
 import TagHasNoPhotos from './TagHasNoPhotos';
 import AddTag from './AddTag';
 import FindTagByName from './FindTagByName';
-import {rudRelation} from '../../actions/tagActions';
+import {rudRelation, rudTag} from '../../actions/tagActions';
 
 // Helpers
 import PropTypes from 'prop-types';
@@ -43,6 +43,7 @@ class TagListAll extends Component {
     this.handleAddVsSearch = this.handleAddVsSearch.bind(this);
     this.assignData = this.assignData.bind(this);
     this.destroyRelation = this.destroyRelation.bind(this);
+    this.destroyTag = this.destroyTag.bind(this);
   }
 
   handleAddVsSearch = event => {
@@ -72,6 +73,16 @@ class TagListAll extends Component {
     );
     console.log('relation', relation);
     this.props.rudRelation(relation.id, 'DELETE');
+  };
+
+  destroyTag = event => {
+    event.preventDefault();
+    console.log('destroyTag called');
+    this.props.rudTag(
+      event.target.id,
+      'DELETE',
+      this.props.match.params.username,
+    );
   };
 
   // RESTRUCTURE DATA FOR DISTRIBUTING PHOTOS BASED ON TAGS
@@ -154,53 +165,65 @@ class TagListAll extends Component {
     // CONVERT TO JSX LISTS
     const per_tag_with_photos = tag_array_with_photos.map(tag => (
       <TagHasPhotos
+        all_photos={this.props.all_photos}
+        destroyRelation={this.destroyRelation}
+        destroyTag={this.destroyTag}
         id={tag.tagname + '-dropdown'}
+        isAuthenticated={this.props.isAuthenticated}
         key={tag.tagname}
+        photos={tag.photos}
+        relations={this.props.relations}
         tag_id={tag.tag_id}
         tagname={tag.tagname}
-        photos={tag.photos}
-        all_photos={this.props.all_photos}
-        relations={this.props.relations}
-        destroyRelation={this.destroyRelation}
         user={this.props.user}
-        isAuthenticated={this.props.isAuthenticated}
       />
     ));
 
     const per_tag_no_photos = tag_array_no_photos.map(tag => (
       <TagHasNoPhotos
+        all_photos={this.props.all_photos}
+        destroyTag={this.destroyTag}
         key={tag.tagname}
         tag_id={tag.id}
         tagname={tag.tagname}
-        all_photos={this.props.all_photos}
+
         relations={this.props.relations}
         user={this.props.user}
         isAuthenticated={this.props.isAuthenticated}
+
       />
     ));
 
     return (
       <div className="tag-container" id="tags-area">
         <h3 className="tag-container" id="all-tags-header" className="header">
-          ALL TAGS
+          All Tags
         </h3>
         <div id="tags-list">
           <div className="tag-container" id="tags-with-photos-container">
-            <h4 id="tags-with-photos-header" className="header">
-              Tags With Associated Photos
-            </h4>
+            {this.props.user !== null &&
+            this.props.user.username === this.props.match.params.username ? (
+              <h4 id="tags-with-photos-header" className="header">
+                Tags With Associated Photos
+              </h4>
+            ) : null}
             <div id="tags-with-photos-body" className="body">
               {per_tag_with_photos}
             </div>
           </div>
-          <div className="tag-container" id="tags-no-photos-container">
-            <h4 id="tags-without-photos-header" className="header">
-              Tags Without Associated Photos
-            </h4>
-            <div id="tags-without-photos-body" className="body">
-              {per_tag_no_photos}
+          {per_tag_no_photos.length > 0 &&
+          this.props.user !== null &&
+          this.props.user.username === this.props.match.params.username ? (
+            <div className="tag-container" id="tags-no-photos-container">
+              <h4 id="tags-without-photos-header" className="header">
+                Tags Without Associated Photos
+              </h4>
+
+              <div id="tags-without-photos-body" className="body">
+                {per_tag_no_photos}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     );
@@ -209,6 +232,7 @@ class TagListAll extends Component {
   render() {
     // GROUP RELATIONS BY TAG - IN ORDER TO ACCESS ALL PHOTOS OWNED BY TAG
     if (this.props.all_photos_loaded) {
+      console.log('tags loaded?', this.props.all_tags_loaded);
       return (
         <div id="tag-view-content-container" className="content-container">
           <div id="find-add-tag-container" className="content-container">
@@ -253,6 +277,7 @@ TagListAll.propTypes = {
   relations: PropTypes.array.isRequired,
   relations_loaded: PropTypes.bool.isRequired,
   rudRelation: PropTypes.func.isRequired,
+  rudTag: PropTypes.func.isRequired,
 
   // USER
   user: PropTypes.object.isRequired,
@@ -264,7 +289,9 @@ const mapStateToProps = state => ({
   all_photos_loaded: state.photos.all_photos_loaded,
 
   all_tags: state.tags.all_tags,
-  all_tags_loaded: state.all_tags_loaded,
+  all_tags_loaded: state.tags.all_tags_loaded,
+
+  tags: state.tags.tags,
 
   relations: state.tags.relations,
   relations_loaded: state.tags.relations_loaded,
@@ -276,6 +303,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {rudRelation},
+    {rudRelation, rudTag},
   )(TagListAll),
 );

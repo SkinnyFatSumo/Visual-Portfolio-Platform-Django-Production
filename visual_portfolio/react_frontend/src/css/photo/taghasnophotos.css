@@ -8,6 +8,7 @@
   border-width: 1px;
   border-color: maroon;
   border-radius: 10px;
+  background-color: rgba(117, 16, 16, 0.05);
   text-align: center;
 }
 
@@ -88,5 +89,5 @@ hr
   background-repeat: no-repeat;
   background-position: center;
 }
-*/
 
+*/
