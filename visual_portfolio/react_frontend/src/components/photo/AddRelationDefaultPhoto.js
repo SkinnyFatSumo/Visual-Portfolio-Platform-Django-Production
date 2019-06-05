@@ -10,8 +10,7 @@ import {connect} from 'react-redux';
 // Actions
 import {postRelation} from '../../actions/tagActions';
 
-// CSS
-import '../../css/photo/addrelationdefaultphoto.css';
+import {validOwner} from '../support/helpers';
 
 class AddRelationDefaultPhoto extends Component {
   constructor(props) {
@@ -64,25 +63,24 @@ class AddRelationDefaultPhoto extends Component {
   }
 
   render() {
-    const related_tags = this.props.relations.filter(
-      relation => relation.photo === this.props.photo_id,
-    );
-    console.log('related_tags', related_tags);
-    var unrelated_tags = this.props.all_tags.slice();
-    console.log('All tags', this.props.all_tags);
 
-    console.log('unrelated_tags before', unrelated_tags);
+    const {relations, all_tags, photo_id, isOpen, toggleOpen} = this.props;
+    const {tagname} = this.state;
+    
+    const related_tags = relations.filter(
+      relation => relation.photo === photo_id,
+    );
+    var unrelated_tags = all_tags.slice();
+    
     related_tags.forEach(rel_tag => {
       unrelated_tags = unrelated_tags.filter(
         un_tag => un_tag.id !== rel_tag.tag,
       );
     });
 
-    console.log('unrelated_tags after', unrelated_tags);
-
     const tag_buttons = unrelated_tags
       .filter(tag =>
-        tag.tagname.toLowerCase().includes(this.state.tagname.toLowerCase()),
+        tag.tagname.toLowerCase().includes(tagname.toLowerCase()),
       )
       .sort((a, b) => {
         var tagname_a = a.tagname.toLowerCase();
@@ -106,7 +104,6 @@ class AddRelationDefaultPhoto extends Component {
         </ButtonGroup>
       ));
 
-    const {isOpen, toggleOpen} = this.props;
     return (
       <div className="relations-box">
         <Button
@@ -127,7 +124,7 @@ class AddRelationDefaultPhoto extends Component {
                     placeholder="search tag by name"
                     onChange={this.onChange}
                     required
-                    value={this.state.tagname}
+                    value={tagname}
                   />
                 </Form.Group>
               </Form.Row>

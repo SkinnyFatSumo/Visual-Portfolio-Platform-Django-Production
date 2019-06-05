@@ -8,6 +8,9 @@ import {connect} from 'react-redux';
 // Actions
 import {postPhoto} from '../../actions/photoActions';
 
+// Helpers
+import {validOwner} from '../support/helpers';
+
 class CreateOrEditPhoto extends Component {
   constructor(props) {
     super(props);
@@ -91,7 +94,7 @@ class CreateOrEditPhoto extends Component {
     var openName;
     var closeName;
     var photo_button_id;
-    
+
     if (action === 'info') {
       photo_button_id = 'edit-photo-toggle-button';
       openName = 'Show Details';
@@ -116,7 +119,7 @@ class CreateOrEditPhoto extends Component {
         </Button>
         <Collapse in={isOpen}>
           <div id="collapse-photo-box">
-            <Form onSubmit={this.onSubmit}>
+            <Form id="photo-add-form" onSubmit={this.onSubmit}>
               <fieldset disabled={disabled}>
                 <Form.Row>
                   <Form.Group as={Col}>
@@ -186,8 +189,12 @@ class CreateOrEditPhoto extends Component {
                   </Form.Group>
                 </Form.Row>
                 {action === 'info' ? null : (
-                  <Form.Row>
-                    <Button type="submit">Upload Photo</Button>
+                  <Form.Row id="submit-photo-button-container">
+                    <Form.Group as={Col}>
+                      <Button id="submit-photo-button" type="submit">
+                        Upload Photo
+                      </Button>
+                    </Form.Group>
                   </Form.Row>
                 )}
               </fieldset>

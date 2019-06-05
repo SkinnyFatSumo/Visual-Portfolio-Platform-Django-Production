@@ -45,3 +45,14 @@ export const tagStringFromURL = path => {
   return tag_string;
 };
 
+
+export const validOwner = props => {
+  var valid_owner = false;
+  props.user !== null &&
+  props.user.username === props.match.params.username &&
+  props.isAuthenticated
+    ? (valid_owner = true)
+    : null;
+  return valid_owner;
+};
+

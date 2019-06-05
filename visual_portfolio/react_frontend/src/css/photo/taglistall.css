@@ -82,6 +82,7 @@ hr
   border-style: solid;
   border-width: 1px 0px 1px 0px;
   border-color: black;
+  text-align: center;
 }
 
 .photo-button-group .btn

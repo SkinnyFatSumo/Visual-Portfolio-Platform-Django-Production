@@ -8,9 +8,6 @@ import AddRelationDefaultTag from './AddRelationDefaultTag';
 // Bootstrap Components
 import {Button, ButtonToolbar, Container} from 'react-bootstrap';
 
-// CSS
-import '../../css/photo/taghasnophotos.css';
-
 class TagHasNoPhotos extends Component {
   constructor(props) {
     super(props);

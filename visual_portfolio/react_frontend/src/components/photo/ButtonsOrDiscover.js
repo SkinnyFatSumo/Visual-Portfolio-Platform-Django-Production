@@ -1,17 +1,15 @@
 // React
 import React from 'react';
 
-import {connect} from 'react-redux';
 // React Router
 import {withRouter} from 'react-router-dom';
 
 // Components
 import DisplayButtons from './DisplayButtons';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import PropTypes from 'prop-types';
 
 // ------------------------------------------------------------------------- //
-//         CHOOSE BETWEEN BUTTON OR CARD MENU FOR PHOTO DISPLAY TYPES        //
+//         PRESENT DISPLAY NAVIGATION BUTTONS, CONDITIONALLY ACTIVE          //
 // ------------------------------------------------------------------------- //
 
 export function ButtonsOrDiscover(props) {
@@ -36,17 +34,4 @@ export function ButtonsOrDiscover(props) {
   );
 }
 
-ButtonsOrDiscover.propTypes = {
-  users: PropTypes.array.isRequired,
-};
-
-const mapStateToProps = state => ({
-  users: state.users.users,
-});
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    {},
-  )(ButtonsOrDiscover),
-);
+export default withRouter(ButtonsOrDiscover);

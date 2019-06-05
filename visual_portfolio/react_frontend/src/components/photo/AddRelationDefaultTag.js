@@ -16,9 +16,6 @@ import {connect} from 'react-redux';
 // Actions
 import {postRelation} from '../../actions/tagActions';
 
-// CSS
-import '../../css/photo/addrelationdefaulttag.css';
-
 class AddRelationDefaultTag extends Component {
   constructor(props) {
     super(props);
@@ -33,15 +30,15 @@ class AddRelationDefaultTag extends Component {
     this.filterOutput = this.filterOutput.bind(this);
   }
 
-  onChange(e) {
+  onChange = e => {
     this.setState({[e.target.name]: e.target.value});
-  }
+  };
 
-  formSubmit(e) {
+  formSubmit = e => {
     e.preventDefault();
-  }
+  };
 
-  addRelation(e) {
+  addRelation = e => {
     e.preventDefault();
     const relation = {
       tag: this.props.tag_id,
@@ -49,13 +46,11 @@ class AddRelationDefaultTag extends Component {
       owner: this.props.user.id,
       tagname: this.props.tagname,
     };
-    console.log('relation', relation);
-    console.log('json relation', JSON.stringify(relation));
     this.props.postRelation(relation);
     this.setState({photo_title: ''});
-  }
+  };
 
-  launchDetailView(e) {
+  launchDetailView = e => {
     event.preventDefault();
     //  PUSH TO GALLERY VIEW
     this.props.history.push(
@@ -64,7 +59,7 @@ class AddRelationDefaultTag extends Component {
         '/detail/' +
         event.target.id,
     );
-  }
+  };
 
   filterOutput(photo_buttons) {
     if (this.state.photo_title === '') {
@@ -81,12 +76,15 @@ class AddRelationDefaultTag extends Component {
   }
 
   render() {
+    const {photo_title} = this.state;
+    const {unassociated_photos} = this.props;
     var photo_buttons = [];
-    this.state.photo_title !== 'all'
-      ? (photo_buttons = this.props.unassociated_photos.filter(photo =>
-          photo.title.includes(this.state.photo_title.toLowerCase()),
-        ))
-      : (photo_buttons = this.props.unassociated_photos);
+
+    photo_title === 'all'
+      ? (photo_buttons = unassociated_photos)
+      : (photo_buttons = unassociated_photos.filter(photo =>
+          photo.title.toLowerCase().includes(photo_title.toLowerCase()),
+        ));
 
     photo_buttons = photo_buttons
       .filter(photo => photo.title.toLowerCase())
@@ -125,7 +123,7 @@ class AddRelationDefaultTag extends Component {
           onSubmit={this.formSubmit}
           placeholder="search by title, or type 'all' to view all photos"
           type="text"
-          value={this.state.photo_title}
+          value={photo_title}
         />
         <ButtonToolbar>{this.filterOutput(photo_buttons)}</ButtonToolbar>
       </div>
@@ -135,12 +133,10 @@ class AddRelationDefaultTag extends Component {
 
 AddRelationDefaultTag.propTypes = {
   postRelation: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
 });
 

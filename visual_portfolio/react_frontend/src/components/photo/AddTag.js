@@ -34,16 +34,18 @@ class AddTag extends Component {
   }
 
   render() {
+    const {isOpen, toggleOpen} = this.props;
+    const {title} = this.state;
     return (
       <div className="tag-add-box">
         <Button
           id="add-tag-toggle-button"
-          onClick={this.props.toggleOpen}
+          onClick={toggleOpen}
           aria-controls="collapse-add-tag-box"
-          aria-expanded={this.props.isOpen}>
-          {this.props.isOpen ? 'Close' : 'Add Tag'}
+          aria-expanded={isOpen}>
+          {isOpen ? 'Close' : 'Add Tag'}
         </Button>
-        <Collapse in={this.props.isOpen}>
+        <Collapse in={isOpen}>
           <div id="collapse-add-tag-box">
             <Form onSubmit={this.onSubmit}>
               <Form.Row>
@@ -54,7 +56,7 @@ class AddTag extends Component {
                     placeholder="sample tag"
                     onChange={this.onChange}
                     required
-                    value={this.state.title}
+                    value={title}
                   />
                 </Form.Group>
                 <Form.Group as={Col}>
@@ -71,12 +73,10 @@ class AddTag extends Component {
 
 AddTag.propTypes = {
   postTag: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   user: state.auth.user,
 });
 

@@ -18,10 +18,6 @@ import {
   tagStringFromURL,
 } from '../support/helpers';
 
-
-// CSS
-import '../../css/photo/photogrid.css';
-
 // ------------------------------------------------------------------------- //
 //                               PHOTO GRID                                  //
 // ------------------------------------------------------------------------- //
@@ -45,7 +41,7 @@ function PhotoGrid(props) {
     const photos_length = props.photos.length;
     console.log('photos length:', photos_length);
     return (
-      <div id="border">
+      <div id="gallery-border">
         <div id="container">
           <Gallery
             photos={photo_list}

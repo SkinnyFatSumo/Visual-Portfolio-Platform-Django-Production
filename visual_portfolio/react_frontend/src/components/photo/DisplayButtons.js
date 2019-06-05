@@ -12,7 +12,7 @@ const DisplayButtons = props => {
   props.active ? (handleClick = props.handleClick) : (handleClick = null);
 
   return (
-    <Button onClick={handleClick} variant="dark" className={active}>
+    <Button onClick={handleClick} size="lg" className={active}>
       {props.name.toUpperCase()}
     </Button>
   );

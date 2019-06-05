@@ -1,0 +1,167 @@
+
+
+
+/*///////////
+/  GALLERY  /
+///////////*/
+
+
+.carousel
+{
+  margin: 20px 20px 20px 20px; max-width: 1200px; background-color: black;
+}
+
+.carousel-item {
+
+  text-align: center;
+  height: 400px;
+}
+
+.carousel-item img 
+{
+  display: inline-block !important;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+#outer-carousel {
+  background-color: black;
+  margin: 20px 20px 20px 20px;
+  padding: 20px 20px 20px 20px;
+  max-width: 1200px;
+}
+
+
+/*//////////////////
+/  TAG SELECT BOX  /
+//////////////////*/
+
+.photo-button-group .btn
+{
+  margin: 2px;
+  background-color: #332d2d;
+  border-color: black;
+}
+
+.photo-button-group:hover .btn:hover
+{
+  border-color: maroon;
+  background-color: rgba(33, 29, 29, 1);
+}
+
+.photo-button-group:active .btn:active
+{
+  background-color: rgba(33, 29, 29, 1);
+  border-color: maroon;
+}
+
+.tagname-button
+{
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 1px;
+  background-color: maroon;
+  border-color: black;
+  color: white;
+  margin-bottom: 1px;
+}
+
+.tag-filter-toolbar {
+  margin: 2px;
+  border-color: rgba(51, 45, 45, 1);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+}
+
+#collapse-photo-box {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 2;
+  background-color: #d8d4d4;
+  border-style: solid;
+  border-color: maroon;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+#collapse-tags-box {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 2;
+  background-color: #d8d4d4;
+  border-style: solid;
+  border-color: maroon;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+#photo-add-form 
+{
+  margin: 2px;
+  padding: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: rgba(51, 45, 45, 1);
+}
+
+#submit-photo-button-container
+{
+  text-align: center !important;
+}
+
+#submit-photo-button
+{
+  display: inline-block !important;
+}
+
+.active-tag:hover .btn:hover 
+{
+  background-color: maroon !important;
+  color: white !important;
+}
+
+#inactive-tags {
+}
+
+#gallery-border {
+  position: relative;
+  z-index: 1;
+}
+
+#main-toolbars-container
+{
+  text-align: center;
+}
+
+.toolbar-container
+{
+  display: inline-block;
+}
+
+#tags-and-photo-toolbar .btn
+{
+
+}
+
+#display-options-toolbar .btn
+{
+  color: maroon;
+  background-color: white;
+  border-color: maroon;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  margin: 2px;
+  width: 130px;
+
+}
+
+
+

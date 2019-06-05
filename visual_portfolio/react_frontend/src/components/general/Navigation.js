@@ -27,7 +27,7 @@ import '../../css/general/navigation.css';
 class Navigation extends Component {
   constructor(props) {
     super(props);
-    this.state = {viewed_user: undefined, menu_value: 'account'};
+    this.state = {menu_value: 'account'};
 
     //this.onFormSubmit = this.onFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -42,9 +42,6 @@ class Navigation extends Component {
   componentDidUpdate(prevProps) {
     console.log('NAVIGATION UPDATE', this.props.match.params.username);
     // IF USERNAME IN ROUTER CHANGES, FORCE THE COMPONENT TO UPDATE
-    this.props.match.params.username !== prevProps.match.params.username
-      ? this.setState({viewed_user: this.props.match.params.username})
-      : null;
   }
 
   render() {
@@ -65,7 +62,7 @@ class Navigation extends Component {
               <SearchUsers quantity={5} source="navbar" />
             </Nav.Item>
             <Nav.Item className="nav-item">
-              {match.params.username !== undefined ? (
+              {match !== null ? (
                 <h4 id="nav-viewing-user">
                   Viewing User: {match.params.username}
                 </h4>
@@ -84,13 +81,16 @@ class Navigation extends Component {
                 id="account-options-selector"
                 name="Account"
                 onChange={this.handleChange}
-                value={this.state.menu_value}
-              >
+                value={this.state.menu_value}>
                 <option id="account" disabled selected hidden value="account">
                   Account
                 </option>
-                <option id="profile" value="profile">View My Profile</option>
-                <option id="logout" value="logout">Logout</option>
+                <option id="profile" value="profile">
+                  View My Profile
+                </option>
+                <option id="logout" value="logout">
+                  Logout
+                </option>
               </select>
             </form>
           </Nav.Item>

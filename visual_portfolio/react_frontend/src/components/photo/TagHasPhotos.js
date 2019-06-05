@@ -15,9 +15,6 @@ import {
   Row,
 } from 'react-bootstrap';
 
-// CSS
-import '../../css/photo/taghasphotos.css';
-
 function Columns(containerWidth) {
   let columns = 1;
   if (containerWidth >= 400) columns = 2;

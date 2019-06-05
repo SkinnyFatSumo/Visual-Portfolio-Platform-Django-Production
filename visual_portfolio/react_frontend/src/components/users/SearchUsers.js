@@ -80,7 +80,7 @@ class SearchUsers extends Component {
           .slice(0, this.props.quantity);
         this.setState({
           valid_users: resulting_users.map(user => user.username),
-       });
+        });
       }
     }
   }
@@ -137,12 +137,14 @@ class SearchUsers extends Component {
           type="text"
           value={this.state.username}
         />
-        {this.props.allUsersLoaded && this.state.isActive ? (
+        {this.state.valid_users !== undefined ? (
           <datalist className="general-dropdown-list" id="users-list">
             {user_buttons}
           </datalist>
         ) : null}
-        <button id='search-users-input-button' onSubmit={this.onFormSubmit}>Go</button>
+        <button id="search-users-input-button" onSubmit={this.onFormSubmit}>
+          Go
+        </button>
       </form>
     );
   }

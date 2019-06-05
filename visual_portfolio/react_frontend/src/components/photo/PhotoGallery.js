@@ -10,7 +10,9 @@ import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 import CreateOrEditPhoto from './CreateOrEditPhoto';
 // Helpers
 import PropTypes from 'prop-types';
-
+import {validOwner} from '../support/helpers';
+// CSS
+import '../../css/photo/contentroot.css';
 // ------------------------------------------------------------------------- //
 //                             PHOTO GALLERY                                 //
 // ------------------------------------------------------------------------- //
@@ -38,8 +40,8 @@ class PhotoGallery extends Component {
       direction: e.direction,
     });
   };
-  
-  handlePhotoVsTag= event => {
+
+  handlePhotoVsTag = event => {
     if (event.target.id === 'edit-photo-toggle-button') {
       if (this.state.tagActive) {
         this.setState({tagActive: false});
@@ -53,62 +55,65 @@ class PhotoGallery extends Component {
     }
   };
 
+  componentDidUpdate(prevProps) {
+    const {photos} = this.props;
+    const {index} = this.state;
+    if (
+      photos.length !== prevProps.photos.length &&
+      photos[index] === undefined
+    ) {
+      this.setState({index: 0});
+    }
+  }
+
   render() {
     const {index, direction, isOpen, tagActive, photoActive} = this.state;
-    var action;
-    var disabled;
-    if (
-      this.props.user !== null &&
-      this.props.user.username === this.props.match.params.username &&
-      this.props.isAuthenticated
-    ) {
-      action = 'edit';
-    } else {
-      action = 'info';
-      disabled = 'disabled';
-    }
+    var action, disabled;
+    validOwner(this.props)
+      ? (action = 'edit')
+      : ((action = 'info'), (disabled = 'disabled'));
     console.log('INDEX', index);
-    if (this.props.photos_loaded && this.props.tags_loaded) {
+    console.log('iasdf', this.props.photos[index]);
+    if (this.props.photos[index] !== undefined) {
       return (
-        <div>
-          <Carousel
-            activeIndex={index}
-            direction={direction}
-            onSelect={this.handleSelect}
-            controls={true}
-            indicators={true}
-            interval={null}>
-            {this.props.photos.map(photo => (
-              <Carousel.Item key={photo.id}>
-                <div className="carousel-item-container">
-                  <div className="carousel-image">
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <div id="outer-carousel">
+              <Carousel
+                activeIndex={index}
+                direction={direction}
+                onSelect={this.handleSelect}
+                controls={true}
+                indicators={true}
+                interval={null}>
+                {this.props.photos.map(photo => (
+                  <Carousel.Item key={photo.id}>
                     <img src={photo.photo_source} href={photo.photo_source} />
-                    <h6>{photo.title}</h6>
-                  </div>
-                  <div className="carousel-detail-container">
-                    <h4>This will be a Dropdown(up) Item with photo info</h4>
-                  </div>
-                </div>
-              </Carousel.Item>
-            ))}
-          </Carousel>
-          <ButtonGroup>
-            <CreateOrEditPhoto
-              action={action}
-              isOpen={photoActive}
-              toggleOpen={this.handlePhotoVsTag}
-              photo={this.props.photos[index]}
-              disabled={disabled}
-            />
-            {action === 'edit' ? (
-              <AddRelationDefaultPhoto
-                isOpen={tagActive}
+                    <Carousel.Caption>
+                      <h6>{photo.title}</h6>
+                    </Carousel.Caption>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </div>
+            <br />
+            <ButtonGroup>
+              <CreateOrEditPhoto
+                action={action}
+                isOpen={photoActive}
                 toggleOpen={this.handlePhotoVsTag}
-                photo_id={this.props.photos[index].id}
+                photo={this.props.photos[index]}
+                disabled={disabled}
               />
-            ) : null}
-            }
-          </ButtonGroup>
+              {action === 'edit' ? (
+                <AddRelationDefaultPhoto
+                  isOpen={tagActive}
+                  toggleOpen={this.handlePhotoVsTag}
+                  photo_id={this.props.photos[index].id}
+                />
+              ) : null}
+            </ButtonGroup>
+          </div>
         </div>
       );
     } else {
@@ -121,10 +126,12 @@ PhotoGallery.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
+  photos_loading: PropTypes.bool.isRequired,
 
   // TAGS
   tags: PropTypes.array.isRequired,
   tags_loaded: PropTypes.bool.isRequired,
+  tags_loading: PropTypes.bool.isRequired,
 
   // RELATIONS
   relations: PropTypes.array.isRequired,
@@ -139,9 +146,11 @@ PhotoGallery.propTypes = {
 const mapStateToProps = state => ({
   photos: state.photos.photos,
   photos_loaded: state.photos.photos_loaded,
+  photos_loading: state.photos.photos_loading,
 
   tags: state.tags.tags,
   tags_loaded: state.tags.tags_loaded,
+  tags_loading: state.tags.tags_loading,
 
   relations: state.tags.relations,
   relations_loaded: state.tags.relations_loaded,
