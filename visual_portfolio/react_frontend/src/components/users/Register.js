@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Router, withRouter, Link} from 'react-router-dom';
 import {Button, Form, Collapse, Col} from 'react-bootstrap';
-import '../../css/users/register.css';
+// import '../../css/users/register.css';
 
 class Register extends Component {
   constructor(props) {

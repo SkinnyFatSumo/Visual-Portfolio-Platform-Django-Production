@@ -1,19 +1,9 @@
-#account-options-selector {
-}
 
-.login-or-register-container {
-  margin: 20px;
-  padding: 15px 5px 20px 5px;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 5px;
-  border-color: rgba(51, 45, 45, 1);
-}
 
-#account
-{
-  border-radius: 5px;
-}
+
+
+/*===============GENERAL CONTAINERS======================*/
+
 
 #body {
   background-color: #d8d4d4;
@@ -22,24 +12,6 @@
 .centering-container {
   text-align: center;
   width: 100%;
-}
-
-.account-form-container {
-  margin: 10px 0px 0px 10px;
-  display: inline-block;
-  width: 95%;
-  background-color: #d8d4d4;
-  border-style: solid;
-  border-color: maroon;
-  border-width: 1px;
-  border-radius: 5px;
-  padding: 2px;
-}
-
-.form-element-box {
-  border-style: solid;
-  border-width: 1px;
-  border-color: maroon;
 }
 
 .general-outer-container {
@@ -54,9 +26,44 @@
   background-color: rgba(117, 16, 16, 0.05);
 }
 
+.form-element-box {
+  border-style: solid;
+  border-width: 1px;
+  border-color: maroon;
+}
+
 .general-form-container {
   margin: 2px;
   padding: 5px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: rgba(51, 45, 45, 1);
+}
+
+/*===========PROFILE AND LOGIN/REGISTER=================*/
+
+#account
+{
+  border-radius: 5px;
+}
+
+.account-form-container {
+  margin: 10px 0px 0px 10px;
+  display: inline-block;
+  width: 95%;
+  background-color: #d8d4d4;
+  border-style: solid;
+  border-color: maroon;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 2px;
+}
+
+
+.login-or-register-container {
+  margin: 20px;
+  padding: 15px 5px 20px 5px;
   border-width: 2px;
   border-style: solid;
   border-radius: 5px;
@@ -72,6 +79,10 @@
   border-color: maroon;
   color: rgba(51, 45, 45, 1);
 }
+
+/*=============== NAVGATION BAR =================*/
+
+
 .navbar {
   padding: 1px !important;
   background-color: rgba(51, 45, 45, 1) !important;
@@ -117,14 +128,16 @@
   border-color: maroon;
 }
 
-/*--------------------------------------*/
-
 #nav-viewing-user {
   border-style: solid;
   border-width: 2px 2px 2px 2px;
   border-radius: 5px 5px 5px 5px;
   border-color: maroon;
 }
+
+
+/*=================== DISCOVER USERS / SEARCH USERS PAGE ==================*/
+
 
 #discover-users-container {
   text-align: center;
@@ -155,6 +168,4 @@
   min-width: 10%;
 }
 
-#register-form {
-  padding: 10px;
-}
+

@@ -22,7 +22,7 @@ import {connect} from 'react-redux';
 
 import SearchUsers from '../users/SearchUsers';
 
-import '../../css/general/navigation.css';
+//import '../../css/general/navigation.css';
 
 class Navigation extends Component {
   constructor(props) {

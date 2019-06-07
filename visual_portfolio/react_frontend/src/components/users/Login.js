@@ -3,7 +3,7 @@ import {Router, withRouter, Link, Redirect} from 'react-router-dom';
 import {Button, Form, Collapse, Col} from 'react-bootstrap';
 import {Connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import '../../css/users/login.css';
+// import '../../css/users/login.css';
 
 // Redux
 import {connect} from 'react-redux';

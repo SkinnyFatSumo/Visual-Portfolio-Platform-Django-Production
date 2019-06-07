@@ -16,39 +16,34 @@ class PhotoDetail extends Component {
   }
 
   render() {
-    // STORE ALL TAGS RELATED TO THIS PHOTOS IN A SET
-    var associated_tag_ids = new Set();
+    const {all_photos, all_photos_loaded} = this.props;
+    const {id} = this.props.match.params;
 
-    console.log('relations:', this.props.relations);
-    // ADD TAG IDS FROM RELATIONS THAT HAVE THIS PHOTO
-    this.props.relations.forEach(relation => {
-      if (relation.photo === this.props.match.params.id) {
-        associated_tag_ids.add(relation.tag);
-      }
-    });
+    var img_src = undefined;
+    var title;
 
-    // INITIALIZE UNASSOCIATED TAGS LIST TO ALL TAGS
-    var unassociated_tags = this.props.all_tags.splice();
-    // INITIALIZE ASSOCIATED TAGS LIST TO EMPTY ARRAY
-    var associated_tags = [];
+    if (all_photos_loaded) img_src = all_photos.find(photo => photo.id == id);
+    if (img_src !== undefined) {
+      title = img_src.title.toUpperCase();
+      img_src = img_src.photo_source;
+    }
 
-    // GET ACTUAL TAGS FROM THEIR IDS
-    associated_tag_ids.forEach(tag_id =>
-      associated_tags.push(this.props.all_tags.find(tag => tag.id === tag_id)),
+    return (
+      <div className="centering-container">
+        <div className="general-outer-container">
+          {all_photos_loaded && img_src !== undefined ? (
+            <div>
+              <h5 id="detail-title">{title}</h5>
+              <img className="detail-content" id="detail-image" src={img_src} />
+            </div>
+          ) : all_photos_loaded ? (
+            <h5 className="detail-content">Photo No Longer Exists</h5>
+          ) : (
+            <h5 className="detail-content">Photos Still Loading</h5>
+          )}
+        </div>
+      </div>
     );
-
-    console.log('1, associated_tags', associated_tags);
-
-    // GET ALL TAGS THAT AREN'T ASSOCIATED BY FILTERING OUT THOSE THAT ARE
-    associated_tags.forEach(as_tag => {
-      unassociated_tags = unassociated_tags.filter(
-        un_tag => un_tag.id !== as_tag.id,
-      );
-    });
-
-    console.log('2, associated_tags', associated_tags);
-    console.log('2, unassociated_tags', unassociated_tags);
-    return <h1>Hi</h1>;
   }
 }
 

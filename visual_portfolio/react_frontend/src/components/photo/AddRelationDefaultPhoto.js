@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 // Actions
-import {postRelation} from '../../actions/tagActions';
+import {postRelation, rudRelation} from '../../actions/tagActions';
 
 import {validOwner} from '../support/helpers';
 
@@ -30,7 +30,7 @@ class AddRelationDefaultPhoto extends Component {
     this.onChange = this.onChange.bind(this);
     this.addRelation = this.addRelation.bind(this);
     this.delRelation = this.delRelation.bind(this);
-    this.launchDetailView = this.launchDetailView.bind(this);
+    this.launchTagView = this.launchTagView.bind(this);
     this.filterOutput = this.filterOutput.bind(this);
   }
 
@@ -54,16 +54,15 @@ class AddRelationDefaultPhoto extends Component {
       })
       .map(remaining_tag => (
         <ButtonGroup key={remaining_tag.id} className="photo-button-group">
-          <Button id={remaining_tag.id} onClick={this.launchDetailView}>
+          <Button id={remaining_tag.id} onClick={this.launchTagView}>
             {remaining_tag.tagname.toUpperCase()}
           </Button>
           <Button
             className={option_type}
             id={remaining_tag.id}
+            name={remaining_tag.tagname}
             onClick={
-              option_type === 'add-button'
-                ? this.addRelation
-                : this.delRelation
+              option_type === 'add-photo' ? this.addRelation : this.delRelation
             }
           />
         </ButtonGroup>
@@ -82,22 +81,22 @@ class AddRelationDefaultPhoto extends Component {
     console.log('relation', relation);
     console.log('json relation', JSON.stringify(relation));
     this.props.postRelation(relation);
-    this.setState({photo_title: ''});
+    this.setState({add_tagname: ''});
   }
 
   delRelation(e) {
     e.preventDefault();
+    this.props.rudRelation(e.target.id, 'DELETE', 'destroy');
     console.log('DELETE RELATION:', e.target.id);
   }
 
-  launchDetailView(e) {
-    event.preventDefault();
-    //  PUSH TO GALLERY VIEW
+  launchTagView(e) {
+    e.preventDefault();
     this.props.history.push(
       '/user/' +
         this.props.match.params.username +
-        '/detail/' +
-        event.target.id,
+        '/tags#' +
+        e.target.name,
     );
   }
 
@@ -123,7 +122,11 @@ class AddRelationDefaultPhoto extends Component {
       unrelated_tags = unrelated_tags.filter(
         un_tag => un_tag.id !== pre_rel_tag.tag,
       );
-      related_tags.push(all_tags.find(tag => tag.id === pre_rel_tag.tag));
+      related_tags.push({
+        tagname: all_tags.find(tag => tag.id === pre_rel_tag.tag).tagname,
+        // THIS ID IS THE RELATION'S ID, NOT THE TAG'S ID
+        id: pre_rel_tag.id,
+      });
     });
 
     // for every relation, append the tag associated with it
@@ -140,23 +143,6 @@ class AddRelationDefaultPhoto extends Component {
       'remove_button',
       del_tagname,
     );
-
-    /*
-      .map(
-      remaining_tag => (
-        <ButtonGroup key={remaining_tag.id} className="photo-button-group">
-          <Button id={remaining_tag.id} onClick={this.launchDetailView}>
-            {remaining_tag.tagname.toUpperCase()}
-          </Button>
-          <Button
-            className="add-button"
-            id={remaining_tag.id}
-            onClick={this.addRelation}
-          />
-        </ButtonGroup>
-      ),
-    );
-    */
 
     return (
       <div className="relations-box">
@@ -187,6 +173,7 @@ class AddRelationDefaultPhoto extends Component {
               <Form.Row id="add-tag-row">
                 {this.filterOutput(unrelated_tag_buttons)}
               </Form.Row>
+              <hr id="edit-tags-horizontal-rule" />
               <Form.Row>
                 <Form.Group as={Col}>
                   <Form.Control
@@ -248,6 +235,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {postRelation},
+    {postRelation, rudRelation},
   )(AddRelationDefaultPhoto),
 );

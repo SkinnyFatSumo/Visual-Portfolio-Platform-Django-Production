@@ -2,9 +2,7 @@
 /  BUTTON  /
 //////////*/
 
-
-
-
+/*========  CAROUSEL =============*/
 .carousel {
   margin: 20px 20px 20px 20px;
   max-width: 1200px;
@@ -29,16 +27,23 @@
   max-width: 1200px;
 }
 
-/*//////////////////
-/  TAG SELECT BOX  /
-//////////////////*/
+/*=========== COLLAPSIBLE BOXES =============*/
 
+.absolute-collapse-box {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 2;
+  background-color: #d8d4d4;
+  border-style: solid;
+  border-color: maroon;
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 2px;
+}
 
-.tag-select-header
-{
-  padding: 0px;
-  margin: 2px 0px 0px 0px;
-  font-weight: bold;
+.collapse-tags-box {
+  padding-top: 2px;
 }
 
 #collapse-tags-active .btn {
@@ -53,7 +58,6 @@
   color: maroon !important;
 }
 
-
 #collapse-tags-inactive .btn {
   background-color: #332d2d !important;
   border-color: white !important;
@@ -64,50 +68,56 @@
   border-color: maroon !important;
   color: maroon !important;
 }
- 
 
-.collapse-tags-box
-{
-  padding-top: 2px;
-}
+/*============ GENERAL FORMS/CONTAINERS ===========*/
 
-.tag-filter-toolbar 
-{
-  margin: 2px;
-  padding: 1px;
-  border-color: maroon;
+#gallery-border {
   border-style: solid;
+  border-color: maroon;
   border-width: 1px;
   border-radius: 5px;
+  margin: 5px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
 }
 
-
-
-
-
-.tagname-button {
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-  border-width: 1px;
-  background-color: maroon;
-  border-color: black;
-  color: white;
-  margin-bottom: 1px;
-}
-
-
-
-.absolute-collapse-box {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  z-index: 2;
-  background-color: #d8d4d4;
-  border-style: solid; border-color: maroon;
+#gallery-container {
+  border-style: solid;
+  border-color: rgba(51, 45, 45, 1);
   border-width: 1px;
   border-radius: 5px;
+  margin: 5px;
   padding: 2px;
+  background-color: rgba(51, 45, 45, 1);
+}
+
+#detail-image
+{
+  max-width: 100%;
+  height: auto;
+}
+
+#detail-title
+{
+  margin: 10px 0px 10px 0px;
+  text-align: center;
+  color: rgba(51, 45, 45, 1);
+}
+
+
+.tag-select-header {
+  padding: 0px;
+  margin: 2px 0px 0px 0px;
+  font-weight: bold;
+}
+
+#add-tag-row {
+  display: inline-block;
+}
+
+.relations-box {
+  display: inline-block;
 }
 
 .photo-or-tag-add-form {
@@ -118,11 +128,9 @@
   border-width: 2px;
   border-style: solid;
   border-radius: 5px;
-
 }
 
-.tag-select-container
-{
+.tag-select-container {
   margin: 2px;
   padding: 5px;
   border-style: solid;
@@ -135,55 +143,106 @@
   text-align: center !important;
 }
 
-#submit-photo-button {
-  display: inline-block !important;
-}
+/*========== BUTTONS ================*/
 
-#add-tag .btn
-{
+/*TAG*/
+
+#add-tag .btn {
   border-color: black;
   width: 100%;
   background-color: rgba(51, 45, 45, 1);
 }
-  
 
-#add-tag:hover .btn:hover
-{
+#add-tag:hover .btn:hover {
   border-color: maroon !important;
   background-color: rgba(20, 17, 17, 1) !important;
 }
 
-#find-tag .btn
-{
+#find-tag .btn {
   border-color: black;
   width: auto;
   background-color: rgba(51, 45, 45, 1);
 }
 
-#find-tag:hover .btn:hover
-{
+#find-tag:hover .btn:hover {
   border-color: maroon !important;
   background-color: rgba(20, 17, 17, 1) !important;
 }
 
-#go-to-tag-container
-{
-  margin: 0px 5px 0px 5px;
+.tagname-button {
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  border-width: 1px;
+  background-color: maroon;
+  border-color: black;
+  color: white;
+  margin-bottom: 1px;
 }
 
-#active-tags .btn
-{
-  margin: 1px;
-}
-#inactive-tags .btn 
-{
+#active-tags .btn {
   margin: 1px;
 }
 
-#gallery-border {
-  position: relative;
-  z-index: 1;
+#inactive-tags .btn {
+  margin: 1px;
 }
+
+/* Button Group */
+
+.btn-group {
+  padding: 2px;
+}
+
+.photo-button-group .btn {
+  background-color: #332d2d !important;
+  border-color: black !important;
+  width: auto !important;
+}
+
+.photo-button-group:hover .btn:hover {
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
+}
+
+.photo-button-group:active .btn:active {
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
+}
+
+/* general add or delete */
+
+.add-button {
+  background-image: url('/static/app_main/plus-white.svg') !important;
+  background-size: 50% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.add-button:hover {
+  background-image: url('/static/app_main/plus-maroon.svg');
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.remove-button {
+  background-image: url('/static/app_main/garbage-white.svg');
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.remove-tag-button {
+  display: inline-block;
+  margin: 5px 0px 5px 0px;
+}
+
+#submit-photo-button {
+  display: inline-block !important;
+}
+
+/*========== TOOLBARS =============*/
 
 #main-toolbars-container {
   text-align: center;
@@ -192,17 +251,6 @@
 .toolbar-container {
   display: inline-block;
   text-align: center;
-}
-
-.tags-and-photo-toolbar .btn {
-  color: white;
-  background-color: maroon;
-  border-color: rgba(33, 29, 29, 1);
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 5px;
-  margin: 5px 1px 1px 0px;
-  width: 130px;
 }
 
 .display-options-toolbar .btn {
@@ -216,90 +264,37 @@
   width: 130px;
 }
 
-.display-options-toolbar:hover .btn:hover
-{
+.display-options-toolbar:hover .btn:hover {
   background-color: #e8dede;
 }
-.display-options-toolbar:focus .btn:focus
-{
+.display-options-toolbar:focus .btn:focus {
   background-color: #e8dede;
+}
+
+.tags-and-photo-toolbar .btn {
+  color: white;
+  background-color: maroon;
+  border-color: rgba(33, 29, 29, 1);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  margin: 5px 1px 1px 0px;
+  width: 130px;
 }
 
 .tags-and-photo-toolbar:hover .btn:hover {
   background-color: #6b0700;
 }
 
-.tags-and-photo-toolbar:focus .btn:focus{
+.tags-and-photo-toolbar:focus .btn:focus {
   background-color: #6b0700 !important;
 }
-  
-  .relations-box {
-  display: inline-block;
+
+.tag-filter-toolbar {
+  margin: 2px;
+  padding: 1px;
+  border-color: maroon;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
 }
-
-
-
-#add-tag-row
-{
-  display: inline-block;
-}
-
-
-
-
-.btn-group 
-{
-  padding: 2px;
-}
-
-.photo-button-group .btn
-{
-  background-color: #332d2d !important;
-  border-color: black !important;
-  width: auto !important;
-}
-
-.photo-button-group:hover .btn:hover
-{
-  border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
-}
-
-.photo-button-group:active .btn:active
-{
-  border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
-}
-
-.add-button
-{
-  background-image: url("/static/app_main/plus-white.svg") !important;
-  background-size: 50% !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-}
-
-.add-button:hover { background-image: url("/static/app_main/plus-maroon.svg");
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.remove-button
-{
-  background-image: url("/static/app_main/garbage-white.svg");
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.remove-tag-button
-{
-  display: inline-block;
-  margin: 5px 0px 5px 0px;
-}
-
-/*//////////
-/  BUTTON  /
-//////////*/
-
