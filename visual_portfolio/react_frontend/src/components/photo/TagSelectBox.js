@@ -19,6 +19,7 @@ class TagSelectBox extends Component {
 
     // CREATE LISTS TO STORE ACTIVE VS. INACTIVE TAG BUTTONS
     var active = [
+      /*
       <Button
         key="inactive"
         className="filter-title"
@@ -27,8 +28,10 @@ class TagSelectBox extends Component {
         size="sm">
         ACTIVE: &nbsp; &nbsp;
       </Button>,
+      */
     ];
     var inactive = [
+      /*
       <Button
         key="active"
         className="filter-title"
@@ -37,6 +40,7 @@ class TagSelectBox extends Component {
         size="sm">
         INACTIVE:
       </Button>,
+      */
     ];
 
     // STORE IDS OF ALL CURRENT PHOTOS BEING DISPLAYED
@@ -92,19 +96,25 @@ class TagSelectBox extends Component {
           onClick={this.props.toggleOpen}
           aria-controls="collapse-tags-container"
           aria-expanded={this.props.isOpen}>
-          {this.props.isOpen ? 'Hide Tags' : 'Show Tags'}
+          {this.props.isOpen ? 'Hide Tags' : 'Filter By Tag'}
         </Button>
         <Collapse in={this.props.isOpen}>
-          <div className="generic-outer-container" id="collapse-tags-box">
-            <div className="collapse-tags-box" id="collapse-tags-active">
-              <ButtonToolbar className="tag-filter-toolbar" id="active-tags">
-                {active}
-              </ButtonToolbar>
-            </div>
-            <div className="collapse-tags-box" id="collapse-tags-inactive">
-              <ButtonToolbar className="tag-filter-toolbar" id="inactive-tags">
-                {inactive}
-              </ButtonToolbar>
+          <div className="absolute-collapse-box">
+            <div className="tag-select-container">
+              <div className="collapse-tags-box" id="collapse-tags-active">
+                <h6 className="tag-select-header">Active</h6>
+                <ButtonToolbar className="tag-filter-toolbar" id="active-tags">
+                  {active}
+                </ButtonToolbar>
+              </div>
+              <div className="collapse-tags-box" id="collapse-tags-inactive">
+                <h6 className="tag-select-header">Inactive</h6>
+                <ButtonToolbar
+                  className="tag-filter-toolbar"
+                  id="inactive-tags">
+                  {inactive}
+                </ButtonToolbar>
+              </div>
             </div>
           </div>
         </Collapse>

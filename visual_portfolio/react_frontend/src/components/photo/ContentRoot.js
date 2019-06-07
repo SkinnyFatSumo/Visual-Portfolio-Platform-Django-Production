@@ -75,7 +75,7 @@ class ContentRoot extends Component {
     const {viewed_user} = this.state;
     if (!this.isSameViewedUser(username, viewed_user)) {
       if (!this.newUserExists(username, users)) {
-        history.push('/discover/' + 'user-does-not-exist');
+        history.push('/bad-url/user-does-not-exist');
       } else {
         this.setState({viewed_user: username});
         fetchRelations(username);
@@ -92,7 +92,7 @@ class ContentRoot extends Component {
     if (display !== activeDisplay) {
       ['profile', 'gallery', 'grid', 'tags', 'detail'].includes(display)
         ? this.setState({activeDisplay: display})
-        : this.props.history.push('/discover/' + 'bad-display-type');
+        : this.props.history.push('/bad-url/invalid-display-type');
     }
   }
 
@@ -202,9 +202,7 @@ class ContentRoot extends Component {
     setPhotos(username, string_for_url);
     // PUSH TO NEW URL WITH UPDATED TAGS
     console.log('handle tag click username is', username);
-    history.push('/user/' + username + '/' + display + '/' + string_for_url, {
-      hydrated: true,
-    });
+    history.push('/user/' + username + '/' + display + '/' + string_for_url);
   };
 
   // --------------
@@ -269,13 +267,28 @@ class ContentRoot extends Component {
     photos_loaded ? (active = true) : (active = false);
 
     if (all_photos_loaded && all_photos.length === 0)
-      return <h1>User Has No Photos</h1>;
-    if (!allUsersLoaded) return <h1>Loading Users</h1>;
+      return (
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <h4 className="error-message">
+              This user hasn't uploaded any photos yet.
+            </h4>
+          </div>
+        </div>
+      );
+    if (!allUsersLoaded)
+      return (
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <h1 className="error-message">Loading Users</h1>;
+          </div>
+        </div>
+      );
 
     return (
       <div id="main-toolbars-container">
         <div className="toolbar-container">
-          <ButtonToolbar id="display-options-toolbar">
+          <ButtonToolbar className="display-options-toolbar">
             <DisplayButtons
               handleClick={this.launchProfileView}
               name="Profile"
@@ -301,7 +314,7 @@ class ContentRoot extends Component {
         <br />
         {display === 'grid' || display === 'gallery' ? (
           <div className="toolbar-container">
-            <ButtonToolbar id="tags-and-photo-toolbar">
+            <ButtonToolbar className="tags-and-photo-toolbar">
               <TagSelectBox
                 photos={this.props.photos}
                 relations={this.props.relations}

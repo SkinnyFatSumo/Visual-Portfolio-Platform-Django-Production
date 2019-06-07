@@ -40,48 +40,64 @@ class SearchUsers extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({isActive: this.props.active});
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const {username, isActive} = this.state;
-    const {source} = this.props;
-    if (source === 'discover_users' && !isActive) {
+    const {source, allUsersLoaded, users} = this.props;
+    if (source === 'navbar') {
+      // if's active, and username is empty, make it inactive
+      // if it's inactive, and username is not empty, make it active
+
+      if (isActive === true && username === '') {
+        this.setState({isActive: false});
+      } else if (isActive === false && username !== '') {
+        this.setState({isActive: true});
+      }
+    }
+
+    /*
+    if (source === 'bad-url' && !isActive) {
+      console.log('source', source);
       this.setState({isActive: true});
     } else if (username !== '' && !isActive) {
       this.setState({isActive: true});
     } else if (source !== 'discover_users' && username === '' && isActive) {
       this.setState({isActive: false});
     }
+    */
 
     if (
       this.props.allUsersLoaded &&
       this.state.username !== prevState.username
     ) {
-      console.log('state username', this.state.username);
-      if (this.state.username === '') {
-        this.setState({valid_users: []});
-      } else {
-        var resulting_users = this.props.users
-          .slice()
-          .filter(user =>
-            user.username
-              .toLowerCase()
-              .includes(this.state.username.toLowerCase()),
-          )
-          .sort((a, b) => {
-            var username_a = a.username.toLowerCase();
-            var username_b = b.username.toLowerCase();
-            if (username_a < username_b) {
-              return -1;
-            }
-            if (username_a > username_b) {
-              return 1;
-            }
-            return 0;
-          })
-          .slice(0, this.props.quantity);
-        this.setState({
-          valid_users: resulting_users.map(user => user.username),
-        });
+      console.log('state username', username);
+
+      var user_lower = username.toLowerCase();
+      var resulting_users = users.map(user => user.username.toLowerCase());
+
+      if (username !== '') {
+        resulting_users = resulting_users.filter(user =>
+          user.includes(user_lower),
+        );
       }
+
+      resulting_users = resulting_users
+        .sort((a, b) => {
+          if (a < b) {
+            return -1;
+          }
+          if (a > b) {
+            return 1;
+          }
+          return 0;
+        })
+        .slice(0, this.props.quantity);
+      this.setState({
+        valid_users: resulting_users,
+      });
     }
   }
 
@@ -113,36 +129,34 @@ class SearchUsers extends Component {
   }
 
   render() {
-    if (this.state.username !== '') {
-      var user_buttons = this.state.valid_users.map((username, index) => (
-        <option id={index} name={username} value={username} />
-      ));
-    }
+    var user_buttons = this.state.valid_users.map((username, index) => (
+      <option id={index} name={username} value={username} />
+    ));
+    console.log('IS ACTIVE', this.state.isActive);
     console.log('USER BUTTONS', user_buttons);
     console.log('valid users', this.state.valid_users);
 
     return (
       <form
-        className="general-form-container"
-        id="search-users-form"
+        id={"search-users-form-" + this.props.id}
         onSubmit={this.onFormSubmit}>
         <input
           autoComplete="off"
           className="general-input"
-          id="search-users-input"
+          id={"search-users-input-" + this.props.id}
           list="users-list"
           name="username"
           onChange={this.onChange}
-          placeholder="find a user"
+          placeholder="&nbsp; &nbsp; find a user"
           type="text"
           value={this.state.username}
         />
-        {this.state.valid_users !== undefined ? (
+        {this.state.isActive ? (
           <datalist className="general-dropdown-list" id="users-list">
             {user_buttons}
           </datalist>
         ) : null}
-        <button id="search-users-input-button" onSubmit={this.onFormSubmit}>
+        <button id={"search-users-input-button-" + this.props.id} onSubmit={this.onFormSubmit}>
           Go
         </button>
       </form>

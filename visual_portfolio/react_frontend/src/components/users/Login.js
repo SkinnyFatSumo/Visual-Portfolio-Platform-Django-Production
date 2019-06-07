@@ -46,37 +46,39 @@ class Login extends Component {
     }
     const {email, password} = this.state;
     return (
-      <div className="formContainer" id="all">
-        <div className="formContainer" id="login">
-          <h4>Login</h4>
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Group controlId="formGroupEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={email}
-                placeholder="Enter Email"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formGroupPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                name="password"
-                value={password}
-                type="password"
-                placeholder="Password"
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Button variant="primary" name="submit" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </div>
-        <div className="formContainer" id="register">
-          <Link to="/register" className="nav-link">
+      <div className="centering-container">
+        <div className="login-or-register-container">
+          <div className="general-outer-container" id="account">
+            <h4>Login</h4>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group controlId="formGroupEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  className="form-element-box"
+                  type="email"
+                  name="email"
+                  value={email}
+                  placeholder="Enter Email"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="formGroupPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  className="form-element-box"
+                  name="password"
+                  value={password}
+                  type="password"
+                  placeholder="Password"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Button variant="primary" name="submit" type="submit">
+                Submit
+              </Button>
+            </Form>
+          </div>
+          <Link to="/register" className="general-outer-container" id="account">
             Don't have an Account? Click here to register.
           </Link>
         </div>

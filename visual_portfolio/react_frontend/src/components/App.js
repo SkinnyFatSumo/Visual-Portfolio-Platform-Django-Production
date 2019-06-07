@@ -86,8 +86,7 @@ class App extends Component {
             />
             <Route path="/user/:username/tags" component={TagListAll} />
             <Route path="/user/:username/detail/:id" component={PhotoDetail} />
-            <Route path="/discover/:reason?" component={DiscoverUsers} />
-            <Route path="/error/" component={ErrorPage} />
+            <Route path="/bad-url/:reason?" component={DiscoverUsers} />
           </Router>
         </Provider>
       </div>

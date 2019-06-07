@@ -14,6 +14,7 @@ import {rudRelation, rudTag} from '../../actions/tagActions';
 // Helpers
 import PropTypes from 'prop-types';
 import {groupByProperty} from '../support/helpers';
+import {validOwner} from '../support/helpers';
 
 // React Bootstrap
 import {
@@ -186,11 +187,9 @@ class TagListAll extends Component {
         key={tag.tagname}
         tag_id={tag.id}
         tagname={tag.tagname}
-
         relations={this.props.relations}
         user={this.props.user}
         isAuthenticated={this.props.isAuthenticated}
-
       />
     ));
 
@@ -201,8 +200,7 @@ class TagListAll extends Component {
         </h3>
         <div id="tags-list">
           <div className="tag-container" id="tags-with-photos-container">
-            {this.props.user !== null &&
-            this.props.user.username === this.props.match.params.username ? (
+            {validOwner(this.props) ? (
               <h4 id="tags-with-photos-header" className="header">
                 Tags With Associated Photos
               </h4>
@@ -211,9 +209,7 @@ class TagListAll extends Component {
               {per_tag_with_photos}
             </div>
           </div>
-          {per_tag_no_photos.length > 0 &&
-          this.props.user !== null &&
-          this.props.user.username === this.props.match.params.username ? (
+          {per_tag_no_photos.length > 0 && validOwner(this.props) ? (
             <div className="tag-container" id="tags-no-photos-container">
               <h4 id="tags-without-photos-header" className="header">
                 Tags Without Associated Photos
@@ -234,27 +230,27 @@ class TagListAll extends Component {
     if (this.props.all_photos_loaded) {
       console.log('tags loaded?', this.props.all_tags_loaded);
       return (
-        <div id="tag-view-content-container" className="content-container">
-          <div id="find-add-tag-container" className="content-container">
-            <ButtonToolbar id="find-add-tag-toolbar" className="button-toolbar">
-              {// Only allow a tag to be added if a user is logged in and this
-              // is their content
-              this.props.user !== null &&
-              this.props.user.username === this.props.match.params.username &&
-              this.props.isAuthenticated ? (
-                <AddTag
-                  isOpen={this.state.addTagActive}
+        <div className="centering-container">
+          <div id="tag-view-content-container" className="content-container">
+            <div className="toolbar-container">
+              <ButtonToolbar className="tags-and-photo-toolbar">
+                {// Only allow a tag to be added if a user is logged in and this
+                // is their content
+                validOwner(this.props) ? (
+                  <AddTag
+                    isOpen={this.state.addTagActive}
+                    toggleOpen={this.handleAddVsSearch}
+                  />
+                ) : null}
+                <FindTagByName
+                  isOpen={this.state.searchTagActive}
                   toggleOpen={this.handleAddVsSearch}
                 />
-              ) : null}
-              <FindTagByName
-                isOpen={this.state.searchTagActive}
-                toggleOpen={this.handleAddVsSearch}
-              />
-            </ButtonToolbar>
-          </div>
-          <div id="all-tags-content-container" className="content-container">
-            <Form id="all-tags-body-form">{this.assignData()}</Form>
+              </ButtonToolbar>
+            </div>
+            <div id="all-tags-content-container" className="content-container">
+              <Form id="all-tags-body-form">{this.assignData()}</Form>
+            </div>
           </div>
         </div>
       );

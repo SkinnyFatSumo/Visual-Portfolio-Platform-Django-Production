@@ -54,6 +54,37 @@ class PhotoGallery extends Component {
       this.setState({tagActive: !this.state.tagActive});
     }
   };
+  
+  mapTagButtons = (tags, photo_id, destroyRelation) => {
+    console.log('tag_id', tag_id);
+    var titles_list = photos.map(photo =>
+      this.props.user !== null &&
+      this.props.user.username === this.props.match.params.username &&
+      this.props.isAuthenticated ? (
+        <ButtonGroup className="photo-button-group" key={photo.id}>
+          <Button
+            className="photo-button-name"
+            id={photo.id}
+            onClick={this.launchDetailView}>
+            {photo.title}
+          </Button>
+          <Button
+            className="remove-button"
+            data-photo_id={photo.id}
+            data-tag_id={tag_id}
+            onClick={destroyRelation}
+          />
+        </ButtonGroup>
+      ) : (
+        <ButtonGroup className="photo-button-group">
+          <Button key={photo.id} id={photo.id} onClick={this.launchDetailView}>
+            {photo.title}
+          </Button>
+        </ButtonGroup>
+      ),
+    );
+    return titles_list;
+  };
 
   componentDidUpdate(prevProps) {
     const {photos} = this.props;
@@ -96,23 +127,24 @@ class PhotoGallery extends Component {
                 ))}
               </Carousel>
             </div>
-            <br />
-            <ButtonGroup>
-              <CreateOrEditPhoto
-                action={action}
-                isOpen={photoActive}
-                toggleOpen={this.handlePhotoVsTag}
-                photo={this.props.photos[index]}
-                disabled={disabled}
-              />
-              {action === 'edit' ? (
-                <AddRelationDefaultPhoto
-                  isOpen={tagActive}
+            <div className="toolbar-container">
+              <ButtonToolbar className="tags-and-photo-toolbar">
+                <CreateOrEditPhoto
+                  action={action}
+                  isOpen={photoActive}
                   toggleOpen={this.handlePhotoVsTag}
-                  photo_id={this.props.photos[index].id}
+                  photo={this.props.photos[index]}
+                  disabled={disabled}
                 />
-              ) : null}
-            </ButtonGroup>
+                {action === 'edit' ? (
+                  <AddRelationDefaultPhoto
+                    isOpen={tagActive}
+                    toggleOpen={this.handlePhotoVsTag}
+                    photo_id={this.props.photos[index].id}
+                  />
+                ) : null}
+              </ButtonToolbar>
+            </div>
           </div>
         </div>
       );

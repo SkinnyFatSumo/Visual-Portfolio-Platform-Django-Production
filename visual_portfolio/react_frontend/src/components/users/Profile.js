@@ -1,21 +1,9 @@
 import React, {Component} from 'react';
 
-import PropTypes from 'prop-types';
-
 // React Router
-import {Router, withRouter, Link} from 'react-router-dom';
-import {
-  Dropdown,
-  DropdownButton,
-  Button,
-  ButtonGroup,
-  Form,
-  Collapse,
-  Col,
-  Row,
-  Container,
-} from 'react-bootstrap';
+import {withRouter} from 'react-router-dom';
 
+/*
 // Redux
 import {connect} from 'react-redux';
 
@@ -27,82 +15,29 @@ import {
   fetchRelations, // async
 } from '../../actions/tagActions';
 
+import PropTypes from 'prop-types';
+
 import CreateOrEditPhoto from '../photo/CreateOrEditPhoto';
-import '../../css/users/profile.css';
+*/
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isActivePhotos: false,
-      isActiveTags: false,
-    };
+    this.state = {};
   }
 
-  toggleActivePhotos = () => {
-    this.setState({isActivePhotos: !this.state.isActivePhotos});
-  };
-
-  toggleActiveTags = () => {
-    this.setState({isActiveTags: !this.state.isActiveTags});
-  };
-
   render() {
-    const photo_list = this.props.photos.map(photo => (
-      <Row key={photo.id}>
-        <Col>
-          <h6>{photo.title}</h6>
-          <img>
-            src={photo.thumbnail_source} width={photo.thumbnail_width}
-            height={photo.thumbnail_height}
-          </img>
-        </Col>
-        <Col />
-      </Row>
-    ));
     return (
-      <div>
-        <Container>
-          <Row>
-            <Col>
-              <h6>USERNAME</h6>
-              <h5>IMAGE</h5>
-              <h6>First Last</h6>
-            </Col>
-            <Col>
-              <p>This is the bio here. However it's totally optional.</p>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              <h4>Edit / Add / Delete</h4>
-              <div id="content-holder">
-                <Button
-                  id="photo-button"
-                  className="toggle-button"
-                  onClick={this.toggleActivePhotos}>
-                  Photos
-                </Button>
-                <div id="photo-dropdown-list" className="dropdown-list">
-                  {this.state.isActivePhotos ? (
-                    <CreateOrEditPhoto
-                      isOpen={true}
-                      id="photo-form"
-                      className="list-item"
-                    />
-                  ) : null}
-                  <h6>Something Else</h6>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+      <div className="centering-container">
+        <div className="general-outer-container">
+          <h4 style={{textAlign: 'center',  marginTop: '5px'}}>Under Construction</h4>
+        </div>
       </div>
     );
   }
 }
 
+/*
 Profile.propTypes = {
   // PHOTOS
   photos: PropTypes.array.isRequired,
@@ -141,3 +76,6 @@ export default withRouter(
     {setPhotos, setTags, fetchTags, fetchRelations, fetchAllPhotos},
   )(Profile),
 );
+*/
+
+export default withRouter(Profile);

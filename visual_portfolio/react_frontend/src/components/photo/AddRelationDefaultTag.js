@@ -125,7 +125,7 @@ class AddRelationDefaultTag extends Component {
           type="text"
           value={photo_title}
         />
-        <ButtonToolbar>{this.filterOutput(photo_buttons)}</ButtonToolbar>
+        {this.filterOutput(photo_buttons)}
       </div>
     );
   }

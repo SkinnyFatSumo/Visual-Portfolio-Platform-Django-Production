@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {Button, Form, Collapse, Col} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
@@ -109,7 +109,7 @@ class CreateOrEditPhoto extends Component {
       closeName = 'Done Adding';
     }
     return (
-      <div className="photo-add-box">
+      <div>
         <Button
           id={photo_button_id}
           onClick={toggleOpen}
@@ -118,13 +118,14 @@ class CreateOrEditPhoto extends Component {
           {isOpen ? closeName : openName}
         </Button>
         <Collapse in={isOpen}>
-          <div id="collapse-photo-box">
-            <Form id="photo-add-form" onSubmit={this.onSubmit}>
+          <div className="absolute-collapse-box">
+            <Form className="photo-or-tag-add-form" onSubmit={this.onSubmit}>
               <fieldset disabled={disabled}>
                 <Form.Row>
                   <Form.Group as={Col}>
                     <Form.Label>Title</Form.Label>
                     <Form.Control
+                      className="form-element-box"
                       type="text"
                       name="title"
                       placeholder="an excellent title"
@@ -139,6 +140,7 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Full Resolution URL</Form.Label>
                     <Form.Control
+                      className="form-element-box"
                       type="url"
                       name="photo_source"
                       placeholder="https://www.somehost.com/fullresurl"
@@ -150,6 +152,7 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail URL</Form.Label>
                     <Form.Control
+                      className="form-element-box"
                       type="url"
                       name="thumbnail_source"
                       placeholder="https://www.somehost.com/thumbnailurl"
@@ -164,6 +167,7 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail Width</Form.Label>
                     <Form.Control
+                      className="form-element-box"
                       type="number"
                       name="thumbnail_width"
                       placeholder="integer"
@@ -177,6 +181,7 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail Height</Form.Label>
                     <Form.Control
+                      className="form-element-box"
                       type="number"
                       name="thumbnail_height"
                       placeholder="integer"

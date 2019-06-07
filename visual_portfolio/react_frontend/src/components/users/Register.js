@@ -37,17 +37,25 @@ class Register extends Component {
     } = this.state;
     return (
       <div className="centering-container">
-        <div className="general-outer-container" id="register-user-container">
-          <div className="general-form-container" id="register-form">
+        <div className="login-or-register-container">
+          <div className="general-outer-container" id="account">
             <h4>Register</h4>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="formGroupUsername">
                 <Form.Label>Create a Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter Username" />
+                <Form.Control
+                  className="form-element-box"
+                  type="text"
+                  placeholder="Enter Username"
+                />
               </Form.Group>
               <Form.Group controlId="formGroupEmail">
                 <Form.Label>Email Address</Form.Label>
-                <Form.Control type="email" placeholder="Enter Email" />
+                <Form.Control
+                  className="form-element-box"
+                  type="email"
+                  placeholder="Enter Email"
+                />
                 <Form.Text className="text-muted">
                   We will never email you or share your email address. This is
                   just for logging in.
@@ -56,6 +64,7 @@ class Register extends Component {
               <Form.Group controlId="formGroupPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                  className="form-element-box"
                   name="password"
                   value={password}
                   type="password"
@@ -63,6 +72,7 @@ class Register extends Component {
                   onChange={this.handleChange}
                 />
                 <Form.Control
+                  className="form-element-box"
                   name="password_2"
                   value={password_2}
                   type="password"
@@ -74,13 +84,21 @@ class Register extends Component {
               <Form.Row>
                 <Form.Group as={Col}>
                   <Form.Label>First Name</Form.Label>
-                  <Form.Control type="test" onChange={this.handleChange} />
+                  <Form.Control
+                    className="form-element-box"
+                    type="test"
+                    onChange={this.handleChange}
+                  />
                   <Form.Text className="text-muted">Optional</Form.Text>
                 </Form.Group>
 
                 <Form.Group as={Col}>
                   <Form.Label>Last Name</Form.Label>
-                  <Form.Control type="name" onChange={this.handleChange} />
+                  <Form.Control
+                    className="form-element-box"
+                    type="name"
+                    onChange={this.handleChange}
+                  />
                   <Form.Text className="text-muted">Optional</Form.Text>
                 </Form.Group>
               </Form.Row>
@@ -90,7 +108,7 @@ class Register extends Component {
               </Button>
             </Form>
           </div>
-          <div className="formContainer" id="login">
+          <div className="general-outer-container" id="account">
             <Link to="/login" className="nav-link">
               Have an Account? Click here to go to login page.
             </Link>

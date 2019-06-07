@@ -46,23 +46,21 @@ class AddTag extends Component {
           {isOpen ? 'Close' : 'Add Tag'}
         </Button>
         <Collapse in={isOpen}>
-          <div id="collapse-add-tag-box">
-            <Form onSubmit={this.onSubmit}>
-              <Form.Row>
-                <Form.Group as={Col}>
-                  <Form.Control
-                    type="text"
-                    name="tagname"
-                    placeholder="sample tag"
-                    onChange={this.onChange}
-                    required
-                    value={title}
-                  />
-                </Form.Group>
-                <Form.Group as={Col}>
-                  <Button type="submit">Create Tag</Button>
-                </Form.Group>
-              </Form.Row>
+          <div className="absolute-collapse-box">
+            <Form className="photo-or-tag-add-form" id="add-tag" onSubmit={this.onSubmit}>
+              <Form.Control
+                autoComplete="off"
+                className="form-element-box"
+                type="text"
+                name="tagname"
+                placeholder="sample tag"
+                onChange={this.onChange}
+                required
+                value={title}
+              />
+              <Button className="form-element-box" type="submit" block>
+                Create Tag
+              </Button>
             </Form>
           </div>
         </Collapse>

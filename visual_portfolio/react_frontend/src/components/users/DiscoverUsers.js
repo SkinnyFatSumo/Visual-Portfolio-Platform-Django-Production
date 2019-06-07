@@ -5,7 +5,7 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 
 // React Router
-import {Router, withRouter, Redirect} from 'react-router-dom';
+import {withRouter, Link} from 'react-router-dom';
 
 import SearchUsers from './SearchUsers';
 
@@ -26,16 +26,32 @@ class DiscoverUsers extends Component {
       isActive: false,
     };
   }
-  
+
   render() {
     return (
-      <div>
-        <SearchUsers quantity={20} source='discover_users'/>
+      <div className="centering-container">
+        <div className="general-outer-container">
+          <SearchUsers
+            quantity={20}
+            source="bad_url"
+            active={true}
+            id="bad-url"
+          />
+          <div id="login-form">
+            <Link to="/login" className="nav-link">
+              Have an Account? Click here to go to login page.
+            </Link>
+          </div>
+          <div id="register-form">
+            <Link to="/register" className="nav-link">
+              Don't have an Account? Click here to register.
+            </Link>
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 }
-
 
 DiscoverUsers.propTypes = {
   allUsersLoaded: PropTypes.bool.isRequired,

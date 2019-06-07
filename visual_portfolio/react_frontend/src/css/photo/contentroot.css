@@ -1,24 +1,22 @@
+/*//////////
+/  BUTTON  /
+//////////*/
 
 
 
-/*///////////
-/  GALLERY  /
-///////////*/
 
-
-.carousel
-{
-  margin: 20px 20px 20px 20px; max-width: 1200px; background-color: black;
+.carousel {
+  margin: 20px 20px 20px 20px;
+  max-width: 1200px;
+  background-color: black;
 }
 
 .carousel-item {
-
   text-align: center;
   height: 400px;
 }
 
-.carousel-item img 
-{
+.carousel-item img {
   display: inline-block !important;
   max-height: 100%;
   max-width: 100%;
@@ -31,32 +29,63 @@
   max-width: 1200px;
 }
 
-
 /*//////////////////
 /  TAG SELECT BOX  /
 //////////////////*/
 
-.photo-button-group .btn
+
+.tag-select-header
+{
+  padding: 0px;
+  margin: 2px 0px 0px 0px;
+  font-weight: bold;
+}
+
+#collapse-tags-active .btn {
+  background-color: white !important;
+  border-color: black !important;
+  color: black !important;
+  width: auto !important;
+}
+
+#collapse-tags-active:hover .btn:hover {
+  border-color: maroon !important;
+  color: maroon !important;
+}
+
+
+#collapse-tags-inactive .btn {
+  background-color: #332d2d !important;
+  border-color: white !important;
+  width: auto !important;
+}
+
+#collapse-tags-inactive:hover .btn:hover {
+  border-color: maroon !important;
+  color: maroon !important;
+}
+ 
+
+.collapse-tags-box
+{
+  padding-top: 2px;
+}
+
+.tag-filter-toolbar 
 {
   margin: 2px;
-  background-color: #332d2d;
-  border-color: black;
-}
-
-.photo-button-group:hover .btn:hover
-{
+  padding: 1px;
   border-color: maroon;
-  background-color: rgba(33, 29, 29, 1);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
 }
 
-.photo-button-group:active .btn:active
-{
-  background-color: rgba(33, 29, 29, 1);
-  border-color: maroon;
-}
 
-.tagname-button
-{
+
+
+
+.tagname-button {
   width: 100%;
   padding: 5px;
   border-radius: 5px;
@@ -67,67 +96,88 @@
   margin-bottom: 1px;
 }
 
-.tag-filter-toolbar {
-  margin: 2px;
-  border-color: rgba(51, 45, 45, 1);
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-}
 
-#collapse-photo-box {
+
+.absolute-collapse-box {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 2;
   background-color: #d8d4d4;
-  border-style: solid;
-  border-color: maroon;
+  border-style: solid; border-color: maroon;
   border-width: 1px;
   border-radius: 5px;
   padding: 2px;
 }
 
-#collapse-tags-box {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  z-index: 2;
-  background-color: #d8d4d4;
-  border-style: solid;
-  border-color: maroon;
-  border-width: 1px;
-  border-radius: 5px;
-  padding: 2px;
-}
-
-#photo-add-form 
-{
+.photo-or-tag-add-form {
+  display: inline-block;
+  text-align: center;
   margin: 2px;
   padding: 5px;
   border-width: 2px;
   border-style: solid;
   border-radius: 5px;
-  border-color: rgba(51, 45, 45, 1);
+
 }
 
-#submit-photo-button-container
+.tag-select-container
 {
+  margin: 2px;
+  padding: 5px;
+  border-style: solid;
+  border-color: rgba(51, 45, 45, 1);
+  border-width: 2px;
+  border-radius: 5px;
+}
+
+#submit-photo-button-container {
   text-align: center !important;
 }
 
-#submit-photo-button
-{
+#submit-photo-button {
   display: inline-block !important;
 }
 
-.active-tag:hover .btn:hover 
+#add-tag .btn
 {
-  background-color: maroon !important;
-  color: white !important;
+  border-color: black;
+  width: 100%;
+  background-color: rgba(51, 45, 45, 1);
+}
+  
+
+#add-tag:hover .btn:hover
+{
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
 }
 
-#inactive-tags {
+#find-tag .btn
+{
+  border-color: black;
+  width: auto;
+  background-color: rgba(51, 45, 45, 1);
+}
+
+#find-tag:hover .btn:hover
+{
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
+}
+
+#go-to-tag-container
+{
+  margin: 0px 5px 0px 5px;
+}
+
+#active-tags .btn
+{
+  margin: 1px;
+}
+#inactive-tags .btn 
+{
+  margin: 1px;
 }
 
 #gallery-border {
@@ -135,33 +185,121 @@
   z-index: 1;
 }
 
-#main-toolbars-container
-{
+#main-toolbars-container {
   text-align: center;
 }
 
-.toolbar-container
-{
+.toolbar-container {
   display: inline-block;
+  text-align: center;
 }
 
-#tags-and-photo-toolbar .btn
-{
-
+.tags-and-photo-toolbar .btn {
+  color: white;
+  background-color: maroon;
+  border-color: rgba(33, 29, 29, 1);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  margin: 5px 1px 1px 0px;
+  width: 130px;
 }
 
-#display-options-toolbar .btn
-{
+.display-options-toolbar .btn {
   color: maroon;
   background-color: white;
   border-color: maroon;
   border-width: 2px;
   border-style: solid;
   border-radius: 10px;
-  margin: 2px;
+  margin: 5px 1px 1px 0px;
   width: 130px;
+}
 
+.display-options-toolbar:hover .btn:hover
+{
+  background-color: #e8dede;
+}
+.display-options-toolbar:focus .btn:focus
+{
+  background-color: #e8dede;
+}
+
+.tags-and-photo-toolbar:hover .btn:hover {
+  background-color: #6b0700;
+}
+
+.tags-and-photo-toolbar:focus .btn:focus{
+  background-color: #6b0700 !important;
+}
+  
+  .relations-box {
+  display: inline-block;
 }
 
 
+
+#add-tag-row
+{
+  display: inline-block;
+}
+
+
+
+
+.btn-group 
+{
+  padding: 2px;
+}
+
+.photo-button-group .btn
+{
+  background-color: #332d2d !important;
+  border-color: black !important;
+  width: auto !important;
+}
+
+.photo-button-group:hover .btn:hover
+{
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
+}
+
+.photo-button-group:active .btn:active
+{
+  border-color: maroon !important;
+  background-color: rgba(20, 17, 17, 1) !important;
+}
+
+.add-button
+{
+  background-image: url("/static/app_main/plus-white.svg") !important;
+  background-size: 50% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.add-button:hover { background-image: url("/static/app_main/plus-maroon.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.remove-button
+{
+  background-image: url("/static/app_main/garbage-white.svg");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.remove-tag-button
+{
+  display: inline-block;
+  margin: 5px 0px 5px 0px;
+}
+
+/*//////////
+/  BUTTON  /
+//////////*/
 

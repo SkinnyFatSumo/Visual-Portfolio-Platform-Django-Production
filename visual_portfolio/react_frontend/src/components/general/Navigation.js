@@ -59,7 +59,7 @@ class Navigation extends Component {
         <Navbar.Collapse id="collapsible-nav">
           <Nav>
             <Nav.Item className="nav-item">
-              <SearchUsers quantity={5} source="navbar" />
+              <SearchUsers quantity={5} source="navbar" id='navbar' active={false} />
             </Nav.Item>
             <Nav.Item className="nav-item">
               {match !== null ? (
@@ -79,7 +79,7 @@ class Navigation extends Component {
               <select
                 className="account-options"
                 id="account-options-selector"
-                name="Account"
+                name="&nbsp; Account"
                 onChange={this.handleChange}
                 value={this.state.menu_value}>
                 <option id="account" disabled selected hidden value="account">

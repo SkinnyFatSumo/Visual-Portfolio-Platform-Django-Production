@@ -27,29 +27,25 @@ class TagHasNoPhotos extends Component {
       this.props.isAuthenticated
     ) {
       return (
-        <div>
+        <div className="tag-content-container">
           <button onClick={this.toggleActive} className="tagname-button">
             {this.props.tagname}
           </button>
           {this.state.isActive ? (
-            <div className="associated-photos-container">
+            <div className="general-outer-container">
               <AddRelationDefaultTag
                 tagname={this.props.tagname}
                 tag_id={this.props.tag_id}
                 unassociated_photos={this.props.all_photos}
               />
+              <Button
+                variant="danger"
+                className="remove-tag-button"
+                id={this.props.tag_id}
+                onClick={this.props.destroyTag}>
+                Delete Tag
+              </Button>
             </div>
-          ) : null}
-          {this.props.user !== null &&
-          this.props.user.username === this.props.match.params.username &&
-          this.props.isAuthenticated ? (
-            <Button
-              variant="danger"
-              className="remove-tag-button"
-              id={this.props.tag_id}
-              onClick={this.props.destroyTag}>
-              Delete Tag
-            </Button>
           ) : null}
         </div>
       );

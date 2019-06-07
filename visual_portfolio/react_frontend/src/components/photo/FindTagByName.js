@@ -70,20 +70,21 @@ class FindTagByName extends Component {
       ));
 
     return (
-      <div className="search-tag-toggle-box">
+      <div>
         <Button
           id="search-tag-toggle-button"
           onClick={this.props.toggleOpen}
           aria-controls="collapse-search-tag-box"
           aria-expanded={this.props.isOpen}>
-          {this.props.isOpen ? 'Close' : 'Find Tag'}
+          {this.props.isOpen ? 'Close' : 'Go to Tag'}
         </Button>
         <Collapse in={this.props.isOpen}>
-          <container id="collapse-search-tag-box">
-            <Form>
+          <div className="absolute-collapse-box">
+            <Form className="photo-or-tag-add-form" id="find-tag">
               <Form.Row>
                 <Form.Group as={Col}>
                   <Form.Control
+                    autoComplete="off"
                     type="text"
                     name="tagname"
                     placeholder="find a tag"
@@ -94,7 +95,7 @@ class FindTagByName extends Component {
                 </Form.Group>
               </Form.Row>
               <Form.Row>
-                <div>
+                <div id="go-to-tag-container">
                   {go_to_tag_buttons.length > 0 ? (
                     go_to_tag_buttons
                   ) : (
@@ -103,7 +104,7 @@ class FindTagByName extends Component {
                 </div>
               </Form.Row>
             </Form>
-          </container>
+          </div>
         </Collapse>
       </div>
     );
