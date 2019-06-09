@@ -45,6 +45,7 @@ class SearchUsers extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('PATHNAME', this.props.history.location.pathname);
     const {username, isActive} = this.state;
     const {source, allUsersLoaded, users} = this.props;
     if (source === 'navbar') {
@@ -57,17 +58,6 @@ class SearchUsers extends Component {
         this.setState({isActive: true});
       }
     }
-
-    /*
-    if (source === 'bad-url' && !isActive) {
-      console.log('source', source);
-      this.setState({isActive: true});
-    } else if (username !== '' && !isActive) {
-      this.setState({isActive: true});
-    } else if (source !== 'discover_users' && username === '' && isActive) {
-      this.setState({isActive: false});
-    }
-    */
 
     if (
       this.props.allUsersLoaded &&
@@ -130,20 +120,26 @@ class SearchUsers extends Component {
 
   render() {
     var user_buttons = this.state.valid_users.map((username, index) => (
-      <option id={index} name={username} value={username} />
+      <option
+        className="list-option"
+        key={index}
+        id={index}
+        name={username}
+        value={username}
+      />
     ));
-    console.log('IS ACTIVE', this.state.isActive);
-    console.log('USER BUTTONS', user_buttons);
-    console.log('valid users', this.state.valid_users);
+
+    const {pathname} = this.props.history.location.pathname;
 
     return (
       <form
-        id={"search-users-form-" + this.props.id}
+        id={'search-users-form-' + this.props.id}
         onSubmit={this.onFormSubmit}>
         <input
+          style={this.props.style}
+
           autoComplete="off"
-          className="general-input"
-          id={"search-users-input-" + this.props.id}
+          id={'search-users-input-' + this.props.id}
           list="users-list"
           name="username"
           onChange={this.onChange}
@@ -156,7 +152,9 @@ class SearchUsers extends Component {
             {user_buttons}
           </datalist>
         ) : null}
-        <button id={"search-users-input-button-" + this.props.id} onSubmit={this.onFormSubmit}>
+        <button
+          id={'search-users-input-button-' + this.props.id}
+          onSubmit={this.onFormSubmit}>
           Go
         </button>
       </form>

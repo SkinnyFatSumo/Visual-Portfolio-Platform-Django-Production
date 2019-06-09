@@ -5,26 +5,18 @@ import {Router, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 // React Components
-import TagHasPhotos from './TagHasPhotos';
-import TagHasNoPhotos from './TagHasNoPhotos';
 import AddTag from './AddTag';
 import FindTagByName from './FindTagByName';
+import TagHasPhotos from './TagHasPhotos';
+import TagHasNoPhotos from './TagHasNoPhotos';
 import {rudRelation, rudTag} from '../../actions/tagActions';
 
 // Helpers
 import PropTypes from 'prop-types';
-import {groupByProperty} from '../support/helpers';
-import {validOwner} from '../support/helpers';
+import {groupByProperty, validOwner} from '../support/helpers';
 
 // React Bootstrap
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Form,
-  Collapse,
-  Container,
-} from 'react-bootstrap';
+import { ButtonToolbar, Form } from 'react-bootstrap';
 
 // CSS
 import '../../css/photo/taglistall.css';
@@ -43,6 +35,7 @@ class TagListAll extends Component {
 
     this.handleAddVsSearch = this.handleAddVsSearch.bind(this);
     this.assignData = this.assignData.bind(this);
+    this.closeAddAndSearch = this.closeAddAndSearch.bind(this);
     this.destroyRelation = this.destroyRelation.bind(this);
     this.destroyTag = this.destroyTag.bind(this);
   }
@@ -59,6 +52,10 @@ class TagListAll extends Component {
       }
       this.setState({addTagActive: !this.state.addTagActive});
     }
+  };
+
+  closeAddAndSearch = () => {
+    this.setState({addTagActive: false, searchTagActive: false});
   };
 
   destroyRelation = event => {
@@ -92,6 +89,7 @@ class TagListAll extends Component {
     // CREATE OBJECT TO STORE PHOTOS, USING THEIR IDS AS KEYS
     var photos_object = {};
     this.props.all_photos.forEach(photo => {
+      console.log('FOR EACH ALL PHOTO', this.props.all_photos);
       photos_object[photo.id] = photo;
     });
 
@@ -226,8 +224,7 @@ class TagListAll extends Component {
   };
 
   render() {
-    // GROUP RELATIONS BY TAG - IN ORDER TO ACCESS ALL PHOTOS OWNED BY TAG
-    if (this.props.all_photos_loaded) {
+    if (this.props.all_photos_loaded && this.props.all_photos.length > 0) {
       console.log('tags loaded?', this.props.all_tags_loaded);
       return (
         <div className="centering-container">
@@ -240,11 +237,13 @@ class TagListAll extends Component {
                   <AddTag
                     isOpen={this.state.addTagActive}
                     toggleOpen={this.handleAddVsSearch}
+                    closeAll={this.closeAddAndSearch}
                   />
                 ) : null}
                 <FindTagByName
                   isOpen={this.state.searchTagActive}
                   toggleOpen={this.handleAddVsSearch}
+                  closeAll={this.closeAddAndSearch}
                 />
               </ButtonToolbar>
             </div>
@@ -255,7 +254,13 @@ class TagListAll extends Component {
         </div>
       );
     } else {
-      return <h6>Photos Still Loading </h6>;
+      return (
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <h5>User Has No Photos</h5>
+          </div>
+        </div>
+      );
     }
   }
 }

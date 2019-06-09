@@ -27,8 +27,10 @@ class FindTagByName extends Component {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  clearState() {
+  clearState(e) {
+    e.preventDefault();
     this.setState({tagname: ''});
+    this.props.closeAll;
   }
 
   render() {

@@ -1,28 +1,22 @@
 import React, {Component} from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Form,
-  Collapse,
-  Col,
-  Row,
-  Container,
-} from 'react-bootstrap';
+import {Nav, Navbar, Collapse} from 'react-bootstrap';
 
+// Router
 import {matchPath} from 'react-router';
 import {withRouter} from 'react-router-dom';
-
-import PropTypes from 'prop-types';
 
 // Redux
 import {connect} from 'react-redux';
 
+// Components
 import SearchUsers from '../users/SearchUsers';
 
-//import '../../css/general/navigation.css';
+// Actions
+import {logoutUser} from '../../actions/authActions';
+
+// Helpers
+import {validOwner} from '../support/helpers';
+import PropTypes from 'prop-types';
 
 class Navigation extends Component {
   constructor(props) {
@@ -36,7 +30,15 @@ class Navigation extends Component {
   handleChange = e => {
     e.preventDefault();
     console.log('EVENT TARGET VALUE:', e.target.value);
+    var redirect = e.target.value;
     this.setState({menu_value: 'account'});
+    if (redirect === 'login') {
+      this.props.history.push('/login/');
+    } else if (redirect === 'logout') {
+      this.props.logoutUser();
+    } else if (redirect === 'profile') {
+      this.props.history.push('/user/' + this.props.user.username + '/grid/');
+    }
   };
 
   componentDidUpdate(prevProps) {
@@ -59,7 +61,13 @@ class Navigation extends Component {
         <Navbar.Collapse id="collapsible-nav">
           <Nav>
             <Nav.Item className="nav-item">
-              <SearchUsers quantity={5} source="navbar" id='navbar' active={false} />
+              <SearchUsers
+                style={match !== null ? {marginTop: '9px'} : null}
+                quantity={5}
+                source="navbar"
+                id="navbar"
+                active={false}
+              />
             </Nav.Item>
             <Nav.Item className="nav-item">
               {match !== null ? (
@@ -82,15 +90,29 @@ class Navigation extends Component {
                 name="&nbsp; Account"
                 onChange={this.handleChange}
                 value={this.state.menu_value}>
-                <option id="account" disabled selected hidden value="account">
+                <option
+                  id="account"
+                  className="list-option"
+                  disabled
+                  selected
+                  hidden
+                  value="account">
                   Account
                 </option>
-                <option id="profile" value="profile">
-                  View My Profile
-                </option>
-                <option id="logout" value="logout">
-                  Logout
-                </option>
+                {this.props.isAuthenticated ? (
+                  <option id="profile" className="list-option" value="profile">
+                    View My Profile
+                  </option>
+                ) : null}
+                {this.props.isAuthenticated ? (
+                  <option id="logout" className="list-option" value="logout">
+                    Logout
+                  </option>
+                ) : (
+                  <option id="login" className="list-option" value="login">
+                    Login
+                  </option>
+                )}
               </select>
             </form>
           </Nav.Item>
@@ -100,4 +122,20 @@ class Navigation extends Component {
   }
 }
 
-export default withRouter(Navigation);
+Navigation.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object,
+  logoutUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {logoutUser},
+  )(Navigation),
+);

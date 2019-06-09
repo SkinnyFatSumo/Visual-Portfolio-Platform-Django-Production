@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 // Actions
-import {postPhoto} from '../../actions/photoActions';
+import {rudPhoto, postPhoto} from '../../actions/photoActions';
 
 // Helpers
 import {validOwner} from '../support/helpers';
@@ -76,6 +76,7 @@ class CreateOrEditPhoto extends Component {
     if (action === 'create') {
       this.props.postPhoto(photo);
     } else if (action === 'edit') {
+      this.props.rudPhoto(this.state.id, 'PUT', photo);
       console.log('submit update');
     } else if (action === 'info') {
       console.log('info');
@@ -89,6 +90,7 @@ class CreateOrEditPhoto extends Component {
       thumbnail_source,
       thumbnail_width,
       thumbnail_height,
+      id
     } = this.state;
     const {action, toggleOpen, isOpen, disabled} = this.props;
     var openName;
@@ -213,6 +215,7 @@ class CreateOrEditPhoto extends Component {
 
 CreateOrEditPhoto.propTypes = {
   postPhoto: PropTypes.func.isRequired,
+  rudPhoto: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   user: PropTypes.object,
 };
@@ -224,5 +227,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {postPhoto},
+  {postPhoto, rudPhoto},
 )(CreateOrEditPhoto);

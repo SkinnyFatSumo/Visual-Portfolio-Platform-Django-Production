@@ -31,7 +31,7 @@ function columns(containerWidth) {
 }
 
 function PhotoGrid(props) {
-  if (props.photos_loaded && props.tags_loaded) {
+  if (props.photos_loaded && props.tags_loaded && props.photos.length > 0) {
     const photo_list = props.photos.map(photo => ({
       src: photo.thumbnail_source,
       width: photo.thumbnail_width,
@@ -52,7 +52,13 @@ function PhotoGrid(props) {
       </div>
     );
   } else {
-    return 'Content still loading';
+    return (
+      <div className="centering-container">
+        <div className="general-outer-container">
+          <h5>User Has No Photos</h5>
+        </div>
+      </div>
+    );
   }
 }
 

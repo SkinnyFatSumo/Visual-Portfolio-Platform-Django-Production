@@ -8,6 +8,9 @@ import AddRelationDefaultPhoto from './AddRelationDefaultPhoto';
 import Carousel from 'react-bootstrap/Carousel';
 import {Button, ButtonGroup, ButtonToolbar, Collapse} from 'react-bootstrap';
 import CreateOrEditPhoto from './CreateOrEditPhoto';
+
+// Actions
+import {rudPhoto} from '../../actions/photoActions';
 // Helpers
 import PropTypes from 'prop-types';
 import {validOwner} from '../support/helpers';
@@ -32,6 +35,12 @@ class PhotoGallery extends Component {
     this.handlePhotoVsTag = this.handlePhotoVsTag.bind(this);
   }
 
+  deletePhoto = event => {
+    event.preventDefault();
+    console.log('deletePhoto called');
+    this.props.rudPhoto(event.target.id, 'DELETE');
+  };
+
   handleSelect = (selectedIndex, e) => {
     console.log('index from handle', this.state.index);
     console.log('photos', this.props.photos);
@@ -54,7 +63,18 @@ class PhotoGallery extends Component {
       this.setState({tagActive: !this.state.tagActive});
     }
   };
-  
+
+  launchDetailView = event => {
+    event.preventDefault();
+    //  PUSH TO GALLERY VIEW
+    this.props.history.push(
+      '/user/' +
+        this.props.match.params.username +
+        '/detail/' +
+        event.target.id,
+    );
+  };
+
   mapTagButtons = (tags, photo_id, destroyRelation) => {
     console.log('tag_id', tag_id);
     var titles_list = photos.map(photo =>
@@ -129,6 +149,11 @@ class PhotoGallery extends Component {
             </div>
             <div className="toolbar-container">
               <ButtonToolbar className="tags-and-photo-toolbar">
+                <Button
+                  onClick={this.launchDetailView}
+                  id={this.props.photos[index].id}>
+                  View Full Res
+                </Button>
                 <CreateOrEditPhoto
                   action={action}
                   isOpen={photoActive}
@@ -143,13 +168,24 @@ class PhotoGallery extends Component {
                     photo_id={this.props.photos[index].id}
                   />
                 ) : null}
+                <Button
+                  onClick={this.deletePhoto}
+                  id={this.props.photos[index].id}>
+                  Delete Photo
+                </Button>
               </ButtonToolbar>
             </div>
           </div>
         </div>
       );
     } else {
-      return <h1>Gallery NOT Loaded</h1>;
+      return (
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <h5>User Has No Photos</h5>
+          </div>
+        </div>
+      );
     }
   }
 }
@@ -159,6 +195,7 @@ PhotoGallery.propTypes = {
   photos: PropTypes.array.isRequired,
   photos_loaded: PropTypes.bool.isRequired,
   photos_loading: PropTypes.bool.isRequired,
+  rudPhoto: PropTypes.func.isRequired,
 
   // TAGS
   tags: PropTypes.array.isRequired,
@@ -194,6 +231,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    {rudPhoto},
   )(PhotoGallery),
 );

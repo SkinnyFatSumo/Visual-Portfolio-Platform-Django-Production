@@ -43,12 +43,14 @@ class ContentRoot extends Component {
       viewTagsActive: false,
       createOrEditPhotoActive: false,
     };
+    /*
     this.launchProfileView = this.launchProfileView.bind(this);
     this.launchGalleryView = this.launchGalleryView.bind(this);
     this.launchGridView = this.launchGridView.bind(this);
     this.launchTagsView = this.launchTagsView.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
     this.handlePhotoVsTags = this.handlePhotoVsTags.bind(this);
+    */ 
   }
 
   // ------------------
@@ -265,25 +267,6 @@ class ContentRoot extends Component {
     // ONLY ACTIVATE NAVIGATION BUTTONS IF PHOTOS ARE LOADED
     var active;
     photos_loaded ? (active = true) : (active = false);
-
-    if (all_photos_loaded && all_photos.length === 0)
-      return (
-        <div className="centering-container">
-          <div className="general-outer-container">
-            <h4 className="error-message">
-              This user hasn't uploaded any photos yet.
-            </h4>
-          </div>
-        </div>
-      );
-    if (!allUsersLoaded)
-      return (
-        <div className="centering-container">
-          <div className="general-outer-container">
-            <h1 className="error-message">Loading Users</h1>;
-          </div>
-        </div>
-      );
 
     return (
       <div id="main-toolbars-container">

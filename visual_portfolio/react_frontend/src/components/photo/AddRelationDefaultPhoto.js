@@ -62,7 +62,7 @@ class AddRelationDefaultPhoto extends Component {
             id={remaining_tag.id}
             name={remaining_tag.tagname}
             onClick={
-              option_type === 'add-photo' ? this.addRelation : this.delRelation
+              option_type === 'add-button' ? this.addRelation : this.delRelation
             }
           />
         </ButtonGroup>
@@ -135,12 +135,12 @@ class AddRelationDefaultPhoto extends Component {
 
     const unrelated_tag_buttons = this.prepTags(
       unrelated_tags,
-      'add_button',
+      'add-button',
       add_tagname,
     );
     const related_tag_buttons = this.prepTags(
       related_tags,
-      'remove_button',
+      'remove-button',
       del_tagname,
     );
 

@@ -6,12 +6,43 @@ import {
   LOGIN_FAILURE,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  LOGOUT,
 } from './types';
 
 // CHECK TOKEN AND LOAD USER
 
+export const logoutUser = () => (dispatch, getState) => {
+  const token = getState().auth.token;
+  const auth_endpoint = 'http://localhost:8000/api/auth/logout';
+  const auth_lookupOptions = {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  };
+
+  if (token) {
+    auth_lookupOptions.headers['Authorization'] = `Token ${token}`;
+  }
+
+  fetch(auth_endpoint, auth_lookupOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response;
+    })
+    .then(
+      dispatch({
+        type: LOGOUT,
+      }),
+    )
+    .catch(error => {
+      console.log(error);
+    });
+};
+
 export const authenticateUser = () => (dispatch, getState) => {
   dispatch({type: AUTHENTICATION_LOADING});
+  
 
   const token = getState().auth.token;
   const auth_endpoint = 'http://localhost:8000/api/auth/user';
@@ -78,8 +109,9 @@ export const loginUser = userData => dispatch => {
     });
 };
 
-
 export const registerUser = userData => dispatch => {
+
+  console.log('stringified', JSON.stringify(userData));
   const register_lookupOptions = {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

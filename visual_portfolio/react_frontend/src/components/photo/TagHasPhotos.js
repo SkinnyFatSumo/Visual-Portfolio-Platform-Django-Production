@@ -15,6 +15,8 @@ import {
   Row,
 } from 'react-bootstrap';
 
+import {validOwner} from '../support/helpers';
+
 function Columns(containerWidth) {
   let columns = 1;
   if (containerWidth >= 400) columns = 2;
@@ -48,9 +50,7 @@ class TagHasPhotos extends Component {
   mapPhotoButtons = (photos, tag_id, destroyRelation) => {
     console.log('tag_id', tag_id);
     var titles_list = photos.map(photo =>
-      this.props.user !== null &&
-      this.props.user.username === this.props.match.params.username &&
-      this.props.isAuthenticated ? (
+      validOwner(this.props) ? (
         <ButtonGroup className="photo-button-group" key={photo.id}>
           <Button
             className="photo-button-name"
@@ -78,12 +78,10 @@ class TagHasPhotos extends Component {
 
   toggleActive = e => {
     e.preventDefault();
-    console.log('toggling active');
     var new_button_state;
     this.state.buttonClass === 'button-active'
       ? (new_button_state = 'button-inactive')
       : (new_button_state = 'button-active');
-    console.log('button state', this.state.buttonClass);
     this.setState({
       isActive: !this.state.isActive,
       buttonClass: new_button_state,
@@ -139,9 +137,7 @@ class TagHasPhotos extends Component {
                 )}
               </div>
             </div>
-            {this.props.user !== null &&
-            this.props.user.username === this.props.match.params.username &&
-            this.props.isAuthenticated ? (
+            {validOwner(this.props) ? (
               <div className="general-outer-container">
                 <AddRelationDefaultTag
                   tagname={this.props.tagname}
@@ -157,9 +153,7 @@ class TagHasPhotos extends Component {
                 columns={Columns}
               />
             </div>
-            {this.props.user !== null &&
-            this.props.user.username === this.props.match.params.username &&
-            this.props.isAuthenticated ? (
+            {validOwner(this.props) ? (
               <Button
                 variant="danger"
                 className="remove-tag-button"

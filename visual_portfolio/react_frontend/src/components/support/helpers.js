@@ -45,7 +45,6 @@ export const tagStringFromURL = path => {
   return tag_string;
 };
 
-
 export const validOwner = props => {
   var valid_owner = false;
   props.user !== null &&
@@ -55,4 +54,3 @@ export const validOwner = props => {
     : null;
   return valid_owner;
 };
-

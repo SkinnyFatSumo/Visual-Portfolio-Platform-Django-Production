@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Router, withRouter, Link, Redirect} from 'react-router-dom';
 import {Button, Form, Collapse, Col} from 'react-bootstrap';
-import {Connect} from 'react-redux';
 import PropTypes from 'prop-types';
 // import '../../css/users/login.css';
 
@@ -41,7 +40,7 @@ class Login extends Component {
   render() {
     if (this.props.isAuthenticated) {
       const user_profile_endpoint =
-        '/user/' + this.props.user.username + '/profile/';
+        '/user/' + this.props.user.username + '/grid/';
       return <Redirect to={user_profile_endpoint} />;
     }
     const {email, password} = this.state;
@@ -73,14 +72,19 @@ class Login extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Group>
-              <Button variant="primary" name="submit" type="submit">
+              <Button
+                id="register-login-button"
+                name="submit"
+                type="submit">
                 Submit
               </Button>
             </Form>
           </div>
-          <Link to="/register" className="general-outer-container" id="account">
-            Don't have an Account? Click here to register.
-          </Link>
+          <div className="general-outer-container" id="register-or-login-link">
+            <Link to="/register" className="nav-link">
+              Don't have an Account? Click here to register.
+            </Link>
+          </div>
         </div>
       </div>
     );

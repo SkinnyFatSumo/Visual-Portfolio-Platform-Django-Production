@@ -19,6 +19,8 @@ import {
   RUD_RELATION_LOADING,
   RUD_RELATION_SUCCESS,
   RUD_RELATION_FAILURE,
+  
+  RUD_PHOTO_SUCCESS,
 
   RUD_TAG_LOADING,
   RUD_TAG_SUCCESS,
@@ -143,6 +145,8 @@ export default function(state = initialState, action) {
       };
     case NEW_RELATION_SUCCESS:
     case RUD_RELATION_SUCCESS:
+    // when a photo is deleted, it's relation is broken too
+    case RUD_PHOTO_SUCCESS:
       return {
         ...state,
         relation: action.payload,

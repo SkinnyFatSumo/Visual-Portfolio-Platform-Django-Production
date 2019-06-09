@@ -5,6 +5,9 @@ import {
   PHOTOS_LOADING,
   PHOTOS_FAILURE,
   PHOTOS_SUCCESS,
+  RUD_PHOTO_LOADING,
+  RUD_PHOTO_FAILURE,
+  RUD_PHOTO_SUCCESS,
   ALL_PHOTOS_LOADING,
   ALL_PHOTOS_FAILURE,
   ALL_PHOTOS_SUCCESS,
@@ -25,16 +28,18 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     // AFTER POSTING NEW PHOTO, STORE INFO ON THAT PHOTO
-    // FORCE RELOAD OF ALL PHOTOS, AND ACTIVE PHOTOS
+      // FORCE RELOAD OF ALL PHOTOS, AND ACTIVE PHOTOS
+    case RUD_PHOTO_LOADING:
     case NEW_PHOTO_LOADING:
       return {
         ...state,
         photo_detail: action.payload,
-        all_photos_loaded: false,
-        photos_loaded: false,
+        // all_photos_loaded: false,
+        // photos_loaded: false,
         new_photo_loading: true,
         new_photo_loaded: false,
       };
+    case RUD_PHOTO_SUCCESS:
     case NEW_PHOTO_SUCCESS:
       return {
         ...state,
@@ -44,6 +49,7 @@ export default function(state = initialState, action) {
         new_photo_loading: false,
         new_photo_loaded: true,
       };
+    case RUD_PHOTO_FAILURE:
     case NEW_PHOTO_FAILURE:
       return {
         ...state,

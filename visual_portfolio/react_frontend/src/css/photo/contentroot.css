@@ -120,6 +120,13 @@
   display: inline-block;
 }
 
+#edit-tags-horizontal-rule
+{
+  width: 80%;
+  display: inline-block; 
+  margin: 5px 0px 5px 0px;
+}
+
 .photo-or-tag-add-form {
   display: inline-block;
   text-align: center;
@@ -220,23 +227,25 @@
 }
 
 .add-button:hover {
-  background-image: url('/static/app_main/plus-maroon.svg');
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-image: url('/static/app_main/plus-maroon.svg') !important;
 }
 
 .remove-button {
-  background-image: url('/static/app_main/garbage-white.svg');
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-image: url('/static/app_main/garbage-white.svg') !important;
+  background-size: 50% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.remove-button:hover {
+  background-image: url('/static/app_main/garbage-maroon.svg') !important;
 }
 
 .remove-tag-button {
   display: inline-block;
   margin: 5px 0px 5px 0px;
 }
+
 
 #submit-photo-button {
   display: inline-block !important;
