@@ -139,7 +139,10 @@ class PhotoGallery extends Component {
                 interval={null}>
                 {this.props.photos.map(photo => (
                   <Carousel.Item key={photo.id}>
-                    <img src={photo.photo_source} href={photo.photo_source} />
+                    <img
+                      src={photo.thumbnail_source}
+                      href={photo.thumbnail_source}
+                    />
                     <Carousel.Caption>
                       <h6>{photo.title}</h6>
                     </Carousel.Caption>
@@ -168,11 +171,13 @@ class PhotoGallery extends Component {
                     photo_id={this.props.photos[index].id}
                   />
                 ) : null}
-                <Button
-                  onClick={this.deletePhoto}
-                  id={this.props.photos[index].id}>
-                  Delete Photo
-                </Button>
+                {action === 'edit' ? (
+                  <Button
+                    onClick={this.deletePhoto}
+                    id={this.props.photos[index].id}>
+                    Delete Photo
+                  </Button>
+                ) : null}
               </ButtonToolbar>
             </div>
           </div>

@@ -39,6 +39,13 @@ function PhotoGrid(props) {
       key: photo.id,
     }));
     const photos_length = props.photos.length;
+    photo_list.forEach(photo => {
+      console.log(
+        'DIMENSIONS: ',
+        photo.src.offsetWidth,
+        photo.src.offsetHeight,
+      );
+    });
     console.log('photos length:', photos_length);
     return (
       <div id="gallery-border">

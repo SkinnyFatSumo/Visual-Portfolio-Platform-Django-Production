@@ -29,11 +29,9 @@ import TagListAll from './photo/TagListAll';
 // User
 import DiscoverUsers from './users/DiscoverUsers';
 import Login from './users/Login';
+import Navigation from './users/Navigation';
 import Profile from './users/Profile';
 import Register from './users/Register';
-
-// General
-import Navigation from './general/Navigation';
 
 // Support
 import Alerts from './support/Alerts';
@@ -69,6 +67,7 @@ class App extends Component {
         <Provider store={store}>
           <Router history={history}>
             <Route path="/" component={Navigation} />
+            <Route exact path="/" component={Login} />
             <Route path="/register/" component={Register} />
             <Route path="/login/" component={Login} />
             <Route
