@@ -12,17 +12,17 @@ Content can be created, edited, and deleted with immediate effect across four di
 
 Quickly register and start adding content:
 
-![](register.gif)
+![](gifs/register.gif)
 
 
 Sort and view photos from multipe display options:
 
-![](add-and-sort-tags.gif)
+![](gifs/add-and-sort-tags.gif)
 
 
 A similar interface makes navigation easy whether logged in or out:
 
-![](protected-routes.gif)
+![](gifs/protected-routes.gif)
 
 -------------------------------------------------------------------
 
@@ -40,8 +40,4 @@ https://github.com/neptunian/react-photo-gallery
 
 Libaries / Frameworks:
 
-Django
-Django Rest Framework
-React
-React Router
-Redux
+Django, Django Rest Framework, React, React Router, Redux
