@@ -66,26 +66,31 @@ class App extends Component {
       <div id="body">
         <Provider store={store}>
           <Router history={history}>
-            <Route path="/" component={Navigation} />
-            <Route exact path="/" component={Login} />
-            <Route path="/register/" component={Register} />
-            <Route path="/login/" component={Login} />
-            <Route
-              path="/user/:username/:display/:urltags?"
-              component={ContentRoot}
-            />
-            <Route path="/user/:username/profile/" component={Profile} />
-            <Route
-              path="/user/:username/gallery/:urltags?"
-              component={PhotoGallery}
-            />
-            <Route
-              path="/user/:username/grid/:urltags?"
-              component={PhotoGrid}
-            />
-            <Route path="/user/:username/tags" component={TagListAll} />
-            <Route path="/user/:username/detail/:id" component={PhotoDetail} />
-            <Route path="/bad-url/:reason?" component={DiscoverUsers} />
+            <div>
+              <Route path="/" component={Navigation} />
+              <Route exact path="/" component={Login} />
+              <Route path="/register/" component={Register} />
+              <Route path="/login/" component={Login} />
+              <Route
+                path="/user/:username/:display/:urltags?"
+                component={ContentRoot}
+              />
+              <Route path="/user/:username/profile/" component={Profile} />
+              <Route
+                path="/user/:username/gallery/:urltags?"
+                component={PhotoGallery}
+              />
+              <Route
+                path="/user/:username/grid/:urltags?"
+                component={PhotoGrid}
+              />
+              <Route path="/user/:username/tags" component={TagListAll} />
+              <Route
+                path="/user/:username/detail/:id"
+                component={PhotoDetail}
+              />
+              <Route path="/bad-url/:reason?" component={DiscoverUsers} />
+            </div>
           </Router>
         </Provider>
       </div>
