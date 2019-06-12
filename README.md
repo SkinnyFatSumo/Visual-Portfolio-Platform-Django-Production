@@ -20,7 +20,7 @@ Sort and view photos from multipe display options:
 ![](gifs/add-and-sort-tags.gif)
 
 
-A similar interface makes navigation easy whether logged in or out:
+A parallel user interface makes navigation easy whether logged in or out:
 
 ![](gifs/protected-routes.gif)
 
