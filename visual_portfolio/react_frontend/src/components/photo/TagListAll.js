@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import {groupByProperty, validOwner} from '../support/helpers';
 
 // React Bootstrap
-import { ButtonToolbar, Form } from 'react-bootstrap';
+import {ButtonToolbar, Form} from 'react-bootstrap';
 
 // CSS
 import '../../css/photo/taglistall.css';
@@ -31,11 +31,13 @@ class TagListAll extends Component {
     this.state = {
       addTagActive: false,
       searchTagActive: false,
+      activeTag: null,
     };
 
     this.handleAddVsSearch = this.handleAddVsSearch.bind(this);
     this.assignData = this.assignData.bind(this);
-    this.closeAddAndSearch = this.closeAddAndSearch.bind(this);
+    this.setActiveTag = this.setActiveTag.bind(this);
+    this.unsetActiveTag = this.unsetActiveTag.bind(this);
     this.destroyRelation = this.destroyRelation.bind(this);
     this.destroyTag = this.destroyTag.bind(this);
   }
@@ -54,8 +56,16 @@ class TagListAll extends Component {
     }
   };
 
-  closeAddAndSearch = () => {
-    this.setState({addTagActive: false, searchTagActive: false});
+  setActiveTag = event => {
+    event.preventDefault();
+    this.setState({addTagActive: false, searchTagActive: false, activeTag: event.target.name});
+    console.log('set tag pressed was:', event.target.name);
+  };
+  
+  unsetActiveTag = event => {
+    event.preventDefault();
+    this.setState({activeTag: null});
+    console.log('unset tag pressed was:', event.target.name);
   };
 
   destroyRelation = event => {
@@ -175,6 +185,9 @@ class TagListAll extends Component {
         tag_id={tag.tag_id}
         tagname={tag.tagname}
         user={this.props.user}
+        activeTag={this.state.activeTag}
+        setActiveTag={this.setActiveTag}
+        unsetActiveTag={this.unsetActiveTag}
       />
     ));
 
@@ -188,37 +201,35 @@ class TagListAll extends Component {
         relations={this.props.relations}
         user={this.props.user}
         isAuthenticated={this.props.isAuthenticated}
+        activeTag={this.state.activeTag}
+        setActiveTag={this.setActiveTag}
+        unsetActiveTag={this.unsetActiveTag}
       />
     ));
 
     return (
       <div className="tag-container" id="tags-area">
-        <h3 className="tag-container" id="all-tags-header" className="header">
-          All Tags
-        </h3>
-        <div id="tags-list">
-          <div className="tag-container" id="tags-with-photos-container">
-            {validOwner(this.props) ? (
-              <h4 id="tags-with-photos-header" className="header">
-                Tags With Associated Photos
-              </h4>
-            ) : null}
-            <div id="tags-with-photos-body" className="body">
-              {per_tag_with_photos}
+        <div className="tag-container" id="tags-with-photos-container">
+          <h4 id="tags-with-photos-header" className="header">
+            {validOwner(this.props)
+              ? 'Tags With Associated Photos'
+              : 'All Tags'}
+          </h4>
+          <div id="tags-with-photos-body" className="body">
+            {per_tag_with_photos}
+          </div>
+        </div>
+        {per_tag_no_photos.length > 0 && validOwner(this.props) ? (
+          <div className="tag-container" id="tags-no-photos-container">
+            <h4 id="tags-without-photos-header" className="header">
+              Tags Without Associated Photos
+            </h4>
+
+            <div id="tags-without-photos-body" className="body">
+              {per_tag_no_photos}
             </div>
           </div>
-          {per_tag_no_photos.length > 0 && validOwner(this.props) ? (
-            <div className="tag-container" id="tags-no-photos-container">
-              <h4 id="tags-without-photos-header" className="header">
-                Tags Without Associated Photos
-              </h4>
-
-              <div id="tags-without-photos-body" className="body">
-                {per_tag_no_photos}
-              </div>
-            </div>
-          ) : null}
-        </div>
+        ) : null}
       </div>
     );
   };
@@ -237,17 +248,16 @@ class TagListAll extends Component {
                   <AddTag
                     isOpen={this.state.addTagActive}
                     toggleOpen={this.handleAddVsSearch}
-                    closeAll={this.closeAddAndSearch}
                   />
                 ) : null}
                 <FindTagByName
                   isOpen={this.state.searchTagActive}
                   toggleOpen={this.handleAddVsSearch}
-                  closeAll={this.closeAddAndSearch}
+                  setActiveTag={this.setActiveTag}
                 />
               </ButtonToolbar>
             </div>
-            <div id="all-tags-content-container" className="content-container">
+            <div id="all-tags-content-container">
               <Form id="all-tags-body-form">{this.assignData()}</Form>
             </div>
           </div>

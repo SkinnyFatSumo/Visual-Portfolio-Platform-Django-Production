@@ -57,15 +57,16 @@ class FindTagByName extends Component {
       })
       .map(remaining_tag => (
         <Link
-          id={remaining_tag}
           to={
             '/user/' +
             this.props.match.params.username +
             '/tags#' +
             remaining_tag +
             '-dropdown'
-          }>
-          <Button onClick={this.clearState} id={remaining_tag}>
+          }
+          onClick={this.props.setActiveTag}
+          name={remaining_tag}>
+          <Button name={remaining_tag} id={remaining_tag}>
             {remaining_tag.toUpperCase()}
           </Button>
         </Link>

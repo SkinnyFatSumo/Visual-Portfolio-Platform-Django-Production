@@ -144,7 +144,7 @@ class PhotoGallery extends Component {
                       href={photo.thumbnail_source}
                     />
                     <Carousel.Caption>
-                      <h6>{photo.title}</h6>
+                      <h6 id="carousel-caption">{photo.title}</h6>
                     </Carousel.Caption>
                   </Carousel.Item>
                 ))}

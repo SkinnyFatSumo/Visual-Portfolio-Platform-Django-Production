@@ -76,16 +76,12 @@ class TagHasPhotos extends Component {
     return titles_list;
   };
 
-  toggleActive = e => {
-    e.preventDefault();
-    var new_button_state;
-    this.state.buttonClass === 'button-active'
-      ? (new_button_state = 'button-inactive')
-      : (new_button_state = 'button-active');
-    this.setState({
-      isActive: !this.state.isActive,
-      buttonClass: new_button_state,
-    });
+  toggleActive = event => {
+    console.log('toggling active');
+    event.preventDefault();
+    this.props.activeTag === event.target.name
+      ? this.props.unsetActiveTag
+      : this.props.setActiveTag;
   };
 
   render() {
@@ -121,10 +117,15 @@ class TagHasPhotos extends Component {
         <button
           className="tagname-button"
           id={this.props.tagname + '-dropdown'}
-          onClick={this.toggleActive}>
+          name={this.props.tagname}
+          onClick={
+            this.props.activeTag === this.props.tagname
+              ? this.props.unsetActiveTag
+              : this.props.setActiveTag
+          }>
           {this.props.tagname}
         </button>
-        {this.state.isActive ? (
+        {this.props.activeTag === this.props.tagname ? (
           <div className="tag-content-container">
             <div className="general-outer-container">
               <h4 className="sub-header">Photos</h4>

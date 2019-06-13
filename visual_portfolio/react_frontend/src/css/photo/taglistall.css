@@ -1,61 +1,45 @@
-#all-tags-content-container
-{
+#all-tags-content-container {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+#all-tags-body-form {
   margin-top: 5px;
 }
 
-#all-tags-header
-{
-  background-color: #332d2d;
-  color: white;
+#all-tags-header {
+  color: black;
   border-bottom-width: 3px !important;
 }
 
-button:hover
-{
+button:hover {
   background-color: #6b0700;
 }
 
-button:active
-{
+button:active {
   background-color: #6b0700;
 }
 
-#gallery
-{
+#gallery {
   background-color: #332d2d;
 }
 
-
-h3
-{
+h3 {
   color: white;
 }
 
-.header
-{
-  background-color: #d8d4d4);
-  text-align: center;
-  padding: 5px 0px 5px 0px;
-  border-radius: 10px 10px 0px 0px;
-  border-bottom-color: #840000;
-  border-bottom-width: 2px;
-  border-bottom-style: solid;
-}
-
-hr
-{
+hr {
   display: block;
   position: relative;
   clear: both;
   border: none;
   width: 95%;
-  background-color: #332d2d; 
+  background-color: #332d2d;
   height: 1px;
   margin: 0px 0px 5px 0px;
-} 
+}
 
-#photo-name-textbox
-{
+#photo-name-textbox {
   width: 100%;
   margin: 3px 0px 3px 0px;
   background-color: rgba(117, 16, 16, 0.05);
@@ -65,69 +49,76 @@ hr
   text-align: center;
 }
 
-
-.sub-header
-{
+.sub-header {
   font-size: 16px;
   font-weight: bold;
   margin: 3px;
   text-align: center;
-} 
+}
 
-#go-to-tag-container
-{
+#go-to-tag-container {
   margin: 0px 5px 0px 5px;
 }
 
-.tagname-button
-{
+.tagname-button {
   width: 100%;
   padding: 5px;
-  border-radius: 5px;
-  border-width: 1px;
-  background-color: maroon;
-  border-color: black;
-  color: white;
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-color: rgba(219, 219, 219, 1) !important;
+  border-radius: 0px !important;
+  color: rgba(52, 52, 52, 1);
   margin-bottom: 1px;
 }
 
-.tag-content-container
-{
+.tagname-button:hover {
+  border-color: rgba(52, 52, 52, 1) !important;
+}
+
+.tag-content-container {
   text-align: center;
 }
 
-#tags-area
-{
+#tags-area {
   margin-left: 15px;
   margin-right: 15px;
   border-style: solid;
   border-width: 1px;
-  border-color: black;
-  border-radius: 10px;
-  background-color: #ede3e3;
+  border-color: rgba(52, 52, 52, 1);
+  border-radius: 2px;
+  background-color: white;
 }
 
-#tags-list
-{
-  margin: 5px 10px 5px 10px;
+#tags-list {
+  padding: 5px 0px 5px 0px;
+  margin: 10px 10px 10px 10px;
   border-style: solid;
-  border-opacity: 10%;
+  border-color: (52, 52, 52, 0.2);
   border-width: 2px;
-  border-color: rgba(51, 45, 45, 0.1);
   border-radius: 10px;
-
 }
 
-#tags-without-photos-header
-{
+#tags-with-photos-header {
+  margin-top: 5px;
+  text-align: center;
+  padding: 5px 0px 5px 0px;
+  border-style: solid;
+  border-color: rgba(2, 33, 54, 1);
+  border-width: 2px 0px 2px 0px;
+}
+
+#tags-without-photos-header {
+  text-align: center;
+  padding: 5px 0px 5px 0px;
   margin-top: 10px;
   border-style: solid;
-  border-color: rgba(51, 45, 45, 0.1);
+  border-width: 2px 0px 2px 0px;
 }
 
-#tags-with-photos-body
-{
+#tags-with-photos-body {
   padding: 0px 5px 0px 5px;
 }
 
-
+#tags-without-photos-body {
+  padding: 0px 5px 0px 5px;
+}

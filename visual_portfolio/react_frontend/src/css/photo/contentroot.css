@@ -6,7 +6,6 @@
 .carousel {
   margin: 20px 20px 20px 20px;
   max-width: 1200px;
-  background-color: black;
 }
 
 .carousel-item {
@@ -18,13 +17,20 @@
   display: inline-block !important;
   max-height: 100%;
   max-width: 100%;
+  box-shadow: 5px -5px 5px rgba(50, 50, 50, .3); 
+}
+
+#carousel-caption {
+  background-color: rgba(0, 0, 0, .3) !important;
+  display: inline;
+  margin: 0 auto;
+  padding: 3px;
+  border-radius: 2px;
 }
 
 #outer-carousel {
-  background-color: black;
-  margin: 20px 20px 20px 20px;
-  padding: 20px 20px 20px 20px;
   max-width: 1200px;
+  background-color: rgba(0, 0, 0, .2);
 }
 
 /*=========== COLLAPSIBLE BOXES =============*/
@@ -34,12 +40,7 @@
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 2;
-  background-color: #d8d4d4;
-  border-style: solid;
-  border-color: maroon;
-  border-width: 1px;
-  border-radius: 5px;
-  padding: 2px;
+
 }
 
 .collapse-tags-box {
@@ -54,8 +55,7 @@
 }
 
 #collapse-tags-active:hover .btn:hover {
-  border-color: maroon !important;
-  color: maroon !important;
+  border-color: white !important;
 }
 
 #collapse-tags-inactive .btn {
@@ -65,28 +65,27 @@
 }
 
 #collapse-tags-inactive:hover .btn:hover {
-  border-color: maroon !important;
-  color: maroon !important;
+  border-color: #332d2d !important;
 }
 
 /*============ GENERAL FORMS/CONTAINERS ===========*/
 
-#gallery-border {
+#grid-border {
   border-style: solid;
-  border-color: maroon;
-  border-width: 1px;
-  border-radius: 5px;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 2px;
   margin: 5px;
   position: relative;
   z-index: 1;
   text-align: center;
 }
 
-#gallery-container {
+#grid-container {
   border-style: solid;
   border-color: rgba(51, 45, 45, 1);
   border-width: 1px;
-  border-radius: 5px;
+  border-radius: 2px;
   margin: 5px;
   padding: 2px;
   background-color: rgba(51, 45, 45, 1);
@@ -132,18 +131,19 @@
   text-align: center;
   margin: 2px;
   padding: 5px;
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   border-radius: 5px;
+  background-color: rgba(219, 219, 219, 1);
 }
 
 .tag-select-container {
-  margin: 2px;
+  background-color: rgba(219, 219, 219, 1) !important;
   padding: 5px;
   border-style: solid;
   border-color: rgba(51, 45, 45, 1);
-  border-width: 2px;
-  border-radius: 5px;
+  border-width: 1px;
+  border-radius: 2px;
 }
 
 #submit-photo-button-container {
@@ -157,23 +157,23 @@
 #add-tag .btn {
   border-color: black;
   width: 100%;
-  background-color: rgba(51, 45, 45, 1);
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #add-tag:hover .btn:hover {
   border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #find-tag .btn {
   border-color: black;
   width: auto;
-  background-color: rgba(51, 45, 45, 1);
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #find-tag:hover .btn:hover {
   border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 .tagname-button {
@@ -181,7 +181,7 @@
   padding: 5px;
   border-radius: 5px;
   border-width: 1px;
-  background-color: maroon;
+  background-color: rgba(219, 219, 219, 1) !important;
   border-color: black;
   color: white;
   margin-bottom: 1px;
@@ -193,6 +193,7 @@
 
 #inactive-tags .btn {
   margin: 1px;
+  color: white !important;
 }
 
 /* Button Group */
@@ -238,7 +239,7 @@
 }
 
 .remove-button:hover {
-  background-image: url('/static/app_main/garbage-maroon.svg') !important;
+  background-image: url('/static/app_main/garbage-black.svg') !important;
 }
 
 .remove-tag-button {
@@ -266,7 +267,7 @@
   color: maroon;
   background-color: white;
   border-color: maroon;
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   border-radius: 10px;
   margin: 5px 1px 1px 0px;
@@ -283,29 +284,31 @@
 }
 
 .tags-and-photo-toolbar .btn {
-  color: white;
-  background-color: maroon;
-  border-color: rgba(33, 29, 29, 1);
+  color: rgba(52, 52, 52, 1);
+  background-color: rgba(219, 219, 219, 1) !important;
+  border-color: rgba(52, 52, 52, 0);
   border-width: 1px;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 2px;
   margin: 5px 1px 1px 0px;
   width: 130px;
 }
 
 .tags-and-photo-toolbar:hover .btn:hover {
-  background-color: #6b0700;
+  border-color: rgba(52, 52, 52, 1);
+  background-color: rgba(209, 209, 209, 1) !important;
 }
 
 .tags-and-photo-toolbar:focus .btn:focus {
-  background-color: #6b0700 !important;
+  border-color: rgba(52, 52, 52, 1);
+  background-color: rgba(209, 209, 209, 1) !important;
 }
 
 .tag-filter-toolbar {
   margin: 2px;
   padding: 1px;
-  border-color: maroon;
+  border-color: rgba(52, 52, 52, 1);
   border-style: solid;
   border-width: 1px;
-  border-radius: 5px;
+  border-radius: 2px;
 }

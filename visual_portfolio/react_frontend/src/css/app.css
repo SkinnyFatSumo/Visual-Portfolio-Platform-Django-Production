@@ -1,12 +1,7 @@
-
-
-
-
 /*===============GENERAL CONTAINERS======================*/
 
-
 #body {
-  background-color: #d8d4d4;
+  background-color: rgba(2, 33, 54, 1);
 }
 
 .centering-container {
@@ -21,15 +16,18 @@
   padding: 5px;
   border-style: solid;
   border-width: 1px;
-  border-color: maroon;
-  border-radius: 10px;
+  border-color: rgba(52, 52, 52, .5);
+  border-radius: 2px;
   background-color: rgba(117, 16, 16, 0.05);
+  color: white;
 }
 
 .form-element-box {
   border-style: solid;
   border-width: 1px;
-  border-color: maroon;
+  border-color: rgba(52, 52, 52, .2);
+  width: 90%;
+  margin: 0 auto;
 }
 
 .general-form-container {
@@ -37,64 +35,53 @@
   padding: 5px;
   border-width: 2px;
   border-style: solid;
-  border-radius: 5px;
+  border-radius: 2px;
   border-color: rgba(51, 45, 45, 1);
 }
 
-
 /*===========PROFILE AND LOGIN/REGISTER=================*/
 
-#account
-{
-  border-radius: 5px;
+#account {
+  border-radius: 2px;
+  background-color: rgba(219, 219, 219, 1) !important;
+  color: rgba(52, 52, 52, 1);
 }
 
+/*
 .account-form-container {
   margin: 10px 0px 0px 10px;
   display: inline-block;
   width: 95%;
   background-color: #d8d4d4;
   border-style: solid;
-  border-color: maroon;
+  border-color: rgba(52, 52, 52, 1);
   border-width: 1px;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 2px;
+  color: rgba(52, 52, 52, 1);
 }
-
+*/
 
 .login-or-register-container {
   display: inline-block;
   max-width: 600px;
   margin: 20px;
-  padding: 15px 5px 20px 5px;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 5px;
-  border-color: rgba(51, 45, 45, 1);
+  color: rgba(52, 52, 52, 1);
 }
 
-#register-or-login-link
-{
-  border-radius: 5px;
+#register-or-login-link {
+  border-radius: 2px;
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
-#register-form {
-  border-color: maroon;
-  color: rgba(51, 45, 45, 1);
-}
-
-#login-form {
-  border-color: maroon;
-  color: rgba(51, 45, 45, 1);
-}
 
 /*=============== NAVGATION BAR =================*/
 
 #account-options-selector {
   border-style: solid;
-  border-width: 2px;
-  border-radius: 5px 5px 5px 5px;
-  border-color: maroon;
+  border-width: 1px;
+  border-radius: 2px 2px 2px 2px;
+  border-color: rgba(52, 52, 52, 1);
   background-color: white;
   width: 140px;
   height: 30px;
@@ -102,15 +89,15 @@
 
 .list-option {
   border-bottom-style: solid;
-  border-bottom-color: rgba(51, 45, 45, 1);
+  border-bottom-color: rgba(52, 52, 52, 1);
   border-bottom-width: 1px;
 }
 
 .navbar {
   padding: 1px !important;
-  background-color: rgba(51, 45, 45, 1) !important;
+  background-color: rgba(219, 219, 219, 1) !important;
   border-bottom-style: solid !important;
-  border-bottom-color: maroon !important;
+  border-bottom-color: rgba(52, 52, 52, 1) !important;
   border-bottom-width: 3px !important;
   color: white !important;
 }
@@ -123,6 +110,7 @@
 #nav-viewing-user {
   padding-top: 5px;
   font-size: 16px;
+  color: black;
 }
 
 #nav-dropdown-title .nav-item {
@@ -138,18 +126,20 @@
 
 #search-users-input-navbar {
   border-style: solid;
-  border-width: 2px 0px 2px 2px;
-  border-radius: 5px 0px 0px 5px;
-  border-color: maroon;
+  border-width: 1px 0px 1px 1px;
+  border-radius: 2px 0px 0px 2px;
+  border-color: rgba(52, 52, 52, 1) !important;
+
+
   width: 140px;
   height: 30px;
 }
 
 #search-users-input-button-navbar {
   border-style: solid;
-  border-width: 2px 2px 2px 0px;
-  border-radius: 0px 5px 5px 0px;
-  border-color: maroon;
+  border-width: 1px 1px 1px 0px;
+  border-radius: 0px 2px 2px 0px;
+  border-color: rgba(52, 52, 52, 1) !important;
   height: 30px;
 }
 
@@ -157,14 +147,12 @@
   margin-top: 9px;
   padding: 4px;
   border-style: solid;
-  border-width: 2px 2px 2px 2px;
-  border-radius: 5px 5px 5px 5px;
-  border-color: maroon;
+  border-width: 1px 1px 1px 1px;
+  border-radius: 2px 2px 2px 2px;
+  border-color: rgba(52, 52, 52, 1);
 }
 
-
 /*=================== DISCOVER USERS / SEARCH USERS PAGE ==================*/
-
 
 #discover-users-container {
   text-align: center;
@@ -179,9 +167,9 @@
   display: inline-block;
   margin: 20px 0px 20px 20px;
   border-style: solid;
-  border-width: 5px 0px 5px 5px;
-  border-radius: 10px 0px 0px 10px;
-  border-color: maroon;
+  border-width: 1px 0px 1px 1px;
+  border-radius: 2px 0px 0px 2px;
+  border-color: rgba(52, 52, 52, 1);
   max-width: 50%;
 }
 
@@ -189,18 +177,17 @@
   display: inline-block;
   margin: 0px 20px 0px 0px;
   border-style: solid;
-  border-width: 5px 5px 5px 0px;
-  border-radius: 0px 10px 10px 0px;
-  border-color: maroon;
+  border-width: 1px 1px 1px 0px;
+  border-radius: 0px 2px 2px 0px;
+  border-color: rgba(52, 52, 52, 1);
   min-width: 10%;
 }
 
-
 #register-login-button {
-  background-color: maroon !important;
-  border-color: black !important;
+  border-color: rgba(52, 52, 52, 1) !important;
   width: auto !important;
-  color: white !important;
+  color: rgba(52, 52, 52, 1) !important;
+  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #register-login-button:hover {
@@ -208,5 +195,5 @@
 }
 
 .nav-link {
-  color: maroon !important;
+  color: rgba(52, 52, 52, 1) !important;
 }

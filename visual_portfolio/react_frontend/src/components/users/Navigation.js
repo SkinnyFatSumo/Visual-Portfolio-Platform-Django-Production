@@ -81,7 +81,6 @@ class Navigation extends Component {
         <Nav>
           <Nav.Item>
             <form
-              className="general-form-container"
               id="account-options-form"
               onSubmit={this.onFormSubmit}>
               <select

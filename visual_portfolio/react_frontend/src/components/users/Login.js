@@ -53,6 +53,7 @@ class Login extends Component {
               <Form.Group controlId="formGroupEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
+                  autoComplete="off"
                   className="form-element-box"
                   type="email"
                   name="email"

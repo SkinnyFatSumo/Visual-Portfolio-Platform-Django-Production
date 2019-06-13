@@ -84,7 +84,7 @@ class App extends Component {
                 path="/user/:username/grid/:urltags?"
                 component={PhotoGrid}
               />
-              <Route path="/user/:username/tags" component={TagListAll} />
+              <Route path="/user/:username/tags/" component={TagListAll} />
               <Route
                 path="/user/:username/detail/:id"
                 component={PhotoDetail}
