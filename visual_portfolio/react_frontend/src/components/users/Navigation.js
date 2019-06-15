@@ -62,7 +62,7 @@ class Navigation extends Component {
           <Nav>
             <Nav.Item className="nav-item">
               <SearchUsers
-                style={match !== null ? {marginTop: '9px'} : null}
+                style={match === null ? {marginBottom: '9px'} : null}
                 quantity={5}
                 source="navbar"
                 id="navbar"
@@ -71,9 +71,7 @@ class Navigation extends Component {
             </Nav.Item>
             <Nav.Item className="nav-item">
               {match !== null ? (
-                <h4 id="nav-viewing-user">
-                  {match.params.username}
-                </h4>
+                <h4 id="nav-viewing-user">&nbsp;{match.params.username}&nbsp;</h4>
               ) : null}
             </Nav.Item>
           </Nav>
@@ -82,7 +80,10 @@ class Navigation extends Component {
           <Nav.Item>
             <form
               id="account-options-form"
-              onSubmit={this.onFormSubmit}>
+              onSubmit={this.onFormSubmit}
+              style={
+                match === null ? {marginBottom: '3px', marginTop: '3px'} : null
+              }>
               <select
                 className="account-options"
                 id="account-options-selector"

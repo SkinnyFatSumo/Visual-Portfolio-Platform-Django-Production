@@ -5,6 +5,7 @@ import {Router, withRouter, Redirect} from 'react-router-dom';
 // React Components
 import Gallery from 'react-photo-gallery';
 import AddRelationDefaultTag from './AddRelationDefaultTag';
+import DeleteRelationDefaultTag from './DeleteRelationDefaultTag';
 // Bootstrap Components
 import {
   Button,
@@ -32,7 +33,6 @@ class TagHasPhotos extends Component {
     this.state = {isActive: false, buttonClass: 'button-inactive'};
 
     this.launchDetailView = this.launchDetailView.bind(this);
-    this.mapPhotoButtons = this.mapPhotoButtons.bind(this);
     this.toggleActive = this.toggleActive.bind(this);
   }
 
@@ -45,35 +45,6 @@ class TagHasPhotos extends Component {
         '/detail/' +
         event.target.id,
     );
-  };
-
-  mapPhotoButtons = (photos, tag_id, destroyRelation) => {
-    console.log('tag_id', tag_id);
-    var titles_list = photos.map(photo =>
-      validOwner(this.props) ? (
-        <ButtonGroup className="photo-button-group" key={photo.id}>
-          <Button
-            className="photo-button-name"
-            id={photo.id}
-            onClick={this.launchDetailView}>
-            {photo.title}
-          </Button>
-          <Button
-            className="remove-button"
-            data-photo_id={photo.id}
-            data-tag_id={tag_id}
-            onClick={destroyRelation}
-          />
-        </ButtonGroup>
-      ) : (
-        <ButtonGroup className="photo-button-group">
-          <Button key={photo.id} id={photo.id} onClick={this.launchDetailView}>
-            {photo.title}
-          </Button>
-        </ButtonGroup>
-      ),
-    );
-    return titles_list;
   };
 
   toggleActive = event => {
@@ -128,15 +99,11 @@ class TagHasPhotos extends Component {
         {this.props.activeTag === this.props.tagname ? (
           <div className="tag-content-container">
             <div className="general-outer-container">
-              <h4 className="sub-header">Photos</h4>
-              <hr />
-              <div>
-                {this.mapPhotoButtons(
-                  associated_photos,
-                  this.props.tag_id,
-                  this.props.destroyRelation,
-                )}
-              </div>
+              <DeleteRelationDefaultTag
+                tagname={this.props.tagname}
+                tag_id={this.props.tag_id}
+                associated_photos={associated_photos}
+              />
             </div>
             {validOwner(this.props) ? (
               <div className="general-outer-container">
@@ -147,7 +114,7 @@ class TagHasPhotos extends Component {
                 />
               </div>
             ) : null}
-            <div id="gallery" className="general-outer-container">
+            <div id="grid-for-tags" className="general-outer-container">
               <Gallery
                 photos={photo_list}
                 directions={photos_length <= 4 ? 'column' : null}

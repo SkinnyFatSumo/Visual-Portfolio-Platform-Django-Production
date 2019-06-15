@@ -37,9 +37,22 @@ class TagListAll extends Component {
     this.handleAddVsSearch = this.handleAddVsSearch.bind(this);
     this.assignData = this.assignData.bind(this);
     this.setActiveTag = this.setActiveTag.bind(this);
+    this.setActiveTagFromState = this.setActiveTagFromState.bind(this);
     this.unsetActiveTag = this.unsetActiveTag.bind(this);
-    this.destroyRelation = this.destroyRelation.bind(this);
     this.destroyTag = this.destroyTag.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('STATE', this.props.location.state);
+    if (
+      this.props.location.state !== undefined &&
+      this.props.location.state.target_tag !== undefined &&
+      this.props.location.state.target_tag !== '' &&
+      this.props.location.state.target_tag !== this.state.activeTag
+    ) {
+      console.log('we got state');
+      this.setActiveTagFromState(this.props.location.state.target_tag);
+    }
   }
 
   handleAddVsSearch = event => {
@@ -58,29 +71,27 @@ class TagListAll extends Component {
 
   setActiveTag = event => {
     event.preventDefault();
-    this.setState({addTagActive: false, searchTagActive: false, activeTag: event.target.name});
+    this.setState({
+      addTagActive: false,
+      searchTagActive: false,
+      activeTag: event.target.name,
+    });
     console.log('set tag pressed was:', event.target.name);
   };
-  
+
+  setActiveTagFromState = tagname => {
+    this.setState({
+      addTagActive: false,
+      searchTagActive: false,
+      activeTag: tagname,
+    });
+    console.log('set tag pressed was:', tagname);
+  };
+
   unsetActiveTag = event => {
     event.preventDefault();
     this.setState({activeTag: null});
     console.log('unset tag pressed was:', event.target.name);
-  };
-
-  destroyRelation = event => {
-    event.preventDefault();
-    console.log('destroyRelation called');
-    console.log('this.props.relations', this.props.relations);
-    console.log(event.target.getAttribute('data-photo_id'));
-    console.log(event.target.getAttribute('data-tag_id'));
-    var relation = this.props.relations.find(
-      relation =>
-        relation.photo == event.target.getAttribute('data-photo_id') &&
-        relation.tag == event.target.getAttribute('data-tag_id'),
-    );
-    console.log('relation', relation);
-    this.props.rudRelation(relation.id, 'DELETE');
   };
 
   destroyTag = event => {
@@ -175,7 +186,6 @@ class TagListAll extends Component {
     const per_tag_with_photos = tag_array_with_photos.map(tag => (
       <TagHasPhotos
         all_photos={this.props.all_photos}
-        destroyRelation={this.destroyRelation}
         destroyTag={this.destroyTag}
         id={tag.tagname + '-dropdown'}
         isAuthenticated={this.props.isAuthenticated}
@@ -196,7 +206,7 @@ class TagListAll extends Component {
         all_photos={this.props.all_photos}
         destroyTag={this.destroyTag}
         key={tag.tagname}
-        tag_id={tag.id}
+        tag_id={tag.tag_id}
         tagname={tag.tagname}
         relations={this.props.relations}
         user={this.props.user}

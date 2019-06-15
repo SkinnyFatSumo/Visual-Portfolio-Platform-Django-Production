@@ -30,42 +30,66 @@ function columns(containerWidth) {
   return columns;
 }
 
-function PhotoGrid(props) {
-  if (props.photos_loaded && props.tags_loaded && props.photos.length > 0) {
-    const photo_list = props.photos.map(photo => ({
-      src: photo.thumbnail_source,
-      width: photo.thumbnail_width,
-      height: photo.thumbnail_height,
-      key: photo.id,
-    }));
-    const photos_length = props.photos.length;
-    photo_list.forEach(photo => {
-      console.log(
-        'DIMENSIONS: ',
-        photo.src.offsetWidth,
-        photo.src.offsetHeight,
+class PhotoGrid extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = (event, object) => {
+    event.preventDefault();
+    //  PUSH TO GALLERY VIEW
+    console.log('object', object);
+    this.props.history.push(
+      '/user/' +
+        this.props.match.params.username +
+        '/detail/' +
+        object.photo.key,
+    );
+  };
+
+  render() {
+    const {photos_loaded, tags_loaded, photos} = this.props;
+
+    if (photos_loaded && tags_loaded && photos.length > 0) {
+      const photo_list = photos.map(photo => ({
+        src: photo.thumbnail_source,
+        width: photo.thumbnail_width,
+        height: photo.thumbnail_height,
+        key: photo.id,
+      }));
+      const photos_length = photos.length;
+      photo_list.forEach(photo => {
+        console.log(
+          'DIMENSIONS: ',
+          photo.src.offsetWidth,
+          photo.src.offsetHeight,
+        );
+      });
+      console.log('photos length:', photos_length);
+
+      return (
+        <div id="grid-border">
+          <div id="grid-container">
+            <Gallery
+              photos={photo_list}
+              direction={photos_length <= 4 ? 'row' : 'column'}
+              columns={columns}
+              onClick={this.handleClick}
+            />
+          </div>
+        </div>
       );
-    });
-    console.log('photos length:', photos_length);
-    return (
-      <div id="grid-border">
-        <div id="grid-container">
-          <Gallery
-            photos={photo_list}
-            direction={photos_length <= 4 ? 'row' : 'column'}
-            columns={columns}
-          />
+    } else {
+      return (
+        <div className="centering-container">
+          <div className="general-outer-container">
+            <h5>User Has No Photos</h5>
+          </div>
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="centering-container">
-        <div className="general-outer-container">
-          <h5>User Has No Photos</h5>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

@@ -128,7 +128,7 @@ class PhotoGallery extends Component {
     if (this.props.photos[index] !== undefined) {
       return (
         <div className="centering-container">
-          <div className="general-outer-container">
+          <div className="general-outer-container" id="gallery-page">
             <div id="outer-carousel">
               <Carousel
                 activeIndex={index}

@@ -14,9 +14,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 // Actions
-import {postRelation} from '../../actions/tagActions';
+import {rudRelation} from '../../actions/tagActions';
 
-class AddRelationDefaultTag extends Component {
+import {validOwner} from '../support/helpers';
+
+class DeleteRelationDefaultTag extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +27,7 @@ class AddRelationDefaultTag extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.formSbumit = this.formSubmit.bind(this);
-    this.addRelation = this.addRelation.bind(this);
+    this.deleteRelation = this.deleteRelation.bind(this);
     this.launchDetailView = this.launchDetailView.bind(this);
     this.filterOutput = this.filterOutput.bind(this);
   }
@@ -38,15 +40,16 @@ class AddRelationDefaultTag extends Component {
     e.preventDefault();
   };
 
-  addRelation = e => {
-    e.preventDefault();
-    const relation = {
-      tag: this.props.tag_id,
-      photo: parseInt(event.target.id),
-      owner: this.props.user.id,
-      tagname: this.props.tagname,
-    };
-    this.props.postRelation(relation);
+  deleteRelation = event => {
+    event.preventDefault();
+    console.log('Tag ID', this.props.tag_id);
+    var relation = this.props.relations.find(
+      relation =>
+        relation.photo == event.target.id &&
+        relation.tag == this.props.tag_id,
+    );
+    console.log('relation', relation);
+    this.props.rudRelation(relation.id, 'DELETE');
   };
 
   launchDetailView = e => {
@@ -76,13 +79,12 @@ class AddRelationDefaultTag extends Component {
 
   render() {
     const {photo_title} = this.state;
-    const {unassociated_photos} = this.props;
-    console.log('unassociated photos', unassociated_photos);
+    const {associated_photos} = this.props;
     var photo_buttons = [];
 
     photo_title === 'all'
-      ? (photo_buttons = unassociated_photos)
-      : (photo_buttons = unassociated_photos.filter(photo =>
+      ? (photo_buttons = associated_photos)
+      : (photo_buttons = associated_photos.filter(photo =>
           photo.title.toLowerCase().includes(photo_title.toLowerCase()),
         ));
 
@@ -99,22 +101,33 @@ class AddRelationDefaultTag extends Component {
         }
         return 0;
       })
-      .map(remaining_photo => (
-        <ButtonGroup key={remaining_photo.id} className="photo-button-group">
-          <Button id={remaining_photo.id} onClick={this.launchDetailView}>
-            {remaining_photo.title}
-          </Button>
-          <Button
-            className="add-button"
-            id={remaining_photo.id}
-            onClick={this.addRelation}
-          />
-        </ButtonGroup>
-      ));
+      .map(remaining_photo =>
+        validOwner(this.props) ? (
+          <ButtonGroup key={remaining_photo.id} className="photo-button-group">
+            <Button id={remaining_photo.id} onClick={this.launchDetailView}>
+              {remaining_photo.title}
+            </Button>
+            <Button
+              className="remove-button"
+              id={remaining_photo.id}
+              onClick={this.deleteRelation}
+            />
+          </ButtonGroup>
+        ) : (
+          <ButtonGroup className="photo-button-group">
+            <Button
+              key={remaining_photo.id}
+              id={remaining_photo.id}
+              onClick={this.launchDetailView}>
+              {remaining_photo.title}
+            </Button>
+          </ButtonGroup>
+        ),
+      );
 
     return (
       <div>
-        <h4 className="sub-header">Add Photo To Tag</h4>
+        <h4 className="sub-header">Search Associated Photos</h4>
         <input
           autoComplete="off"
           id="photo-name-textbox"
@@ -131,18 +144,22 @@ class AddRelationDefaultTag extends Component {
   }
 }
 
-AddRelationDefaultTag.propTypes = {
-  postRelation: PropTypes.func.isRequired,
+DeleteRelationDefaultTag.propTypes = {
+  rudRelation: PropTypes.func.isRequired,
   user: PropTypes.object,
+  isAuthenticated: PropTypes.bool.isRequired,
+  relations: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
+  relations: state.tags.relations,
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    {postRelation},
-  )(AddRelationDefaultTag),
+    {rudRelation},
+  )(DeleteRelationDefaultTag),
 );

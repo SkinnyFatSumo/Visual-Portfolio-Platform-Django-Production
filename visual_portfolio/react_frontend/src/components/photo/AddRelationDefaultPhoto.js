@@ -54,7 +54,7 @@ class AddRelationDefaultPhoto extends Component {
       })
       .map(remaining_tag => (
         <ButtonGroup key={remaining_tag.id} className="photo-button-group">
-          <Button id={remaining_tag.id} onClick={this.launchTagView}>
+          <Button id={remaining_tag.id} name={remaining_tag.tagname} onClick={this.launchTagView}>
             {remaining_tag.tagname.toUpperCase()}
           </Button>
           <Button
@@ -92,11 +92,11 @@ class AddRelationDefaultPhoto extends Component {
 
   launchTagView(e) {
     e.preventDefault();
+    const tagname = e.target.name;
+    console.log('Tagname from launch', tagname);
     this.props.history.push(
-      '/user/' +
-        this.props.match.params.username +
-        '/tags#' +
-        e.target.name,
+      '/user/' + this.props.match.params.username + '/tags#' + e.target.name,
+      {target_tag: tagname},
     );
   }
 
@@ -160,7 +160,6 @@ class AddRelationDefaultPhoto extends Component {
                 <Form.Group as={Col}>
                   <Form.Control
                     autoComplete="off"
-                    className="form-element-box"
                     type="text"
                     name="add_tagname"
                     placeholder="find tag to add"
@@ -178,7 +177,6 @@ class AddRelationDefaultPhoto extends Component {
                 <Form.Group as={Col}>
                   <Form.Control
                     autoComplete="off"
-                    className="form-element-box"
                     type="text"
                     name="del_tagname"
                     placeholder="find tag to remove"

@@ -50,7 +50,6 @@ class AddTag extends Component {
             <Form className="photo-or-tag-add-form" id="add-tag" onSubmit={this.onSubmit}>
               <Form.Control
                 autoComplete="off"
-                className="form-element-box"
                 type="text"
                 name="tagname"
                 placeholder="sample tag"
@@ -58,7 +57,7 @@ class AddTag extends Component {
                 required
                 value={title}
               />
-              <Button className="form-element-box" type="submit" block>
+              <Button type="submit" block>
                 Create Tag
               </Button>
             </Form>

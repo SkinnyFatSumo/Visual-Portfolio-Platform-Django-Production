@@ -30,7 +30,7 @@ class PhotoDetail extends Component {
 
     return (
       <div className="centering-container">
-        <div className="general-outer-container">
+        <div className="general-outer-container" id="photo-detail-page">
           {all_photos_loaded && img_src !== undefined ? (
             <div>
               <h5 id="detail-title">{title}</h5>

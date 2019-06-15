@@ -127,7 +127,6 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Title</Form.Label>
                     <Form.Control
-                      className="form-element-box"
                       type="text"
                       name="title"
                       placeholder="an excellent title"
@@ -142,7 +141,6 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Full Resolution URL</Form.Label>
                     <Form.Control
-                      className="form-element-box"
                       type="url"
                       name="photo_source"
                       placeholder="https://www.somehost.com/fullresurl"
@@ -154,7 +152,6 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail URL</Form.Label>
                     <Form.Control
-                      className="form-element-box"
                       type="url"
                       name="thumbnail_source"
                       placeholder="https://www.somehost.com/thumbnailurl"
@@ -169,7 +166,6 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail Width</Form.Label>
                     <Form.Control
-                      className="form-element-box"
                       type="number"
                       name="thumbnail_width"
                       placeholder="integer"
@@ -183,7 +179,6 @@ class CreateOrEditPhoto extends Component {
                   <Form.Group as={Col}>
                     <Form.Label>Thumbnail Height</Form.Label>
                     <Form.Control
-                      className="form-element-box"
                       type="number"
                       name="thumbnail_height"
                       placeholder="integer"

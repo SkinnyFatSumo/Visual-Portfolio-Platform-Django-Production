@@ -17,11 +17,11 @@
   display: inline-block !important;
   max-height: 100%;
   max-width: 100%;
-  box-shadow: 5px -5px 5px rgba(50, 50, 50, .3); 
+  box-shadow: 5px -5px 5px rgba(50, 50, 50, 0.3);
 }
 
 #carousel-caption {
-  background-color: rgba(0, 0, 0, .3) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
   display: inline;
   margin: 0 auto;
   padding: 3px;
@@ -30,7 +30,15 @@
 
 #outer-carousel {
   max-width: 1200px;
-  background-color: rgba(0, 0, 0, .2);
+}
+
+#gallery-page {
+  background-color: rgba(51, 45, 45, 1);
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+  margin-top: 10px;
+  border-color: black;
+  border-width: 1px;
 }
 
 /*=========== COLLAPSIBLE BOXES =============*/
@@ -40,7 +48,6 @@
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 2;
-
 }
 
 .collapse-tags-box {
@@ -49,32 +56,31 @@
 
 #collapse-tags-active .btn {
   background-color: white !important;
-  border-color: black !important;
+  border-color: white !important;
+  background-color: rgba(219, 219, 219, 1);
   color: black !important;
   width: auto !important;
 }
 
 #collapse-tags-active:hover .btn:hover {
-  border-color: white !important;
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(235, 235, 235, 1) !important;
 }
 
 #collapse-tags-inactive .btn {
-  background-color: #332d2d !important;
-  border-color: white !important;
+  background-color: rgba(52, 52, 52, 1) !important;
+  border-color: rgba(52, 52, 52, 1) !important;
   width: auto !important;
 }
 
 #collapse-tags-inactive:hover .btn:hover {
-  border-color: #332d2d !important;
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(32, 32, 32, 1) !important;
 }
 
 /*============ GENERAL FORMS/CONTAINERS ===========*/
 
 #grid-border {
-  border-style: solid;
-  border-color: black;
-  border-width: 2px;
-  border-radius: 2px;
   margin: 5px;
   position: relative;
   z-index: 1;
@@ -83,27 +89,28 @@
 
 #grid-container {
   border-style: solid;
-  border-color: rgba(51, 45, 45, 1);
+  border-color: black;
   border-width: 1px;
   border-radius: 2px;
-  margin: 5px;
-  padding: 2px;
+  margin: 10px 10px 50px 10px;
   background-color: rgba(51, 45, 45, 1);
+  padding: 3px;
 }
 
-#detail-image
-{
+#detail-image {
   max-width: 100%;
-  height: auto;
+  max-height: 800px;
 }
 
-#detail-title
-{
+#detail-title {
   margin: 10px 0px 10px 0px;
   text-align: center;
-  color: rgba(51, 45, 45, 1);
+  color: white;
 }
 
+#photo-detail-page {
+  margin-bottom: 50px;
+}
 
 .tag-select-header {
   padding: 0px;
@@ -115,22 +122,30 @@
   display: inline-block;
 }
 
+#delete-tag-row {
+  display: inline-block;
+}
+
 .relations-box {
   display: inline-block;
 }
 
-#edit-tags-horizontal-rule
-{
-  width: 80%;
-  display: inline-block; 
-  margin: 5px 0px 5px 0px;
+#find-tag-by-name-container {
+  width: 95%;
+  margin-bottom: 0px;
 }
 
+#go-to-tag-container {
+  width: 95%;
+}
+
+
 .photo-or-tag-add-form {
+  width: 90%;
   display: inline-block;
   text-align: center;
   margin: 2px;
-  padding: 5px;
+  padding: 10px;
   border-width: 1px;
   border-style: solid;
   border-radius: 5px;
@@ -155,25 +170,25 @@
 /*TAG*/
 
 #add-tag .btn {
-  border-color: black;
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
   width: 100%;
-  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #add-tag:hover .btn:hover {
-  border-color: maroon !important;
-  background-color: rgba(219, 219, 219, 1) !important;
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 #find-tag .btn {
-  border-color: black;
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
   width: auto;
-  background-color: rgba(219, 219, 219, 1) !important;
 }
 
 #find-tag:hover .btn:hover {
-  border-color: maroon !important;
-  background-color: rgba(219, 219, 219, 1) !important;
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 .tagname-button {
@@ -203,19 +218,20 @@
 }
 
 .photo-button-group .btn {
-  background-color: #332d2d !important;
-  border-color: black !important;
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
   width: auto !important;
+  display: inline-block;
 }
 
 .photo-button-group:hover .btn:hover {
-  border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
+  border-color: rgba(51, 45, 45, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 .photo-button-group:active .btn:active {
-  border-color: maroon !important;
-  background-color: rgba(20, 17, 17, 1) !important;
+  border-color: rgba(51, 45, 45, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 /* general add or delete */
@@ -228,7 +244,6 @@
 }
 
 .add-button:hover {
-  background-image: url('/static/app_main/plus-maroon.svg') !important;
 }
 
 .remove-button {
@@ -239,14 +254,12 @@
 }
 
 .remove-button:hover {
-  background-image: url('/static/app_main/garbage-black.svg') !important;
 }
 
 .remove-tag-button {
   display: inline-block;
   margin: 5px 0px 5px 0px;
 }
-
 
 #submit-photo-button {
   display: inline-block !important;
@@ -263,24 +276,34 @@
   text-align: center;
 }
 
+.display-options-toolbar {
+  justify-content: center !important;
+}
+
 .display-options-toolbar .btn {
-  color: maroon;
+  color: rgba(52, 52, 52, 1);
   background-color: white;
-  border-color: maroon;
+  border-color: white;
   border-width: 1px;
   border-style: solid;
-  border-radius: 10px;
-  margin: 5px 1px 1px 0px;
+  border-radius: 2px;
+  margin: 10px 1px 1px 0px;
   width: 130px;
   display: inline-block;
-  justify-content: center;
+  text-align: center;
 }
 
 .display-options-toolbar:hover .btn:hover {
-  background-color: #e8dede;
+  border-color: rgba(2, 33, 54, 1);
+  background-color: rgba(235, 235, 235, 1);
 }
 .display-options-toolbar:focus .btn:focus {
-  background-color: #e8dede;
+  border-color: rgba(2, 33, 54, 1);
+  background-color: rgba(235, 235, 235, 1);
+}
+
+.tags-and-photo-toolbar {
+  justify-content: center !important;
 }
 
 .tags-and-photo-toolbar .btn {
@@ -295,19 +318,19 @@
 }
 
 .tags-and-photo-toolbar:hover .btn:hover {
-  border-color: rgba(52, 52, 52, 1);
-  background-color: rgba(209, 209, 209, 1) !important;
+  border-color: rgba(2, 33, 54, 1);
+  background-color: rgba(199, 199, 199, 1) !important;
 }
 
 .tags-and-photo-toolbar:focus .btn:focus {
-  border-color: rgba(52, 52, 52, 1);
-  background-color: rgba(209, 209, 209, 1) !important;
+  border-color: rgba(2, 33, 54, 1);
+  background-color: rgba(199, 199, 199, 1) !important;
 }
 
 .tag-filter-toolbar {
   margin: 2px;
   padding: 1px;
-  border-color: rgba(52, 52, 52, 1);
+  border-color: rgba(52, 52, 52, .4);
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
