@@ -12,7 +12,12 @@ Content can be created, edited, and deleted with immediate effect across four di
 
 Use tags to search and sort photos across multiple display options:
 
-![](gifs/tags.gif)
+![](gifs/tagview.gif)
+
+
+Dynamic display adapts to all screen sizes:
+
+![](gifs/scale.gif)
 
 
 A parallel user interface makes navigation easy whether logged in or out:
@@ -20,9 +25,9 @@ A parallel user interface makes navigation easy whether logged in or out:
 ![](gifs/login.gif)
 
 
-Dynamic display adapts to all screen sizes:
+Content changes take immediate, global effect:
 
-![](gifs/scale.gif)
+![](gifs/photos.gif)
 
 
 It only takes seconds to register and start adding content:
