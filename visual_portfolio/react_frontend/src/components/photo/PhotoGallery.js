@@ -174,7 +174,8 @@ class PhotoGallery extends Component {
                 {action === 'edit' ? (
                   <Button
                     onClick={this.deletePhoto}
-                    id={this.props.photos[index].id}>
+                    id={this.props.photos[index].id}
+                    className="danger-button">
                     Delete Photo
                   </Button>
                 ) : null}

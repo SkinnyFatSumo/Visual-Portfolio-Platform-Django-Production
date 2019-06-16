@@ -154,6 +154,7 @@ class SearchUsers extends Component {
         ) : null}
         <button
           id={'search-users-input-button-' + this.props.id}
+          className='search-users-input-button'
           onSubmit={this.onFormSubmit}>
           Go
         </button>

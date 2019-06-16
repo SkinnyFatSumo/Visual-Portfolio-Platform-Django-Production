@@ -206,7 +206,7 @@ class TagListAll extends Component {
         all_photos={this.props.all_photos}
         destroyTag={this.destroyTag}
         key={tag.tagname}
-        tag_id={tag.tag_id}
+        tag_id={tag.id}
         tagname={tag.tagname}
         relations={this.props.relations}
         user={this.props.user}

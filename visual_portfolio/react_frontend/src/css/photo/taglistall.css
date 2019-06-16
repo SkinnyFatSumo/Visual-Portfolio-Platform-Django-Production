@@ -12,20 +12,16 @@
   border-bottom-width: 3px !important;
 }
 
-button:hover {
-  background-color: #6b0700;
-}
-
-button:active {
-  background-color: #6b0700;
-}
-
 #grid-for-tags {
   background-color: rgba(0, 0, 0, .2);
 }
 
 h3 {
   color: white;
+}
+
+.header {
+  border-radius: 2px;
 }
 
 hr {
@@ -72,7 +68,7 @@ hr {
   border-style: solid !important;
   border-width: 1px !important;
   border-color: rgba(219, 219, 219, 1) !important;
-  border-radius: 0px !important;
+  border-radius: 2px !important;
   color: rgba(52, 52, 52, 1);
   margin-bottom: 1px;
 }

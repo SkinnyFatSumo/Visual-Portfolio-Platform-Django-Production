@@ -44,6 +44,7 @@
 /*=========== COLLAPSIBLE BOXES =============*/
 
 .absolute-collapse-box {
+  color: rgba(52, 52, 52, 1);
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -122,8 +123,28 @@
   display: inline-block;
 }
 
+#add-tag-row .btn {
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
+}
+
+#add-tag-row:hover .btn:hover {
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
+}
+
 #delete-tag-row {
   display: inline-block;
+}
+
+#delete-tag-row .btn {
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
+}
+
+#delete-tag-row:hover .btn:hover {
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 .relations-box {
@@ -191,6 +212,10 @@
   background-color: rgba(2, 33, 54, .5) !important;
 }
 
+.danger-button:hover .btn:hover {
+  background-color: red !important;
+}
+
 .tagname-button {
   width: 100%;
   padding: 5px;
@@ -244,6 +269,7 @@
 }
 
 .add-button:hover {
+  background-image: url('/static/app_main/plus-black.svg') !important;
 }
 
 .remove-button {
@@ -254,6 +280,7 @@
 }
 
 .remove-button:hover {
+  background-image: url('/static/app_main/garbage-maroon.svg') !important;
 }
 
 .remove-tag-button {
@@ -263,6 +290,15 @@
 
 #submit-photo-button {
   display: inline-block !important;
+  max-width: 50% !important;
+  background-color: rgba(2, 33, 54, .3) !important;
+  border-color: rgba(2, 33, 54, .3) !important;
+  color: white;
+}
+
+#submit-photo-button:hover {
+  border-color: rgba(219, 219, 219, 1) !important;
+  background-color: rgba(2, 33, 54, .5) !important;
 }
 
 /*========== TOOLBARS =============*/
@@ -278,6 +314,7 @@
 
 .display-options-toolbar {
   justify-content: center !important;
+  margin-top: 10px;
 }
 
 .display-options-toolbar .btn {
@@ -287,7 +324,7 @@
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  margin: 10px 1px 1px 0px;
+  margin: 1px;
   width: 130px;
   display: inline-block;
   text-align: center;
@@ -304,6 +341,7 @@
 
 .tags-and-photo-toolbar {
   justify-content: center !important;
+  margin-top: 5px;
 }
 
 .tags-and-photo-toolbar .btn {
@@ -313,7 +351,7 @@
   border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  margin: 5px 1px 1px 0px;
+  margin: 1px;
   width: 130px;
 }
 

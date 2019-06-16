@@ -10,19 +10,25 @@ Content can be created, edited, and deleted with immediate effect across four di
 
 -------------------------------------------------------------------
 
-Quickly register and start adding content:
+Use tags to search and sort photos across multiple display options:
 
-![](gifs/register.gif)
-
-
-Sort and view photos from multipe display options:
-
-![](gifs/add-and-sort-tags.gif)
+![](gifs/tags.gif)
 
 
 A parallel user interface makes navigation easy whether logged in or out:
 
-![](gifs/protected-routes.gif)
+![](gifs/login.gif)
+
+
+Dynamic display adapts to all screen sizes:
+
+![](gifs/scale.gif)
+
+
+It only takes seconds to register and start adding content:
+
+![](gifs/register.gif)
+
 
 -------------------------------------------------------------------
 

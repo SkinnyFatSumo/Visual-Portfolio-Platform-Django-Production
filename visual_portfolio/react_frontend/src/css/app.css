@@ -1,7 +1,13 @@
 /*===============GENERAL CONTAINERS======================*/
 
+/*
 #body {
   background-color: rgba(2, 33, 54, 1);
+}
+*/
+
+#body {
+  background-color: rgba(1, 21, 35, 1);
 }
 
 .centering-container {
@@ -73,6 +79,7 @@
   color: rgba(52, 52, 52, 1);
 }
 
+
 #register-or-login-link {
   border-radius: 2px;
   background-color: rgba(219, 219, 219, 1) !important;
@@ -133,6 +140,14 @@
   border-color: rgba(52, 52, 52, 1) !important;
 }
 
+#navbar-toggle:hover {
+  background-color: rgba(2, 33, 54, 1) !important;
+}
+
+#navbar-toggle:active {
+  background-color: rgba(2, 33, 54, 1) !important;
+}
+
 #search-users-input-navbar {
   border-style: solid;
   border-width: 1px 0px 1px 1px;
@@ -150,6 +165,11 @@
   border-color: rgba(52, 52, 52, 1) !important;
   height: 30px;
   width: 33px;
+}
+
+#search-users-input-button-navbar:hover {
+  background-color: rgba(2, 33, 54, 1) !important;
+  color: white !important;
 }
 
 #nav-viewing-user {

@@ -53,6 +53,7 @@ class AddRelationDefaultPhoto extends Component {
         return 0;
       })
       .map(remaining_tag => (
+
         <ButtonGroup key={remaining_tag.id} className="photo-button-group">
           <Button id={remaining_tag.id} name={remaining_tag.tagname} onClick={this.launchTagView}>
             {remaining_tag.tagname.toUpperCase()}

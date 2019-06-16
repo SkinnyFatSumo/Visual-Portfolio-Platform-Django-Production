@@ -46,6 +46,7 @@ class AddRelationDefaultTag extends Component {
       owner: this.props.user.id,
       tagname: this.props.tagname,
     };
+    console.log('ADD RELATION', relation);
     this.props.postRelation(relation);
   };
 
