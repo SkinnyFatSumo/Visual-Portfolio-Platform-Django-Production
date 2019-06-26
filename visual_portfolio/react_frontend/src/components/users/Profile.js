@@ -30,7 +30,7 @@ class Profile extends Component {
     return (
       <div className="centering-container">
         <div className="general-outer-container">
-          <h4 style={{textAlign: 'center',  marginTop: '5px'}}>Under Construction</h4>
+          <h5 style={{textAlign: 'center',  marginTop: '5px'}}>Under Construction</h5>
         </div>
       </div>
     );

@@ -245,8 +245,7 @@ class TagListAll extends Component {
   };
 
   render() {
-    if (this.props.all_photos_loaded && this.props.all_photos.length > 0) {
-      console.log('tags loaded?', this.props.all_tags_loaded);
+    if (this.props.all_tags_loaded && this.props.all_tags.length > 0) {
       return (
         <div className="centering-container">
           <div id="tag-view-content-container" className="content-container">
@@ -277,7 +276,7 @@ class TagListAll extends Component {
       return (
         <div className="centering-container">
           <div className="general-outer-container">
-            <h5>User Has No Photos</h5>
+            <h5 id="no-content">Either this user has no tags, or they failed to load.</h5>
           </div>
         </div>
       );

@@ -85,7 +85,7 @@ class PhotoGrid extends Component {
       return (
         <div className="centering-container">
           <div className="general-outer-container">
-            <h5>User Has No Photos</h5>
+            <h5 id="no-content">Either this user has no photos, or they failed to load.</h5>
           </div>
         </div>
       );

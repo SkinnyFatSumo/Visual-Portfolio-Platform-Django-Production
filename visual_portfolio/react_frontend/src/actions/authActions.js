@@ -78,6 +78,7 @@ export const authenticateUser = () => (dispatch, getState) => {
 };
 
 export const loginUser = userData => dispatch => {
+ 
   const login_lookupOptions = {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -110,6 +111,8 @@ export const loginUser = userData => dispatch => {
 };
 
 export const registerUser = userData => dispatch => {
+
+  userData.username = userData.username.toLowerCase();
 
   console.log('stringified', JSON.stringify(userData));
   const register_lookupOptions = {
