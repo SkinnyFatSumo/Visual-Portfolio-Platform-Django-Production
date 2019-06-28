@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,8 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,10 +87,10 @@ WSGI_APPLICATION = 'visual_portfolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'visual_portfolio_db',
-        'USER': 'visual_portfolio_admin',
+        'NAME': 'visual_portfolio',
+        'USER': 'simon',
         # A+ Password Right Here
-        'PASSWORD': 'F1lmMak3r#17',
+        'PASSWORD': 'password',
         'HOST': '',
     }
 }
@@ -142,10 +145,4 @@ STATICFILES_DIRS = [
 
 
 # TODO: FIX BEFORE PRODUCTION 
-CORS_URLS_REGEX = r'^/api.*'
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    '*',
-    'your-domain.com',
-    'your-bucket-here.s3-us-west-2.amazonaws.com',
-)
