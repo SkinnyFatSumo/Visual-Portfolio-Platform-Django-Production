@@ -1,1 +1,1 @@
-web: gunicorn visual_portfolio_root.visual_portfolio.wsgi
+web: gunicorn visual_portfolio.wsgi
