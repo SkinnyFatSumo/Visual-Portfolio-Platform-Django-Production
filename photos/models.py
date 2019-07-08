@@ -124,7 +124,7 @@ class Photo(models.Model):
         # TODO: handle deleting old files from s3 when new values are added
 
         # set save to False to escape infinite loop
-        self.thumbnail.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
+        self.thumb.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
         temp_thumb.close()
 
         return True
