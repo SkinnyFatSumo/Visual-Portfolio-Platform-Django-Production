@@ -89,16 +89,14 @@ class Photo(models.Model):
             raise Exception('Could not create thumnbail') 
 
     def create_thumbnail(self):
-        fh = s3.open(self.photo.name, 'r')
         try:
-            image = Image.open(fh)
+            image = Image.open(self.photo)
         except:
             raise Exception('Failed to open full res image')
             return False
         
         size = (700, 700)
         image.thumbnail(size, Image.ANTIALIAS)
-        fh.close()
 
         thumb_base, thumb_ext = os.path.splitext(self.photo.name)
         thumb_ext = thumb_ext.lower()
