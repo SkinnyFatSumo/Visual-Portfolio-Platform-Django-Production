@@ -23,7 +23,7 @@ class PhotoSerializer(serializers.ModelSerializer):
                   'camera_brand', 'camera_model', 'lens_brand', 'lens_model',
                   'country', 'city', 'state', 'site', 'taken',
                   'uploaded', 'photo_source', 'thumbnail_source', 'thumbnail_height',
-                  'thumbnail_width', 'url')
+                  'thumbnail_width', 'url', 'photo', 'thumb')
 
 
 class PhotoWithTagSerializer(serializers.ModelSerializer):

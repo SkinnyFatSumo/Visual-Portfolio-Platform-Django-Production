@@ -1,7 +1,15 @@
+import os.path
+from io import BytesIO
+from django.core.files.base import ContentFile
+
 from django.db import models
 from django.conf import settings
 from .permissions import IsOwnerOrReadOnly
 
+from django.utils.timezone import now
+from PIL import Image
+from django_boto.s3.storage import S3Storage
+s3 = S3Storage()
 
 
 # Create TAG (that can be associated with photos)
@@ -17,6 +25,13 @@ class Tag(models.Model):
         ordering = ['tagname']
         unique_together = ('owner', 'tagname',)
 
+
+
+def upload_image_to(instance, filename):
+    filename_base, filename_ext = os.path.splitext(filename)
+    return 'photos/%s/%s/%s/%s/' % (
+        now().strftime("%Y%m%d"), instance.owner.lower(), instance.title.lower(), filename_ext.lower(),
+    )
 
 # Create PHOTO (that can be associated with tags)
 class Photo(models.Model):
@@ -54,15 +69,65 @@ class Photo(models.Model):
 
     # referential info
     uploaded = models.DateTimeField(auto_now_add=True)
+    
+    photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
+    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, editable=False, null=True, blank=True)
+    
     photo_source = models.URLField(max_length=300)
     thumbnail_source = models.URLField(max_length=300)
     thumbnail_height = models.SmallIntegerField()
     thumbnail_width = models.SmallIntegerField()
 
-    # location = models.ImageField(upload_to='photos/%Y/%m/%d/')
 
     def __str__(self):
         return self.title
+    
+    
+    def save(self, *args, **kwargs):
+        super(Photo, self).save(*args, **kwargs)
+        if not self.create_thumbnail():
+            raise Exception('Could not create thumnbail') 
+
+    def create_thumbnail(self):
+        fh = s3.open(self.photo.name, 'r')
+        try:
+            image = Image.open(fh)
+        except:
+            raise Exception('Failed to open full res image')
+            return False
+        
+        size = (700, 700)
+        image.thumbnail(size, Image.ANTIALIAS)
+        fh.close()
+
+        thumb_base, thumb_ext = os.path.splitext(self.photo.name)
+        thumb_ext = thumb_ext.lower()
+        thumb_file_path = thumb_base + '_thumb' + thumb_ext
+
+        if thumb_ext in ['.jpg', '.jpeg']:
+            FTYPE = 'JPEG'
+        elif thumb_ext in ['.tif', '.tiff']:
+            FTYPE = 'TIFF'
+        elif thumb_ext == '.png':
+            FTYPE = 'PNG'
+        elif thumb_ext == '.gif':
+            FTYPE = 'GIF'
+        else:
+            raise Exception('unrecognized file type')
+            return False
+
+        # SAVE THUMBNAIL TO IN-MEMORY FILE
+        temp_thumb = BytesIO()
+        image.save(temp_thumb, FTYPE)
+        temp_thumb.seek(0)
+
+        # TODO: handle deleting old files from s3 when new values are added
+
+        # set save to False to escape infinite loop
+        self.thumbnail.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
+        temp_thumb.close()
+
+        return True
 
     class Meta:
         ordering = ['taken']

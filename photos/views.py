@@ -171,3 +171,21 @@ class PhotoWithTagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPI
     queryset = PhotoWithTag.objects.all()
     serializer_class = PhotoWithTagSerializer
     permission_classes = [ permissions.IsAuthenticated ]
+
+
+session: auth
+
+
+positional argument: in order of function position
+keyword arguments: arbitrarily, 
+*args, (positional)
+**kwargs (keyword)
+
+
+def getLogs(a, b=None, *args, **kwargs):
+
+
+*args, ==> (tuple)
+**kwargs ==> (
+        *args
+        **kwargs
