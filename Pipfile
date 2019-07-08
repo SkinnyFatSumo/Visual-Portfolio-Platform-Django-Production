@@ -15,6 +15,7 @@ psycopg2 = "*"
 dj-database-url = "*"
 django-storages = "*"
 boto3 = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
