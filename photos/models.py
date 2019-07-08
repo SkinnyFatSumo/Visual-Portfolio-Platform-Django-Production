@@ -27,7 +27,7 @@ class Tag(models.Model):
 
 
 
-def upload_image_to(instance, filename):
+def upload_photo_to(instance, filename):
     filename_base, filename_ext = os.path.splitext(filename)
     return 'photos/%s/%s/%s/%s/' % (
         now().strftime("%Y%m%d"), instance.owner.lower(), instance.title.lower(), filename_ext.lower(),
