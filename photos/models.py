@@ -83,7 +83,8 @@ class Photo(models.Model):
         return self.title
     
     
-    def save(self, *args, **kwargs):
+    def save(self, owner, *args, **kwargs):
+        self.save(owner=owner)
         super(Photo, self).save(*args, **kwargs)
         if not self.create_thumbnail():
             raise Exception('Could not create thumnbail') 
