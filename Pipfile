@@ -16,6 +16,7 @@ dj-database-url = "*"
 django-storages = "*"
 boto3 = "*"
 pillow = "*"
+django-boto = "*"
 
 [requires]
 python_version = "3.7"
