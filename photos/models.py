@@ -84,7 +84,7 @@ class Photo(models.Model):
     
     
     def save(self, **kwargs):
-        super(Photo, self).save(*args, **kwargs)
+        super(Photo, self).save(**kwargs)
         if not self.create_thumbnail():
             raise Exception('Could not create thumnbail') 
 
