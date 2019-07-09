@@ -71,7 +71,7 @@ class Photo(models.Model):
     uploaded = models.DateTimeField(auto_now_add=True)
     
     photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
-    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, editable=False, null=True, blank=True)
+    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
     
     photo_source = models.URLField(max_length=300)
     thumbnail_source = models.URLField(max_length=300)
@@ -83,12 +83,7 @@ class Photo(models.Model):
         return self.title
     
     
-    def save(self, *args, **kwargs):
 
-        if not self.create_thumbnail():
-            raise Exception('Could not create thumnbail') 
-        
-        super(Photo, self).save(*args, **kwargs)
 
     def create_thumbnail(self):
         try:
@@ -100,7 +95,7 @@ class Photo(models.Model):
         size = (700, 700)
         image.thumbnail(size, Image.ANTIALIAS)
 
-        thumb_base, thumb_ext = os.path.splitext(self.photo.name)
+        thumb_base, thumb_ext = os.path.splitext(self.photo)
         thumb_ext = thumb_ext.lower()
         thumb_file_path = thumb_base + '_thumb' + thumb_ext
 
@@ -126,6 +121,11 @@ class Photo(models.Model):
         # set save to False to escape infinite loop
         self.thumb.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
         temp_thumb.close()
+    
+    def save(self, *args, **kwargs):
+        self.create_thumbnail()
+        print('MADE IT HERE') 
+        super(Photo, self).save()
 
         return True
 
