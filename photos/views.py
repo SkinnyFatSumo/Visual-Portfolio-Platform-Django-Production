@@ -169,7 +169,7 @@ class PhotoWithTagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPI
     serializer_class = PhotoWithTagSerializer
     permission_classes = [ permissions.IsAuthenticated ]
 
-
+'''
 session: auth
 
 
@@ -186,3 +186,4 @@ def getLogs(a, b=None, *args, **kwargs):
 **kwargs ==> (
         *args
         **kwargs
+'''

@@ -84,6 +84,10 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
     
+    def save(self, *args, **kwargs):
+        if not self.create_thumbnail():
+            raise Exception('Could not create thumbnail, check file type')
+        super(Photo, self).save(*args, **kwargs)
     
 
 
@@ -110,7 +114,7 @@ class Photo(models.Model):
         elif thumb_ext == '.gif':
             FTYPE = 'GIF'
         else:
-            raise Exception('unrecognized file type')
+            raise Exception('unsupported file type')
             return False
 
         # SAVE THUMBNAIL TO IN-MEMORY FILE
@@ -123,11 +127,6 @@ class Photo(models.Model):
         # set save to False to escape infinite loop
         self.thumb.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
         temp_thumb.close()
-    
-    def save(self, *args, **kwargs):
-        self.create_thumbnail()
-        print('MADE IT HERE') 
-        super(Photo, self).save()
 
         return True
 
