@@ -17,6 +17,7 @@ django-storages = "*"
 boto3 = "*"
 pillow = "*"
 django-boto = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"

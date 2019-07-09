@@ -1,5 +1,6 @@
 # Created by https://www.gitignore.io/api/vim,node,django
 # Edit at https://www.gitignore.io/?templates=vim,node,django
+.env
 
 ### Django ###
 *.log
