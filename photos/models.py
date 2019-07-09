@@ -70,13 +70,15 @@ class Photo(models.Model):
     # referential info
     uploaded = models.DateTimeField(auto_now_add=True)
     
-    photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
-    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
+
     
     photo_source = models.URLField(max_length=300)
     thumbnail_source = models.URLField(max_length=300)
     thumbnail_height = models.SmallIntegerField()
     thumbnail_width = models.SmallIntegerField()
+    
+    photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
+    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
 
 
     def __str__(self):
