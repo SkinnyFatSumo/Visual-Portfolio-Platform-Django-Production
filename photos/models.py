@@ -29,8 +29,14 @@ class Tag(models.Model):
 
 def upload_photo_to(instance, filename):
     filename_base, filename_ext = os.path.splitext(filename)
-    return 'photos/%s/%s/%s/%s/' % (
-        now().strftime("%Y%m%d"), instance.owner, instance.title.lower(), filename_ext.lower(),
+    return 'photos/%s/%s/' % (
+        instance.owner.username.lower(), instance.title.lower() + '-' + now().strftime("%Y%m%d") + '-' + filename_ext.lower(),
+    )
+
+def upload_thumb_to(instance, filename):
+    filename_base, filename_ext = os.path.splitext(filename)
+    return 'thumbnails/%s/%s/' % (
+        instance.owner.username.lower(), instance.title.lower() + '-' + now().strftime("%Y%m%d") + '-' + filename_ext.lower(),
     )
 
 # Create PHOTO (that can be associated with tags)
@@ -78,7 +84,7 @@ class Photo(models.Model):
     thumbnail_width = models.SmallIntegerField()
     
     photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
-    thumb = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
+    thumb = models.ImageField(upload_to=upload_thumb_to, storage=s3, null=True, blank=True)
 
 
     def __str__(self):
