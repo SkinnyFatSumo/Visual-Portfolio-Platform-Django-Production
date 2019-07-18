@@ -101,7 +101,7 @@ class Photo(models.Model):
         size = (700, 700)
         image.thumbnail(size, Image.ANTIALIAS)
 
-        thumb_base, thumb_ext = os.path.splitext(self.photo)
+        thumb_base, thumb_ext = os.path.splitext(self.photo.name)
         thumb_ext = thumb_ext.lower()
         thumb_file_path = thumb_base + '_thumb' + thumb_ext
 
