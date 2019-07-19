@@ -1,14 +1,15 @@
 import os.path
-from io import BytesIO
-from django.core.files.base import ContentFile
+from django.conf import settings
 
 from django.db import models
-from django.conf import settings
-from .permissions import IsOwnerOrReadOnly
+from django.dispatch import receiver
 
 from django.utils.timezone import now
+
+from io import BytesIO
 from PIL import Image
 from django_boto.s3.storage import S3Storage
+
 s3 = S3Storage()
 
 
@@ -92,7 +93,6 @@ class Photo(models.Model):
         if not self.create_thumbnail():
             raise Exception('Could not create thumbnail, check file type')
         super(Photo, self).save(*args, **kwargs)
-    
 
 
     def create_thumbnail(self):
@@ -141,7 +141,6 @@ class Photo(models.Model):
 
 # Use for many-to-many relationship between tags and photos
 class PhotoWithTag(models.Model):
-   
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE, related_name='related_photos')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name='related_tags')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='relations', on_delete=models.CASCADE)
@@ -150,8 +149,13 @@ class PhotoWithTag(models.Model):
         return 'photo: ' + self.photo.title + ' --- tag: ' + self.tag.tagname
     
 
+# TODO: create reciever to clean up when a photo is updated/altered
 
-
+# Delete photos from S3 storage AFTER instance is deleted from database
+@receiver(models.signals.post_delete, sender=Photo)
+def remove_file_from_s3(sender, instance, using, **kwargs):
+    instance.photo_source.delete(save=False)
+    instance.thumbnail_source.delete(save=False)
 
 
 
