@@ -30,21 +30,32 @@ class Tag(models.Model):
 def upload_photo_to(instance, filename):
     filename_base, filename_ext = os.path.splitext(filename)
     return 'photos/%s/%s/' % (
-        instance.owner.username.lower(), instance.title.lower() + '-' + now().strftime("%Y%m%d") + '-' + filename_ext.lower(),
+        instance.owner.username.lower(), instance.title.lower() + '--' + now().strftime("%Y%m%d") + filename_ext.lower(),
     )
 
 def upload_thumb_to(instance, filename):
     filename_base, filename_ext = os.path.splitext(filename)
     return 'thumbnails/%s/%s/' % (
-        instance.owner.username.lower(), instance.title.lower() + '-' + now().strftime("%Y%m%d") + '-' + filename_ext.lower(),
+        instance.owner.username.lower(), instance.title.lower() + '--' + now().strftime("%Y%m%d") + filename_ext.lower(),
     )
 
 # Create PHOTO (that can be associated with tags)
 class Photo(models.Model):
 
+    ''' REQUIRED INFO ''' 
     title = models.CharField(max_length=50)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='photos', on_delete=models.CASCADE)
+    photo_source = models.ImageField(upload_to=upload_photo_to, storage=s3)
 
+    ''' AUTO-GENERATED INFO '''
+    thumbnail_source = models.ImageField(
+            upload_to=upload_thumb_to, height_field='thumbnail_height', 
+            width_field='thumbnail_width', storage=s3, null=True, blank=True)
+    thumbnail_height = models.SmallIntegerField(blank=True, null=True)
+    thumbnail_width = models.SmallIntegerField(blank=True, null=True)
+    uploaded = models.DateTimeField(auto_now_add=True)
+
+    ''' OPTIONAL INFO '''
     # color/bw & film/digital
     color = models.BooleanField(blank=True, null=True)
     film = models.BooleanField(blank=True, null=True)
@@ -73,24 +84,11 @@ class Photo(models.Model):
     site = models.CharField(max_length=100, blank=True, null=True)
     taken = models.DateTimeField(blank=True, null=True)
 
-    # referential info
-    uploaded = models.DateTimeField(auto_now_add=True)
-    
-
-    
-    photo_source = models.URLField(max_length=300)
-    thumbnail_source = models.URLField(max_length=300)
-    thumbnail_height = models.SmallIntegerField()
-    thumbnail_width = models.SmallIntegerField()
-    
-    photo = models.ImageField(upload_to=upload_photo_to, storage=s3, null=True, blank=True)
-    thumb = models.ImageField(upload_to=upload_thumb_to, storage=s3, null=True, blank=True)
-
-
     def __str__(self):
         return self.title
     
     def save(self, *args, **kwargs):
+        # Insure that a thumbnail is created on file save
         if not self.create_thumbnail():
             raise Exception('Could not create thumbnail, check file type')
         super(Photo, self).save(*args, **kwargs)
@@ -99,39 +97,39 @@ class Photo(models.Model):
 
     def create_thumbnail(self):
         try:
-            image = Image.open(self.photo)
+            image = Image.open(self.photo_source)
         except:
             raise Exception('Failed to open full res image')
             return False
-        
+       
+        # resize image to max 700px on longest side
         size = (700, 700)
         image.thumbnail(size, Image.ANTIALIAS)
 
-        thumb_base, thumb_ext = os.path.splitext(self.photo.name)
+        thumb_base, thumb_ext = os.path.splitext(self.photo_source.name)
         thumb_ext = thumb_ext.lower()
         thumb_file_path = thumb_base + '_thumb' + thumb_ext
 
+
         if thumb_ext in ['.jpg', '.jpeg']:
-            FTYPE = 'JPEG'
+            FTYPE = "JPEG"
         elif thumb_ext in ['.tif', '.tiff']:
-            FTYPE = 'TIFF'
+            FTYPE = "TIFF"
         elif thumb_ext == '.png':
-            FTYPE = 'PNG'
+            FTYPE = "PNG"
         elif thumb_ext == '.gif':
-            FTYPE = 'GIF'
+            FTYPE = "GIF"
         else:
             raise Exception('unsupported file type')
             return False
 
         # SAVE THUMBNAIL TO IN-MEMORY FILE
         temp_thumb = BytesIO()
-        image.save(temp_thumb, FTYPE)
+        image.save(temp_thumb, format=FTYPE)
         temp_thumb.seek(0)
 
-        # TODO: handle deleting old files from s3 when new values are added
-
         # set save to False to escape infinite loop
-        self.thumb.save(thumb_file_path, ContentFile(temp_thumb.read()), save=False)
+        self.thumbnail_source.save(thumb_file_path, temp_thumb, save=False)
         temp_thumb.close()
 
         return True
