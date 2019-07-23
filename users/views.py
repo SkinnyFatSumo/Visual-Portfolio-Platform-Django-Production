@@ -73,6 +73,12 @@ class RegisterUserAPIView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+        '''
+        print(request)
+        if CustomUser.objects.filter(username=request.POST['username']).exists():
+            return HttpResponse("Username already taken")
+        else:
+        '''
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

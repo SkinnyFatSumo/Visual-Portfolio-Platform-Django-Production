@@ -13,7 +13,7 @@ class PhotoListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        return Photo.objects.filter(owner__username=username)
+        return Photo.objects.filter(owner__username=username).defer('photo_source')
 
 
 # Add a new photo owned by this user
