@@ -16,7 +16,6 @@ dj-database-url = "*"
 django-storages = "*"
 boto3 = "*"
 pillow = "*"
-django-boto = "*"
 psycopg2-binary = "*"
 
 [requires]
