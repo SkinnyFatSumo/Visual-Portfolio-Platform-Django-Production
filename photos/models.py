@@ -8,9 +8,9 @@ from django.utils.timezone import now
 
 from io import BytesIO
 from PIL import Image
-from django_boto.s3.storage import S3Storage
-
-s3 = S3Storage()
+# from django_boto.s3.storage import S3Storage
+from storages.backends.s3boto import S3BotoStorage
+s3 = S3BotoStorage(location='')
 
 
 # Create TAG (that can be associated with photos)
@@ -50,8 +50,8 @@ class Photo(models.Model):
 
     ''' AUTO-GENERATED INFO '''
     thumbnail_source = models.ImageField(
-            upload_to=upload_thumb_to, height_field='thumbnail_height', 
-            width_field='thumbnail_width', storage=s3, null=True, blank=True)
+            upload_to=upload_thumb_to, storage=s3, height_field='thumbnail_height', 
+            width_field='thumbnail_width', null=True, blank=True)
     thumbnail_height = models.SmallIntegerField(blank=True, null=True)
     thumbnail_width = models.SmallIntegerField(blank=True, null=True)
     uploaded = models.DateTimeField(auto_now_add=True)
