@@ -22,8 +22,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    '''
     class Meta:
         verbose_name = 'User'
+    '''
   
 
 class OptionalUserInfo(models.Model):
