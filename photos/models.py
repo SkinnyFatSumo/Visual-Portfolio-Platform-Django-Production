@@ -100,7 +100,8 @@ class Photo(models.Model):
         except:
             raise Exception('Failed to open full res image')
             return False
-     
+   
+        '''
         # Handle orientation exif data if found
         try:
             if hasattr(image, '_getexif'): # only present in JPEGs
@@ -119,6 +120,7 @@ class Photo(models.Model):
         except:
             raise Exception('Failure while checking exif data.')
             return False
+        '''
         
 
         # resize image to max 700px on longest side
