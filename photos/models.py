@@ -36,7 +36,7 @@ def upload_photo_to(instance, filename):
 def upload_thumb_to(instance, filename):
     filename_base, filename_ext = os.path.splitext(filename)
     return 'thumbnails/%s/%s/' % (
-        instance.owner.username.lower(), str(instance.id) + filename_ext.lower(),
+        instance.owner.username.lower(), instance.title.lower() + '--' + now().strftime("%Y%m%d") + filename_ext.lower(),
     )
 
 # Create PHOTO (that can be associated with tags)
